@@ -3,7 +3,7 @@ import * as React from "react";
 const pageStyles = {
   backgroundColor: "#272822",
   minHeight: "100vh",
-  width: "100%",
+  flexGrow: 1,
 };
 
 export default function CodeSpace() {

@@ -1,8 +1,10 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import { graphql } from "gatsby";
 import CodeSpace from "../components/layouts/CodeSpace";
 import Explorer from "../components/layouts/Explorer";
 import Menubar from "../components/layouts/Menubar";
+import { loadTabsInfo, saveTabsInfo } from "../utils/sessionStorage";
+import { TabsInfo } from "../types/types";
 
 const layoutStyle = {
   display: "flex",
@@ -13,6 +15,17 @@ export default function BlogPostTemplate({
 }: any) {
   const { markdownRemark } = data; // data.markdownRemark holds your post data
   const { frontmatter, html } = markdownRemark;
+
+  useEffect(() => {
+    console.log(frontmatter);
+    const oldTabsInfo = loadTabsInfo();
+    const isAlreadySaved = oldTabsInfo.some(
+      (d: TabsInfo) => d.slug === frontmatter.slug
+    );
+    if (!isAlreadySaved) {
+      saveTabsInfo([...oldTabsInfo, frontmatter]);
+    }
+  }, []);
   return (
     <div style={layoutStyle}>
       <Menubar />
