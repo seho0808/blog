@@ -68,8 +68,12 @@ export default function TabsWrapper({
     removeTabsInfo(slug);
     if (slug === currentTabSlug) {
       const currTabsInfo = tabsInfo.filter((d) => d.slug !== slug);
-      if (currTabsInfo.length === 0) navigate("/");
+      if (currTabsInfo.length === 0) {
+        navigate("/");
+        return;
+      }
       navigate(currTabsInfo[0].slug);
+      return;
     }
     setTabsInfo((tabsInfo) => tabsInfo.filter((d) => d.slug !== slug));
   };
