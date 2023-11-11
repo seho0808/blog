@@ -3,3 +3,9 @@ export interface TabsInfo {
   slug: string;
   date: string;
 }
+export interface BlogMarkdownRemark {
+  markdownRemark: {
+    html: string;
+    frontmatter: TabsInfo;
+  };
+}

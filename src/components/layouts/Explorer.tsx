@@ -12,13 +12,13 @@ const asideStyle = {
 
 const titleStyle = {
   padding: "10px 14px",
-  fontSize: "10px",
+  fontSize: "12px",
 };
 
 const subTitleStyle = {
   backgroundColor: "#272822",
   padding: "4px 2px",
-  fontSize: "10px",
+  fontSize: "12px",
   fontWeight: 800,
 };
 

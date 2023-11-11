@@ -3,35 +3,37 @@ import { graphql } from "gatsby";
 import CodeSpace from "../components/layouts/CodeSpace";
 import Explorer from "../components/layouts/Explorer";
 import Menubar from "../components/layouts/Menubar";
-import { loadTabsInfo, saveTabsInfo } from "../utils/sessionStorage";
-import { TabsInfo } from "../types/types";
+import { BlogMarkdownRemark, TabsInfo } from "../types/types";
+import TabsWrapper from "../components/Tabs/TabsWrapper";
 
 const layoutStyle = {
   display: "flex",
 };
 
+const contentWindowStyle = {
+  backgroundColor: "#272822",
+  flexGrow: 1,
+};
+
+const contentWrapperStyle = {
+  paddingLeft: "20px",
+  overflowY: "auto" as const,
+};
 export default function BlogPostTemplate({
   data, // this prop will be injected by the GraphQL query below.
-}: any) {
+}: {
+  data: BlogMarkdownRemark;
+}) {
   const { markdownRemark } = data; // data.markdownRemark holds your post data
   const { frontmatter, html } = markdownRemark;
 
-  useEffect(() => {
-    console.log(frontmatter);
-    const oldTabsInfo = loadTabsInfo();
-    const isAlreadySaved = oldTabsInfo.some(
-      (d: TabsInfo) => d.slug === frontmatter.slug
-    );
-    if (!isAlreadySaved) {
-      saveTabsInfo([...oldTabsInfo, frontmatter]);
-    }
-  }, []);
   return (
     <div style={layoutStyle}>
       <Menubar />
       <Explorer />
-      <div>
-        <div>
+      <div style={contentWindowStyle}>
+        <TabsWrapper frontmatter={frontmatter} />
+        <div style={contentWrapperStyle}>
           <h1>{frontmatter.title}</h1>
           <h2>{frontmatter.date}</h2>
           <div dangerouslySetInnerHTML={{ __html: html }} />
