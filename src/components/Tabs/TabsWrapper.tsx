@@ -66,7 +66,11 @@ export default function TabsWrapper({
 
   const handleTabClose = (e: React.MouseEvent, slug: string) => {
     removeTabsInfo(slug);
-    if (slug === currentTabSlug) navigate("/");
+    if (slug === currentTabSlug) {
+      const currTabsInfo = tabsInfo.filter((d) => d.slug !== slug);
+      if (currTabsInfo.length === 0) navigate("/");
+      navigate(currTabsInfo[0].slug);
+    }
     setTabsInfo((tabsInfo) => tabsInfo.filter((d) => d.slug !== slug));
   };
 
