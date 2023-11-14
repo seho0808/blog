@@ -3,6 +3,43 @@ body {
   margin: 0;
 }
 
+/* Custom Scrollbar Styling */
+
+/* Width and color of the scrollbar */
+::-webkit-scrollbar {
+	width: 12px; /* Adjust the width as needed */
+	height: 12px; /* For horizontal scrollbars */
+}
+
+/* Track of the scrollbar */
+::-webkit-scrollbar-track {
+	background: #272822; /* Light gray track background */
+	border: solid 1px #474844;
+	border-width: 0px 1px;
+}
+
+/* Handle of the scrollbar */
+::-webkit-scrollbar-thumb {
+	background: #474844; /* Darker color for the handle */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: #555; /* Even darker color on hover */
+}
+
+
+/* minimap logic */
+.minimap-container {
+	position: fixed;
+	top: 36px;
+	right: 40px;
+}
+
+.minimap-container .markdown-content {
+	zoom: 0.15;
+}
+
 @font-face {
 	font-family: 'Pretendard';
 	font-weight: 900;

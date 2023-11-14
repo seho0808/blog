@@ -1,5 +1,5 @@
 import "../markdownStyle.css";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { graphql } from "gatsby";
 import CodeSpace from "../components/layouts/CodeSpace";
 import Explorer from "../components/layouts/Explorer";
@@ -7,6 +7,7 @@ import Menubar from "../components/layouts/Menubar";
 import { BlogMarkdownRemark, TabsInfo } from "../types/types";
 import TabsWrapper from "../components/Tabs/TabsWrapper";
 import Footer from "../components/layouts/Footer";
+import Minimap from "../components/Minimap/Minimap";
 
 const layoutStyle = {
   display: "flex",
@@ -20,6 +21,7 @@ const contentWindowStyle = {
 const contentWrapperStyle = {
   // display: "flex",
   // justifyContent: "center",
+  position: "relative" as const,
   padding: "0px 30px",
   maxHeight: "calc(100vh - 36px)",
   overflowY: "auto" as const,
@@ -32,6 +34,8 @@ export default function BlogPostTemplate({
   const { markdownRemark } = data; // data.markdownRemark holds your post data
   const { frontmatter, html } = markdownRemark;
 
+  const contentRef = useRef<HTMLDivElement>(null);
+
   return (
     <div style={layoutStyle}>
       <Menubar />
@@ -39,12 +43,12 @@ export default function BlogPostTemplate({
       <div style={contentWindowStyle}>
         <TabsWrapper frontmatter={frontmatter} />
         <div style={contentWrapperStyle}>
-          {/* <h1>{frontmatter.title}</h1>
-          <h2>{frontmatter.date}</h2> */}
           <div
             className="markdown-content"
             dangerouslySetInnerHTML={{ __html: html }}
+            ref={contentRef}
           />
+          <Minimap contentRef={contentRef} html={html} />
           <Footer />
         </div>
       </div>
