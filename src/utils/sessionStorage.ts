@@ -1,5 +1,9 @@
 import { TabsInfo } from "../types/types";
 
+/**
+ * save open tabs information
+ * @param state tabs that are open
+ */
 export const saveTabsInfo = (state: TabsInfo[]) => {
   try {
     const serializedState = JSON.stringify(state);
@@ -8,7 +12,10 @@ export const saveTabsInfo = (state: TabsInfo[]) => {
     console.log("unexpected error at saveTabsInfo");
   }
 };
-
+/**
+ * get open tabs information
+ * @returns tabs that are open
+ */
 export const loadTabsInfo = () => {
   try {
     const serializedState = sessionStorage.getItem("tabsInfo");
@@ -41,6 +48,63 @@ export const removeTabsInfo = (slug: string) => {
     return true;
   } catch (err) {
     console.log("unexpected error at removeTabsInfo");
+    return false;
+  }
+};
+
+/**
+ * save list of open folder names to session storage
+ * @param folderNames folder names to save
+ */
+export const saveOpenFolders = (folderNames: string[]) => {
+  try {
+    sessionStorage.setItem("openFolders", JSON.stringify(folderNames));
+    return true;
+  } catch (e) {
+    console.log("unexpected error at addOpenFolders");
+    return false;
+  }
+};
+
+/**
+ * load open folders informations
+ * @returns open folders' names
+ */
+export const loadOpenFolders = () => {
+  try {
+    const serializedState = sessionStorage.getItem("openFolders");
+    if (serializedState === null) {
+      return []; // No state saved in session storage
+    }
+    return JSON.parse(serializedState);
+  } catch (e) {
+    console.log("unexpected error at loadOpenFolders");
+    return [];
+  }
+};
+
+/**
+ * close folder and remove name from session storage
+ * @param folderName folder name to remove
+ */
+export const removeOpenFolders = (folderName: string) => {
+  try {
+    const serializedState = sessionStorage.getItem("openFolders");
+    if (serializedState !== null) {
+      sessionStorage.setItem(
+        "openFolders",
+        JSON.stringify([
+          ...JSON.parse(serializedState).filter(
+            (name: string) => name !== folderName
+          ),
+        ])
+      );
+      return true;
+    } else {
+      return false;
+    }
+  } catch (e) {
+    console.log("unexpected error at removeOpenFolders");
     return false;
   }
 };

@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useStaticQuery, graphql, Link } from "gatsby";
-import { loadTabsInfo, saveTabsInfo } from "../../utils/sessionStorage";
+import {
+  loadOpenFolders,
+  loadTabsInfo,
+  saveOpenFolders,
+  saveTabsInfo,
+} from "../../utils/sessionStorage";
 import { TabsInfo } from "../../types/types";
 import { useLocation } from "@reach/router";
 
@@ -25,8 +30,22 @@ type Tree = {
   [key: string]: Tree | FileNode;
 };
 
+const extractFolderNames = (allFiles: { node: Node }[], pathName: string) => {
+  let res = [] as string[];
+  allFiles.forEach(({ node }) => {
+    if (node.childMarkdownRemark.frontmatter.slug + "/" !== pathName) return;
+    res = node.relativePath.split("/").filter(Boolean);
+    res.pop(); // remove file name
+  });
+  return res;
+};
+
+/**
+ * Uses recursion to create Tree structure for rendering Explorer Tab.
+ */
 const PostList = () => {
   const location = useLocation();
+  const [openFolders, setOpenFolders] = useState<string[]>([]);
   const data: { node: Node }[] = useStaticQuery(graphql`
     query {
       allFile {
@@ -45,7 +64,42 @@ const PostList = () => {
       }
     }
   `).allFile.edges;
+
+  /**
+   * On initial render, guarantee that all folders(directories) to current page is open.
+   * To do so flawlessly, I moved initial openFolders value to be inited here instead.
+   **/
+  useEffect(() => {
+    const openFolders = loadOpenFolders();
+    const mustOpen = extractFolderNames(data, location.pathname);
+    const merged = Array.from(new Set([...openFolders, ...mustOpen]));
+    setOpenFolders(merged);
+    saveOpenFolders(merged);
+  }, []);
+
+  // convert
   const treeData = transformDataToTree(data);
+
+  /**
+   * Flips status of open folder on UI AND Session Storage
+   * - Having folder names in string list makes O(n^2) search on render, but
+   * n < 200, so shouldn't be too much of an issue.
+   * - don't need to use usecallback since renderTree renders anyway due to `openFolders` state change
+   * @param folderName folderName to Open or Close
+   */
+  const handleFolderClick = (folderName: string) => {
+    setOpenFolders((prev) => {
+      if (prev.includes(folderName)) {
+        const newList = prev.filter((n) => n !== folderName);
+        saveOpenFolders(newList);
+        return newList;
+      } else {
+        const newList = [...prev, folderName];
+        saveOpenFolders(newList);
+        return newList;
+      }
+    });
+  };
 
   return (
     <div style={treeWrapperStyle}>
@@ -53,12 +107,18 @@ const PostList = () => {
         tree={treeData}
         currSlug={location.pathname.slice(0, -1)}
         depth={0}
+        openTrees={openFolders}
+        handleFolderClick={handleFolderClick}
       />
     </div>
   );
 };
 
-//TODO: detailed commenting on this file.
+/**
+ * converts 1d files array into tree structure that parses all directories and files used
+ * @param edges
+ * @returns object literal that represents a file tree
+ */
 const transformDataToTree = (edges: { node: Node }[]) => {
   const tree = {} as Tree;
 
@@ -86,14 +146,23 @@ const transformDataToTree = (edges: { node: Node }[]) => {
   return tree;
 };
 
+/**
+ * renders tree data into an actual dom element
+ * @param param0
+ * @returns Explorer UI
+ */
 const RenderTree = ({
   tree,
   currSlug,
   depth,
+  openTrees,
+  handleFolderClick,
 }: {
   tree: Tree;
   currSlug: string;
   depth: number;
+  openTrees: string[];
+  handleFolderClick: (folderName: string) => void;
 }) => {
   const files = [];
   const dirs = [];
@@ -107,9 +176,11 @@ const RenderTree = ({
 
   return (
     <ul style={ulStyle}>
+      {/* first, render the file list */}
       {files.map((f) => (
         <Link to={f.slug} style={linkStyle} key={f.slug}>
           <li style={liStyle}>
+            {/* color background if the file is selected. */}
             <div
               style={
                 currSlug === f.slug
@@ -120,25 +191,39 @@ const RenderTree = ({
               {/* file hierarchy indent is done like this to keep the background color fully colored when selected */}
               <img
                 src="/file-document.svg"
-                style={{ ...iconStyle, paddingLeft: `${10 * depth}px` }} // file hierarchy indent
+                style={{ ...iconStyle, paddingLeft: `${8 * depth}px` }} // file hierarchy indent
               />
               {f.title}
             </div>
           </li>
         </Link>
       ))}
-      {dirs.map((d) => (
-        <li key={d.dirname} style={liStyle}>
-          <div style={lineStyle}>
-            <img
-              src="/folder.svg"
-              style={{ ...iconStyle, paddingLeft: `${10 * depth}px` }} // file hierarchy indent
-            />
-            {d.dirname}
-          </div>
-          <RenderTree tree={d.tree} currSlug={currSlug} depth={depth + 1} />
-        </li>
-      ))}
+      {/* secondly, render the directory(folders) list */}
+      {dirs.map((d) => {
+        const isOpen = openTrees.includes(d.dirname);
+        return (
+          <li key={d.dirname} style={liStyle}>
+            {/* clickable component for folder closing / opening */}
+            <div style={lineStyle} onClick={() => handleFolderClick(d.dirname)}>
+              <img
+                src={isOpen ? "/folder-open.svg" : "/folder.svg"}
+                style={{ ...iconStyle, paddingLeft: `${8 * depth}px` }} // file hierarchy indent
+              />
+              {d.dirname}
+            </div>
+            {/* render children if folder is open */}
+            <div style={isOpen ? {} : { display: "none" }}>
+              <RenderTree
+                tree={d.tree}
+                currSlug={currSlug}
+                depth={depth + 1}
+                openTrees={openTrees}
+                handleFolderClick={handleFolderClick}
+              />
+            </div>
+          </li>
+        );
+      })}
     </ul>
   );
 };
@@ -147,6 +232,7 @@ export default PostList;
 
 const treeWrapperStyle = {
   marginTop: "0px",
+  fontSize: "12px",
 };
 
 const ulStyle = {
@@ -161,12 +247,13 @@ const liStyle = {};
 const linkStyle = { textDecoration: "none", color: "#ccc" };
 
 const iconStyle = {
-  margin: "0px 10px",
-  width: "20px",
+  margin: "0px 8px",
+  width: "16px",
 };
 
 const lineStyle = {
   padding: "4px 0px",
   display: "flex",
   alignItems: "center",
+  cursor: "pointer",
 };
