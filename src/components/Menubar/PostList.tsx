@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useStaticQuery, graphql, Link } from "gatsby";
 import { loadTabsInfo, saveTabsInfo } from "../../utils/sessionStorage";
 import { TabsInfo } from "../../types/types";
+import { useLocation } from "@reach/router";
 
 // TODO: check if slug and title structure and graphql usage is optimal
 type Node = {
@@ -25,6 +26,7 @@ type Tree = {
 };
 
 const PostList = () => {
+  const location = useLocation();
   const data: { node: Node }[] = useStaticQuery(graphql`
     query {
       allFile {
@@ -47,11 +49,16 @@ const PostList = () => {
 
   return (
     <div style={treeWrapperStyle}>
-      <RenderTree tree={treeData} />
+      <RenderTree
+        tree={treeData}
+        currSlug={location.pathname.slice(0, -1)}
+        depth={0}
+      />
     </div>
   );
 };
 
+//TODO: detailed commenting on this file.
 const transformDataToTree = (edges: { node: Node }[]) => {
   const tree = {} as Tree;
 
@@ -79,7 +86,15 @@ const transformDataToTree = (edges: { node: Node }[]) => {
   return tree;
 };
 
-const RenderTree = ({ tree }: { tree: Tree }) => {
+const RenderTree = ({
+  tree,
+  currSlug,
+  depth,
+}: {
+  tree: Tree;
+  currSlug: string;
+  depth: number;
+}) => {
   const files = [];
   const dirs = [];
   for (let key in tree) {
@@ -93,10 +108,20 @@ const RenderTree = ({ tree }: { tree: Tree }) => {
   return (
     <ul style={ulStyle}>
       {files.map((f) => (
-        <Link to={f.slug} style={linkStyle}>
-          <li key={f.slug} style={liStyle}>
-            <div style={lineStyle}>
-              <img src="/file-document.svg" style={iconStyle} />
+        <Link to={f.slug} style={linkStyle} key={f.slug}>
+          <li style={liStyle}>
+            <div
+              style={
+                currSlug === f.slug
+                  ? { ...lineStyle, backgroundColor: "#414339" }
+                  : lineStyle
+              }
+            >
+              {/* file hierarchy indent is done like this to keep the background color fully colored when selected */}
+              <img
+                src="/file-document.svg"
+                style={{ ...iconStyle, paddingLeft: `${10 * depth}px` }} // file hierarchy indent
+              />
               {f.title}
             </div>
           </li>
@@ -105,10 +130,13 @@ const RenderTree = ({ tree }: { tree: Tree }) => {
       {dirs.map((d) => (
         <li key={d.dirname} style={liStyle}>
           <div style={lineStyle}>
-            <img src="/folder.svg" style={iconStyle} />
+            <img
+              src="/folder.svg"
+              style={{ ...iconStyle, paddingLeft: `${10 * depth}px` }} // file hierarchy indent
+            />
             {d.dirname}
           </div>
-          <RenderTree tree={d.tree} />
+          <RenderTree tree={d.tree} currSlug={currSlug} depth={depth + 1} />
         </li>
       ))}
     </ul>
@@ -124,22 +152,21 @@ const treeWrapperStyle = {
 const ulStyle = {
   listStyleType: "none",
   margin: "0px 0px",
-  padding: "2px 10px",
+  padding: "0px 0px",
   color: "#ccc",
 };
 
-const liStyle = {
-  paddingTop: "8px",
-};
+const liStyle = {};
 
 const linkStyle = { textDecoration: "none", color: "#ccc" };
 
 const iconStyle = {
-  marginRight: "10px",
+  margin: "0px 10px",
   width: "20px",
 };
 
 const lineStyle = {
+  padding: "4px 0px",
   display: "flex",
   alignItems: "center",
 };

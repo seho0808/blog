@@ -29,7 +29,7 @@ export default function Explorer() {
       <div style={subTitleStyle}>
         <img
           src="/arrow-down.svg"
-          style={{ verticalAlign: "-10%", paddingRight: "2px" }}
+          style={{ verticalAlign: "0%", paddingRight: "2px" }}
         />
         LOCAL &#40;seholee.com&#41;
       </div>
