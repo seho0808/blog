@@ -1,7 +1,7 @@
 import type { GatsbyConfig } from "gatsby";
 
 const config: GatsbyConfig = {
-  pathPrefix: "/portfolio",
+  pathPrefix: "",
   plugins: [
     {
       resolve: `gatsby-source-filesystem`,
