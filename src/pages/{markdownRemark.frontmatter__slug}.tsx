@@ -1,3 +1,4 @@
+import "../markdownStyle.css";
 import React, { useEffect } from "react";
 import { graphql } from "gatsby";
 import CodeSpace from "../components/layouts/CodeSpace";
@@ -5,6 +6,7 @@ import Explorer from "../components/layouts/Explorer";
 import Menubar from "../components/layouts/Menubar";
 import { BlogMarkdownRemark, TabsInfo } from "../types/types";
 import TabsWrapper from "../components/Tabs/TabsWrapper";
+import Footer from "../components/layouts/Footer";
 
 const layoutStyle = {
   display: "flex",
@@ -34,10 +36,14 @@ export default function BlogPostTemplate({
       <div style={contentWindowStyle}>
         <TabsWrapper frontmatter={frontmatter} />
         <div style={contentWrapperStyle}>
-          <h1>{frontmatter.title}</h1>
-          <h2>{frontmatter.date}</h2>
-          <div dangerouslySetInnerHTML={{ __html: html }} />
+          {/* <h1>{frontmatter.title}</h1>
+          <h2>{frontmatter.date}</h2> */}
+          <div
+            className="markdown-content"
+            dangerouslySetInnerHTML={{ __html: html }}
+          />
         </div>
+        <Footer />
       </div>
     </div>
   );

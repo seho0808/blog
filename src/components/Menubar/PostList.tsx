@@ -174,6 +174,7 @@ const RenderTree = ({
     }
   }
 
+  if (currSlug === "") currSlug = "/"; // exception for main page
   return (
     <ul style={ulStyle}>
       {/* first, render the file list */}

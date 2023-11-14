@@ -1,0 +1,57 @@
+.markdown-content {
+  color: white;
+  font-family: "Pretendard";
+}
+
+.markdown-content h2,
+.markdown-content h3 {
+  font-weight: 300;
+}
+
+.markdown-content p {
+  line-height: 150%;
+}
+
+.markdown-content li {
+  margin: 0px 0px 10px 0px;
+}
+
+.markdown-content li p {
+  margin-bottom: 10px;
+}
+
+.text-skyblue {
+  color: #66d9ef;
+}
+
+.text-blue {
+  color: #1f9fff;
+}
+
+.text-grey {
+  color: #b4b4b4;
+}
+
+.text-red {
+  color: #f92672;
+}
+
+.text-pink {
+  color: #da70d6;
+}
+
+.text-purple {
+  color: #ae81ff;
+}
+
+.text-green {
+  color: #a6e22e;
+}
+
+.text-orange {
+  color: #f6931f;
+}
+
+.text-yellow {
+  color: #ffd700;
+}
