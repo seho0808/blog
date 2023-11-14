@@ -16,7 +16,7 @@ title: "who_is_seholee"
 
 <br/>
 
-<h2 style="margin-bottom: 10px; font-size: 20px;">#직무 경험 </h2>
+<h2 style="margin-bottom: 10px; font-size: 20px;">직무 경험 </h2>
 
 **국방부** &nbsp;<span class="text-grey">대한민국 국방부</span> <br/>
 SW 개발병 &nbsp;2022-01&#126;2023-07 <br/>
