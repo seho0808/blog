@@ -20,6 +20,11 @@
   margin-bottom: 10px;
 }
 
+.link-icon {
+  width: 18px;
+  vertical-align: text-bottom;
+}
+
 .text-skyblue {
   color: #66d9ef;
 }

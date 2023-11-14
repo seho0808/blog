@@ -18,7 +18,7 @@ const contentWindowStyle = {
 };
 
 const contentWrapperStyle = {
-  paddingLeft: "20px",
+  padding: "0px 20px",
   overflowY: "auto" as const,
 };
 export default function BlogPostTemplate({
