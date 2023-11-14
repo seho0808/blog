@@ -14,7 +14,7 @@ const topStyle = {
 export default function Menubar() {
   return (
     <aside style={asideStyle}>
-      <img src="/folder.svg" style={topStyle} />
+      <img src="/folder_sax.svg" style={topStyle} />
     </aside>
   );
 }

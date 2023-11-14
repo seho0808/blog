@@ -10,7 +10,7 @@ import { TabsInfo } from "../../types/types";
 const tabStyle = {
   padding: "10px 8px 10px 14px",
   fontSize: "12px",
-  color: "white",
+  color: "#ccc",
   backgroundColor: "#34352F",
   display: "flex",
   gap: "6px",
@@ -18,6 +18,7 @@ const tabStyle = {
 
 const selectedTabStyle = {
   backgroundColor: "#272822",
+  color: "white",
 };
 
 const xWrapper = {

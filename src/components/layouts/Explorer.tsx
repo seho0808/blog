@@ -5,7 +5,7 @@ const asideStyle = {
   backgroundColor: "#1E1F1C",
   minHeight: "100vh",
   minWidth: "275px",
-  color: "white",
+  color: "#ccc",
   cursor: "default",
   userSelect: "none" as const,
 };
