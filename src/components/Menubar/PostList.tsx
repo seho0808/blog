@@ -5,55 +5,99 @@ import { TabsInfo } from "../../types/types";
 
 // TODO: check if slug and title structure and graphql usage is optimal
 type Node = {
-  id: string;
-  frontmatter: {
-    title: string;
-    slug: string;
+  relativePath: string;
+  name: string;
+  childMarkdownRemark: {
+    frontmatter: {
+      title: string;
+      slug: string;
+    };
   };
 };
 
+type Tree = {
+  [key: string]: Tree | string;
+};
+
 const PostList = () => {
-  const data = useStaticQuery(graphql`
+  const data: { node: Node }[] = useStaticQuery(graphql`
     query {
-      allMarkdownRemark {
+      allFile {
         edges {
           node {
-            id
-            frontmatter {
-              title
-              slug
+            relativePath
+            name
+            childMarkdownRemark {
+              frontmatter {
+                slug
+                date
+              }
             }
           }
         }
       }
     }
-  `);
-
-  /**
-   * tabsInfo is only supposed to change the highlight colors of the components.
-   * newly clicked post's info is saved to sessionStorage on page load,
-   * not when `Link` is clicked.
-   */
-  const [tabsInfo, setTabsInfo] = useState<TabsInfo[]>(() => loadTabsInfo());
-  console.log(tabsInfo);
-
-  const saveBeforeReload = () => {
-    saveTabsInfo(tabsInfo);
-  };
+  `).allFile.edges;
+  console.log(data);
+  const treeData = transformDataToTree(data);
+  console.log(data, treeData);
 
   return (
     <div>
-      <ul>
-        {data.allMarkdownRemark.edges.map(({ node }: { node: Node }) => {
-          // console.log(node);
-          return (
-            <Link to={node.frontmatter.slug} key={node.id}>
-              <li key={node.id}>{node.frontmatter.title}</li>
-            </Link>
-          );
-        })}
-      </ul>
+      <RenderTree tree={treeData} />
     </div>
+  );
+};
+
+const transformDataToTree = (edges: { node: Node }[]) => {
+  const tree = {} as Tree;
+
+  edges.forEach(({ node }) => {
+    const pathParts = node.relativePath.split("/").filter(Boolean);
+    let currentLevel = tree;
+
+    pathParts.forEach((part, index) => {
+      // last one is file
+      if (index === pathParts.length - 1) {
+        currentLevel[part] = "file";
+        return;
+      }
+      // rest are directory
+      if (!currentLevel[part]) {
+        currentLevel[part] = {};
+      }
+      currentLevel = currentLevel[part] as Tree;
+    });
+  });
+
+  return tree;
+};
+
+const RenderTree = ({ tree }: { tree: Tree }) => {
+  const files = [];
+  const dirs = [];
+  for (let key in tree) {
+    if (tree[key] === "file") {
+      files.push(key);
+    } else {
+      dirs.push({ dirname: key, tree: tree[key] as Tree });
+    }
+  }
+
+  return (
+    <>
+      <ul>
+        {files.map((f) => (
+          <li key={f}>{f}</li>
+        ))}
+        {dirs.map((d) => (
+          <li key={d.dirname}>
+            {d.dirname}
+            <RenderTree tree={d.tree} />
+          </li>
+        ))}
+      </ul>
+    </>
   );
 };
 

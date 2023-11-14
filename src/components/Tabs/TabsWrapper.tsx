@@ -84,7 +84,7 @@ export default function TabsWrapper({
       {tabsInfo.map((tabInfo) => {
         let moreStyle = currentTabSlug === tabInfo.slug ? selectedTabStyle : {};
         return (
-          <>
+          <React.Fragment key={tabInfo.slug}>
             <Link to={tabInfo.slug} style={{ textDecoration: "none" }}>
               <div style={{ ...tabStyle, ...moreStyle }}>{tabInfo.title}</div>
             </Link>
@@ -94,7 +94,7 @@ export default function TabsWrapper({
             >
               🗙
             </div>
-          </>
+          </React.Fragment>
         );
       })}
     </div>
