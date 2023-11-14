@@ -1,11 +1,17 @@
 .markdown-content {
   color: white;
   font-family: "Pretendard";
+  font-size: 18px;
 }
 
 .markdown-content h2,
 .markdown-content h3 {
   font-weight: 300;
+}
+
+.markdown-content .subtitle {
+  margin-bottom: 10px;
+  font-size: 24px;
 }
 
 .markdown-content p {

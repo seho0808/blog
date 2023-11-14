@@ -16,7 +16,7 @@ title: "who_is_seholee"
 
 <br/>
 
-<h2 style="margin-bottom: 10px; font-size: 20px;">직무 경험 </h2>
+<h2 class="subtitle"> &lt;/&gt; 직무 경험 </h2>
 
 **국방부** &nbsp;<span class="text-grey">대한민국 국방부</span> <br/>
 SW 개발병 &nbsp;2022-01&#126;2023-07 <br/>
@@ -95,7 +95,7 @@ SW 개발병 &nbsp;2022-01&#126;2023-07 <br/>
 <br/>
 <br/>
 
-<h2 style="margin-bottom: 10px; font-size: 20px;"> #사이드 프로젝트 </h2>
+<h2 class="subtitle"> &lt;/&gt; 사이드 프로젝트 </h2>
 
 **VHUB 글로벌 버튜버 플랫폼** <a href="https://vhub.club"><img class="link-icon" src="/link-variant.svg" alt="link"/></a> &nbsp;2023-07&#126;2023-09 <br/>
 <span class="text-grey">Next.js 13, Supabase, Node.js</span> <br/>
@@ -118,7 +118,7 @@ SW 개발병 &nbsp;2022-01&#126;2023-07 <br/>
 <br/>
 <br/>
 
-<h2 style="margin-bottom: 10px; font-size: 20px;"> #학력 </h2>
+<h2 class="subtitle"> &lt;/&gt; 학력 </h2>
 
 **버지니아 공대** &nbsp;2016-08&#126;2020-05 <br/>
 
@@ -133,7 +133,7 @@ SW 개발병 &nbsp;2022-01&#126;2023-07 <br/>
 <br/>
 <br/>
 
-<h2 style="margin-bottom: 10px; font-size: 20px;"> #기타 경력 </h2>
+<h2 class="subtitle"> &lt;/&gt; 기타 경력 </h2>
 
 **2021 Geothermal Energy 논문 기고** <a href="https://geothermal-energy-journal.springeropen.com/articles/10.1186/s40517-021-00200-4"><img class="link-icon" src="/link-variant.svg" alt="link"/></a>
 

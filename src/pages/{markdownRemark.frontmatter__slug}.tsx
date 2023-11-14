@@ -18,7 +18,10 @@ const contentWindowStyle = {
 };
 
 const contentWrapperStyle = {
-  padding: "0px 20px",
+  // display: "flex",
+  // justifyContent: "center",
+  padding: "0px 30px",
+  maxHeight: "calc(100vh - 36px)",
   overflowY: "auto" as const,
 };
 export default function BlogPostTemplate({
@@ -42,8 +45,8 @@ export default function BlogPostTemplate({
             className="markdown-content"
             dangerouslySetInnerHTML={{ __html: html }}
           />
+          <Footer />
         </div>
-        <Footer />
       </div>
     </div>
   );
