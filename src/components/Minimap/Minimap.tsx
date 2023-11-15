@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
-// Import necessary libraries like html2canvas if using that approach
 
+/**
+ * Minimap Component renders the page in small minimap.
+ * The event cycle is as below:
+ * - User drags minimap-box
+ * - the drag changes the scroll location
+ * - scroll event triggers minimap-box location to also change
+ * - minimap-box is rendered to move along
+ **/
 const Minimap = ({
   contentRef,
   html,
@@ -16,18 +23,19 @@ const Minimap = ({
    */
   const updateMinimap = (curr: number, total: number, view: number) => {
     if (!minimapBoxRef.current) return;
-    console.log((total / view) * 100 + "");
     minimapBoxRef.current.style.height = (view / total) * 100 + "%";
     minimapBoxRef.current.style.top = (curr / total) * 100 + "%";
   };
 
   useEffect(() => {
     if (!contentRef.current) return;
-    const handleScroll = (e: Event) => {
+    const handleScroll = () => {
       let elem = contentRef.current;
       if (!elem) return;
       updateMinimap(elem.scrollTop, elem.scrollHeight, elem.clientHeight);
     };
+
+    handleScroll(); // run once on initial render
 
     // Add event listener
     const contentElement = contentRef.current;
@@ -66,7 +74,7 @@ const Minimap = ({
   };
 
   useEffect(() => {
-    // Add mouse move and mouse up listeners to window
+    // move and up listeners only exist while user is dragging!!
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
 
