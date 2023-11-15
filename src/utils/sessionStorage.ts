@@ -108,3 +108,33 @@ export const removeOpenFolders = (folderName: string) => {
     return false;
   }
 };
+
+/**
+ * save explorer width
+ * @param width width in px
+ */
+export const saveExplorerWidth = (width: number) => {
+  try {
+    console.log("saving", width);
+    sessionStorage.setItem("explorerWidth", JSON.stringify(width));
+  } catch (err) {
+    console.log("unexpected error at explorerWidth");
+  }
+};
+/**
+ * load explorer width
+ * @returns width in px
+ */
+export const loadExplorerWidth = () => {
+  try {
+    const serializedState = sessionStorage.getItem("explorerWidth");
+    console.log(serializedState);
+    if (!serializedState) {
+      return 275; // No state saved in session storage
+    }
+    return Number(serializedState);
+  } catch (err) {
+    console.log("unexpected error at explorerWidth");
+    return 275; // Handle errors or invalid state
+  }
+};

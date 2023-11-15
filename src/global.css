@@ -15,6 +15,12 @@ body {
 	}
 }
 
+/* re-resizable explorer resizing option. this option blocks height drag*/
+.pointer-events-none {
+  pointer-events: none;
+	display: none;
+}
+
 /* Custom Scrollbar Styling */
 
 /* Width and color of the scrollbar */
