@@ -42,11 +42,10 @@ export default function BlogPostTemplate({
       <Explorer />
       <div style={contentWindowStyle}>
         <TabsWrapper frontmatter={frontmatter} />
-        <div style={contentWrapperStyle}>
+        <div style={contentWrapperStyle} ref={contentRef}>
           <div
             className="markdown-content"
             dangerouslySetInnerHTML={{ __html: html }}
-            ref={contentRef}
           />
           <Minimap contentRef={contentRef} html={html} />
           <Footer />

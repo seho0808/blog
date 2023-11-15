@@ -1,6 +1,18 @@
 body {
-  background-color: slategray;
+  background-color: #272822;
   margin: 0;
+}
+
+@-moz-document url-prefix() {
+	.hide-on-firefox {
+			display: none;
+	}
+}
+
+@media (max-width: 1400px) {
+	.hide-on-1400 {
+			display: none;
+	}
 }
 
 /* Custom Scrollbar Styling */
@@ -13,19 +25,19 @@ body {
 
 /* Track of the scrollbar */
 ::-webkit-scrollbar-track {
-	background: #272822; /* Light gray track background */
+	background: #272822;
 	border: solid 1px #474844;
 	border-width: 0px 1px;
 }
 
 /* Handle of the scrollbar */
 ::-webkit-scrollbar-thumb {
-	background: #474844; /* Darker color for the handle */
+	background: #474844;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-	background: #555; /* Even darker color on hover */
+	background: #555;
 }
 
 

@@ -133,7 +133,7 @@ SW 개발병 &nbsp;2022-01&#126;2023-07 <br/>
 <br/>
 <br/>
 
-<h2 class="subtitle"> &lt;/&gt; 기타 경력 </h2>
+<h2 class="subtitle"> &lt;/&gt; 출판 </h2>
 
 **2021 Geothermal Energy 논문 기고** <a href="https://geothermal-energy-journal.springeropen.com/articles/10.1186/s40517-021-00200-4"><img class="link-icon" src="/link-variant.svg" alt="link"/></a>
 
@@ -144,3 +144,11 @@ SW 개발병 &nbsp;2022-01&#126;2023-07 <br/>
 **2016 IEEE 논문 기고 <a href="https://ieeexplore.ieee.org/document/7428573"><img class="link-icon" src="/link-variant.svg" alt="link"/></a>**
 
 - 목소리 감정인식 알고리즘의 기초적인 하이브리드 알고리즘이 컨퍼런스에서 통과되어 아카이빙
+
+<br/>
+<br/>
+
+<h2 class="subtitle"> &lt;/&gt; 기타 경력 </h2>
+
+- 정보처리기사 (2020년)
+- IBT TOEFL 108 점 - Reading 27, Listening 29, Speaking 29, Writing 23 (2020년)
