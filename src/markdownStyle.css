@@ -26,6 +26,13 @@
   margin-bottom: 10px;
 }
 
+@media (max-width: 900px) {
+  .markdown-content ul {
+    padding-left: 20px;
+  }
+}
+
+
 .link-icon {
   width: 18px;
   vertical-align: text-bottom;
