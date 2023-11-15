@@ -115,7 +115,6 @@ export const removeOpenFolders = (folderName: string) => {
  */
 export const saveExplorerWidth = (width: number) => {
   try {
-    console.log("saving", width);
     sessionStorage.setItem("explorerWidth", JSON.stringify(width));
   } catch (err) {
     console.log("unexpected error at explorerWidth");
@@ -128,7 +127,6 @@ export const saveExplorerWidth = (width: number) => {
 export const loadExplorerWidth = () => {
   try {
     const serializedState = sessionStorage.getItem("explorerWidth");
-    console.log(serializedState);
     if (!serializedState) {
       return 275; // No state saved in session storage
     }

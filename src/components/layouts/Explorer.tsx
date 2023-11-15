@@ -29,8 +29,8 @@ const subTitleStyle = {
 
 export default function Explorer() {
   const [defaultExplorerWidth, _] = useState<number>(loadExplorerWidth());
-  console.log(defaultExplorerWidth);
 
+  // on resize end, save explorer width to session storage.
   const resizeHandler: ResizeCallback = (
     event: MouseEvent | TouchEvent,
     direction: string,
@@ -39,6 +39,7 @@ export default function Explorer() {
   ) => {
     saveExplorerWidth(Number(elementRef.style.width.slice(0, -2)));
   };
+
   return (
     <Resizable
       defaultSize={{
