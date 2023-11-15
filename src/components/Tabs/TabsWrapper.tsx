@@ -1,3 +1,4 @@
+import styled from "@emotion/styled";
 import React, { useEffect, useState } from "react";
 import { Link, navigate } from "gatsby";
 import {
@@ -7,36 +8,42 @@ import {
 } from "../../utils/sessionStorage";
 import { TabsInfo } from "../../types/types";
 
-const tabStyle = {
-  padding: "10px 8px 10px 14px",
-  fontSize: "12px",
-  color: "#ccc",
-  backgroundColor: "#34352F",
-  display: "flex",
-  gap: "6px",
-};
+const TabWrapper = styled.div`
+  display: flex;
+  background-color: #1e1f1c;
+  align-items: stretch;
 
-const selectedTabStyle = {
-  backgroundColor: "#272822",
-  color: "white",
-};
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
 
-const xWrapper = {
-  backgroundColor: "#34352F",
-  display: "flex",
-  alignItems: "center",
-  fontSize: "12px",
-  color: "#aaa",
-  paddingRight: "14px",
-  marginRight: "1px",
-  cursor: "pointer",
-};
+const Tab = styled.div<{ isSelected: boolean }>`
+  padding: 10px 8px 10px 14px;
+  font-size: 12px;
+  color: #ccc;
+  background-color: #34352f;
+  display: flex;
+  gap: 6px;
+  background-color: ${(props) => (props.isSelected ? "#272822" : "#34352F")};
+  color: ${(props) => (props.isSelected ? "white" : "#ccc")};
+`;
 
-const tabWrapperStyle = {
-  display: "flex",
-  backgroundColor: "#1E1F1C",
-  alignItems: "stretch",
-};
+const CloseButton = styled.div<{ isSelected: boolean }>`
+  background-color: #34352f;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #aaa;
+  padding-right: 14px;
+  margin-right: 1px;
+  cursor: pointer;
+  background-color: ${(props) => (props.isSelected ? "#272822" : "#34352F")};
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+`;
 
 export default function TabsWrapper({
   frontmatter,
@@ -81,23 +88,22 @@ export default function TabsWrapper({
 
   // TODO: implement x-mark onmouseenter and out to toggle or use hover with other css framworks.
   return (
-    <div style={tabWrapperStyle}>
-      {tabsInfo.map((tabInfo) => {
-        let moreStyle = currentTabSlug === tabInfo.slug ? selectedTabStyle : {};
-        return (
-          <React.Fragment key={tabInfo.slug}>
-            <Link to={tabInfo.slug} style={{ textDecoration: "none" }}>
-              <div style={{ ...tabStyle, ...moreStyle }}>{tabInfo.title}</div>
-            </Link>
-            <div
-              style={{ ...xWrapper, ...moreStyle }}
-              onClick={(e) => handleTabClose(e, tabInfo.slug)}
-            >
-              🗙
-            </div>
-          </React.Fragment>
-        );
-      })}
-    </div>
+    <TabWrapper>
+      {tabsInfo.map((tabInfo) => (
+        <React.Fragment key={tabInfo.slug}>
+          <StyledLink to={tabInfo.slug}>
+            <Tab isSelected={currentTabSlug === tabInfo.slug}>
+              {tabInfo.title}
+            </Tab>
+          </StyledLink>
+          <CloseButton
+            isSelected={currentTabSlug === tabInfo.slug}
+            onClick={(e) => handleTabClose(e, tabInfo.slug)}
+          >
+            🗙
+          </CloseButton>
+        </React.Fragment>
+      ))}
+    </TabWrapper>
   );
 }

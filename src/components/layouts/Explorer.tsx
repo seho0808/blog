@@ -7,12 +7,21 @@ import {
   saveExplorerWidth,
 } from "../../utils/sessionStorage";
 
-const Aside = styled.aside`
+const Aside = styled.aside<{ doShow: boolean }>`
   background-color: #1e1f1c;
   height: 100vh;
   color: #ccc;
   cursor: default;
   user-select: none;
+
+  @media (max-width: 1050px) {
+    z-index: 10;
+    position: fixed;
+    top: 48px;
+    height: 100vh;
+    width: 100vw;
+    display: ${(props) => (props.doShow ? "block" : "none")};
+  }
 `;
 
 const Title = styled.div`
@@ -57,7 +66,7 @@ export default function Explorer() {
       }}
       onResizeStop={resizeHandler}
     >
-      <Aside>
+      <Aside doShow={true}>
         <Title>EXPLORER</Title>
         <SubTitle>
           <img

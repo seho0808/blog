@@ -64,11 +64,15 @@ const Layout = styled.div`
 const ContentWindow = styled.div`
   background-color: #272822;
   flex-grow: 1;
+
+  @media (max-width: 1050px) {
+    padding-top: 48px;
+  }
 `;
 
 const ContentWrapper = styled.div`
   position: relative;
   padding: 0px 30px;
-  max-height: calc(100vh - 36px);
+  height: calc(100vh - 36px);
   overflow-y: auto;
 `;
