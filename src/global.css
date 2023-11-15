@@ -3,6 +3,7 @@ body {
   margin: 0;
 }
 
+/* hide minimap on firefox and < 1400px*/
 @-moz-document url-prefix() {
 	.hide-on-firefox {
 			display: none;

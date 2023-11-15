@@ -1,32 +1,31 @@
+import styled from "@emotion/styled";
 import React from "react";
+
+const FooterWrapper = styled.div`
+  font-family: "Pretendard";
+  height: 60px;
+  padding-top: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #b4b4b4;
+  font-size: 14px;
+`;
+
+const StyledLink = styled.a`
+  text-decoration: none;
+  color: #a6e22e;
+`;
 
 export default function Footer() {
   return (
-    <div style={footerWrapperStyle}>
+    <FooterWrapper>
       <span className="text-red">Copyright&nbsp;</span>
       <span className="text-purple">©&nbsp;</span>
       <span className="text-skyblue">2023</span>
-      <a href="/" style={atagStyle}>
-        &nbsp;Seho Lee&nbsp;
-      </a>
+      <StyledLink href="/">&nbsp;Seho Lee&nbsp;</StyledLink>
       <span className="text-orange">All Rights Reserved</span>
       <span className="text-yellow">.</span>
-    </div>
+    </FooterWrapper>
   );
 }
-
-const footerWrapperStyle = {
-  fontFamily: "Pretendard",
-  height: "60px",
-  paddingTop: "40px",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  color: "#b4b4b4",
-  fontSize: "14px",
-};
-
-const atagStyle = {
-  textDecoration: "none",
-  color: "#a6e22e",
-};

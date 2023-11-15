@@ -8,6 +8,7 @@ import {
 } from "../../utils/sessionStorage";
 import { TabsInfo } from "../../types/types";
 import { useLocation } from "@reach/router";
+import styled from "@emotion/styled";
 
 // TODO: check if slug and title structure and graphql usage is optimal
 type Node = {
@@ -102,7 +103,7 @@ const PostList = () => {
   };
 
   return (
-    <div style={treeWrapperStyle}>
+    <TreeWrapper>
       <RenderTree
         tree={treeData}
         currSlug={location.pathname.slice(0, -1)}
@@ -110,7 +111,7 @@ const PostList = () => {
         openTrees={openFolders}
         handleFolderClick={handleFolderClick}
       />
-    </div>
+    </TreeWrapper>
   );
 };
 
@@ -176,26 +177,31 @@ const RenderTree = ({
 
   if (currSlug === "") currSlug = "/"; // exception for main page
   return (
-    <ul style={ulStyle}>
+    <Ul>
       {/* first, render the file list */}
       {files.map((f) => (
-        <Link to={f.slug} style={linkStyle} key={f.slug}>
-          <li style={liStyle}>
+        <Link
+          to={f.slug}
+          style={{ textDecoration: "none", color: "#ccc" }}
+          key={f.slug}
+        >
+          <li>
             {/* color background if the file is selected. */}
-            <div
-              style={
-                currSlug === f.slug
-                  ? { ...lineStyle, backgroundColor: "#414339" }
-                  : lineStyle
-              }
+            <FolderLine
+              selected={currSlug === f.slug}
+              // style={
+              //   currSlug === f.slug
+              //     ? { ...lineStyle, backgroundColor: "#414339" }
+              //     : lineStyle
+              // }
             >
               {/* file hierarchy indent is done like this to keep the background color fully colored when selected */}
-              <img
+              <FileIcon
                 src="/file-document.svg"
-                style={{ ...iconStyle, paddingLeft: `${8 * depth}px` }} // file hierarchy indent
+                depth={depth} // file hierarchy indent
               />
               {f.title}
-            </div>
+            </FolderLine>
           </li>
         </Link>
       ))}
@@ -203,15 +209,18 @@ const RenderTree = ({
       {dirs.map((d) => {
         const isOpen = openTrees.includes(d.dirname);
         return (
-          <li key={d.dirname} style={liStyle}>
+          <li key={d.dirname}>
             {/* clickable component for folder closing / opening */}
-            <div style={lineStyle} onClick={() => handleFolderClick(d.dirname)}>
-              <img
+            <FolderLine
+              selected={false}
+              onClick={() => handleFolderClick(d.dirname)}
+            >
+              <FileIcon
                 src={isOpen ? "/folder-open.svg" : "/folder.svg"}
-                style={{ ...iconStyle, paddingLeft: `${8 * depth}px` }} // file hierarchy indent
+                depth={depth} // file hierarchy indent
               />
               {d.dirname}
-            </div>
+            </FolderLine>
             {/* render children if folder is open */}
             <div style={isOpen ? {} : { display: "none" }}>
               <RenderTree
@@ -225,36 +234,34 @@ const RenderTree = ({
           </li>
         );
       })}
-    </ul>
+    </Ul>
   );
 };
 
 export default PostList;
 
-const treeWrapperStyle = {
-  marginTop: "0px",
-  fontSize: "12px",
-};
+const TreeWrapper = styled.div`
+  margin-top: 0px;
+  font-size: 12px;
+`;
 
-const ulStyle = {
-  listStyleType: "none",
-  margin: "0px 0px",
-  padding: "0px 0px",
-  color: "#ccc",
-};
+const Ul = styled.ul`
+  list-style-type: none;
+  margin: 0px 0px;
+  padding: 0px 0px;
+  color: #ccc;
+`;
 
-const liStyle = {};
+const FileIcon = styled.img<{ depth: number }>`
+  margin: 0px 8px;
+  width: 16px;
+  padding-left: ${(props) => 8 * props.depth + "px"};
+`;
 
-const linkStyle = { textDecoration: "none", color: "#ccc" };
-
-const iconStyle = {
-  margin: "0px 8px",
-  width: "16px",
-};
-
-const lineStyle = {
-  padding: "4px 0px",
-  display: "flex",
-  alignItems: "center",
-  cursor: "pointer",
-};
+const FolderLine = styled.div<{ selected: boolean }>`
+  background-color: ${(props) => (props.selected ? "#414339" : "transparent")};
+  padding: 4px 0px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`;

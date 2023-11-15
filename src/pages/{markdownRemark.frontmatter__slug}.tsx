@@ -1,5 +1,6 @@
 import "../markdownStyle.css";
 import React, { useEffect, useRef } from "react";
+import styled from "@emotion/styled";
 import { graphql } from "gatsby";
 import CodeSpace from "../components/layouts/CodeSpace";
 import Explorer from "../components/layouts/Explorer";
@@ -9,23 +10,6 @@ import TabsWrapper from "../components/Tabs/TabsWrapper";
 import Footer from "../components/layouts/Footer";
 import Minimap from "../components/Minimap/Minimap";
 
-const layoutStyle = {
-  display: "flex",
-};
-
-const contentWindowStyle = {
-  backgroundColor: "#272822",
-  flexGrow: 1,
-};
-
-const contentWrapperStyle = {
-  // display: "flex",
-  // justifyContent: "center",
-  position: "relative" as const,
-  padding: "0px 30px",
-  maxHeight: "calc(100vh - 36px)",
-  overflowY: "auto" as const,
-};
 export default function BlogPostTemplate({
   data, // this prop will be injected by the GraphQL query below.
 }: {
@@ -37,21 +21,21 @@ export default function BlogPostTemplate({
   const contentRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div style={layoutStyle}>
+    <Layout>
       <Menubar />
       <Explorer />
-      <div style={contentWindowStyle}>
+      <ContentWindow>
         <TabsWrapper frontmatter={frontmatter} />
-        <div style={contentWrapperStyle} ref={contentRef}>
+        <ContentWrapper ref={contentRef}>
           <div
             className="markdown-content"
             dangerouslySetInnerHTML={{ __html: html }}
           />
           <Minimap contentRef={contentRef} html={html} />
           <Footer />
-        </div>
-      </div>
-    </div>
+        </ContentWrapper>
+      </ContentWindow>
+    </Layout>
   );
 }
 
@@ -66,4 +50,25 @@ export const pageQuery = graphql`
       }
     }
   }
+`;
+
+const Layout = styled.div`
+  display: flex;
+  flex-direction: row;
+
+  @media (max-width: 1050px) {
+    flex-direction: column;
+  }
+`;
+
+const ContentWindow = styled.div`
+  background-color: #272822;
+  flex-grow: 1;
+`;
+
+const ContentWrapper = styled.div`
+  position: relative;
+  padding: 0px 30px;
+  max-height: calc(100vh - 36px);
+  overflow-y: auto;
 `;

@@ -8,6 +8,11 @@ const layoutStyle = {
   display: "flex",
 };
 
+/**
+ * this page is currently not used. slug "/" on main .md seems to redirect
+ * the user to {markdownRemark.frontmatter__slug}.tsx component
+ * @returns
+ */
 const IndexPage: React.FC<PageProps> = () => {
   return (
     <div style={layoutStyle}>

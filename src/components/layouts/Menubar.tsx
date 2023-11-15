@@ -1,20 +1,22 @@
+import styled from "@emotion/styled";
 import * as React from "react";
 
-const asideStyle = {
-  backgroundColor: "#272822",
-  minHeight: "100vh",
-  textAlign: "center" as const,
-  width: "48px",
-};
+const StyledAside = styled.aside`
+  background-color: #272822;
+  min-height: 100vh;
+  text-align: center;
+  width: 48px;
+  user-select: none;
+`;
 
-const topStyle = {
-  paddingTop: "10px",
-};
+const StyledImage = styled.img`
+  padding-top: 10px;
+`;
 
 export default function Menubar() {
   return (
-    <aside style={asideStyle}>
-      <img src="/folder_sax.svg" style={topStyle} />
-    </aside>
+    <StyledAside>
+      <StyledImage src="/folder_sax.svg" />
+    </StyledAside>
   );
 }
