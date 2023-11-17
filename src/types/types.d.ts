@@ -71,3 +71,19 @@ type GitHubUser = {
   type: string;
   site_admin: boolean;
 };
+
+type ExplorerFileNode = {
+  relativePath: string;
+  name: string;
+  childMarkdownRemark: {
+    frontmatter: {
+      title: string;
+      slug: string;
+    };
+  };
+};
+
+type FileNode = {
+  title: string;
+  slug: string;
+};

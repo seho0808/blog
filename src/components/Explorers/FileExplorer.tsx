@@ -1,37 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useStaticQuery, graphql, Link } from "gatsby";
-import {
-  loadOpenFolders,
-  loadTabsInfo,
-  saveOpenFolders,
-  saveTabsInfo,
-} from "../../utils/sessionStorage";
-import { TabsInfo } from "../../types/types";
+import { loadOpenFolders, saveOpenFolders } from "../../utils/sessionStorage";
 import { useLocation } from "@reach/router";
 import styled from "@emotion/styled";
-
-// TODO: check if slug and title structure and graphql usage is optimal
-type Node = {
-  relativePath: string;
-  name: string;
-  childMarkdownRemark: {
-    frontmatter: {
-      title: string;
-      slug: string;
-    };
-  };
-};
-
-type FileNode = {
-  title: string;
-  slug: string;
-};
+import { ArrowImg } from "./Explorer";
+import { ExplorerFileNode, FileNode } from "../../types/types";
 
 type Tree = {
   [key: string]: Tree | FileNode;
 };
 
-const extractFolderNames = (allFiles: { node: Node }[], pathName: string) => {
+const extractFolderNames = (
+  allFiles: { node: ExplorerFileNode }[],
+  pathName: string
+) => {
   let res = [] as string[];
   allFiles.forEach(({ node }) => {
     if (node.childMarkdownRemark.frontmatter.slug + "/" !== pathName) return;
@@ -44,10 +26,10 @@ const extractFolderNames = (allFiles: { node: Node }[], pathName: string) => {
 /**
  * Uses recursion to create Tree structure for rendering Explorer Tab.
  */
-const PostList = () => {
+const FileExplorer = () => {
   const location = useLocation();
   const [openFolders, setOpenFolders] = useState<string[]>([]);
-  const data: { node: Node }[] = useStaticQuery(graphql`
+  const data: { node: ExplorerFileNode }[] = useStaticQuery(graphql`
     query {
       allFile {
         edges {
@@ -103,15 +85,22 @@ const PostList = () => {
   };
 
   return (
-    <TreeWrapper>
-      <RenderTree
-        tree={treeData}
-        currSlug={location.pathname.slice(0, -1)}
-        depth={0}
-        openTrees={openFolders}
-        handleFolderClick={handleFolderClick}
-      />
-    </TreeWrapper>
+    <>
+      <SubTitle>
+        <ArrowImg src="/icons/arrow-down.svg" alt="arrow-down" />
+        LOCAL &#40;seholee.com&#41;
+      </SubTitle>
+
+      <TreeWrapper>
+        <RenderTree
+          tree={treeData}
+          currSlug={location.pathname.slice(0, -1)}
+          depth={0}
+          openTrees={openFolders}
+          handleFolderClick={handleFolderClick}
+        />
+      </TreeWrapper>
+    </>
   );
 };
 
@@ -120,7 +109,7 @@ const PostList = () => {
  * @param edges
  * @returns object literal that represents a file tree
  */
-const transformDataToTree = (edges: { node: Node }[]) => {
+const transformDataToTree = (edges: { node: ExplorerFileNode }[]) => {
   const tree = {} as Tree;
 
   edges.forEach(({ node }) => {
@@ -180,12 +169,8 @@ const RenderTree = ({
     <Ul>
       {/* first, render the file list */}
       {files.map((f) => (
-        <li>
-          <Link
-            to={f.slug}
-            style={{ textDecoration: "none", color: "#ccc" }}
-            key={f.slug}
-          >
+        <li key={f.slug}>
+          <Link to={f.slug} style={{ textDecoration: "none", color: "#ccc" }}>
             {/* color background if the file is selected. */}
             <FolderLine selected={currSlug === f.slug}>
               {/* file hierarchy indent is done like this to keep the background color fully colored when selected */}
@@ -232,7 +217,7 @@ const RenderTree = ({
   );
 };
 
-export default PostList;
+export default FileExplorer;
 
 const TreeWrapper = styled.div`
   margin-top: 0px;
@@ -258,4 +243,11 @@ const FolderLine = styled.div<{ selected: boolean }>`
   display: flex;
   align-items: center;
   cursor: pointer;
+`;
+
+const SubTitle = styled.div`
+  background-color: #272822;
+  padding: 4px 2px;
+  font-size: 12px;
+  font-weight: 800;
 `;

@@ -1,13 +1,20 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-import PostList from "../Menubar/PostList";
+import FileExplorer from "./FileExplorer";
 import { Resizable, ResizeCallback, NumberSize } from "re-resizable";
 import {
   loadExplorerWidth,
   saveExplorerWidth,
 } from "../../utils/sessionStorage";
+import SearchExplorer from "./SearchExplorer";
 
-export default function Explorer({ showExplorer }: { showExplorer: boolean }) {
+export default function Explorer({
+  showExplorer,
+  explorerType,
+}: {
+  showExplorer: boolean;
+  explorerType: "file" | "search";
+}) {
   const [defaultExplorerWidth, _] = useState<number>(loadExplorerWidth());
 
   const resizeHandler: ResizeCallback = (
@@ -38,12 +45,9 @@ export default function Explorer({ showExplorer }: { showExplorer: boolean }) {
       onResizeStop={resizeHandler}
     >
       <Nav doShow={showExplorer}>
-        <Title>EXPLORER</Title>
-        <SubTitle>
-          <ArrowImg src="/icons/arrow-down.svg" alt="arrow-down" />
-          LOCAL &#40;seholee.com&#41;
-        </SubTitle>
-        <PostList />
+        <Title>{explorerType === "file" ? "EXPLORER" : "SEARCH"}</Title>
+        {explorerType === "file" && <FileExplorer />}
+        {explorerType === "search" && <SearchExplorer />}
         <LegacyLink
           href="https://d1ykeqyorqdego.cloudfront.net."
           rel="no-follow"
@@ -71,20 +75,13 @@ const Nav = styled.nav<{ doShow: boolean }>`
     top: 48px;
     height: calc(100% - 48px);
     width: 100vw;
-    display: ${(props) => (props.doShow ? "block" : "none")};
+    display: ${(props) => (props.doShow ? "flex" : "none")};
   }
 `;
 
 const Title = styled.div`
   padding: 10px 14px;
   font-size: 12px;
-`;
-
-const SubTitle = styled.div`
-  background-color: #272822;
-  padding: 4px 2px;
-  font-size: 12px;
-  font-weight: 800;
 `;
 
 const LegacyLink = styled.a`
@@ -94,7 +91,7 @@ const LegacyLink = styled.a`
   margin-top: auto;
 `;
 
-const ArrowImg = styled.img`
+export const ArrowImg = styled.img`
   vertical-align: 0%;
   padding-right: 2px;
   width: 10px;

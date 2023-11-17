@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
 import { graphql } from "gatsby";
 import CodeSpace from "../components/layouts/CodeSpace";
-import Explorer from "../components/layouts/Explorer";
+import Explorer from "../components/Explorers/Explorer";
 import Menubar from "../components/layouts/Menubar";
 import { BlogMarkdownRemark, TabsInfo } from "../types/types";
 import TabsWrapper from "../components/Tabs/TabsWrapper";
@@ -11,6 +11,7 @@ import Footer from "../components/layouts/Footer";
 import Minimap from "../components/Minimap/Minimap";
 import StatusBar from "../components/layouts/StatusBar";
 import { SEO } from "../components/SEO/SEO";
+import FileExplorer from "../components/Explorers/Explorer";
 
 export default function BlogPostTemplate({
   data, // this prop will be injected by the GraphQL query below.
@@ -26,6 +27,7 @@ export default function BlogPostTemplate({
 
   // explorer toggle logic
   const [showExplorer, setShowExplorer] = useState<boolean>(true);
+  const [explorerType, setExplorerType] = useState<"file" | "search">("file");
   useEffect(() => {
     const isMobile = window.innerWidth <= 1050;
     setShowExplorer(!isMobile);
@@ -47,9 +49,13 @@ export default function BlogPostTemplate({
       />
       <WindowsLayout>
         {/* explorer, search selector */}
-        <Menubar setShowExplorer={setShowExplorer} />
+        <Menubar
+          setShowExplorer={setShowExplorer}
+          setExplorerType={setExplorerType}
+          explorerType={explorerType}
+        />
         {/* explorer window */}
-        <Explorer showExplorer={showExplorer} />
+        <Explorer showExplorer={showExplorer} explorerType={explorerType} />
         {/* content window */}
         <ContentWindow>
           <TabsWrapper frontmatter={frontmatter} />

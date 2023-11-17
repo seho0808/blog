@@ -1,7 +1,7 @@
 import * as React from "react";
 import type { HeadFC, PageProps } from "gatsby";
 import CodeSpace from "../components/layouts/CodeSpace";
-import Explorer from "../components/layouts/Explorer";
+import Explorer from "../components/Explorers/SearchExplorer";
 import Menubar from "../components/layouts/Menubar";
 
 const layoutStyle = {
