@@ -2,7 +2,7 @@
 slug: "/"
 date: "1997-08-08"
 title: "who_is_seholee.cv"
-subtitle: "CV"
+subtitle: "Web Dev / Software Engineer Seho Lee's Website"
 ---
 
 ## 안녕하세요, <br/> **웹 개발자 이세호** 입니다.
