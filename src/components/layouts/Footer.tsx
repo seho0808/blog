@@ -2,7 +2,6 @@ import styled from "@emotion/styled";
 import React from "react";
 
 const FooterWrapper = styled.div`
-  font-family: "Pretendard";
   height: 60px;
   padding-top: 40px;
   display: flex;

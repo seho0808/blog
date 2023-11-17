@@ -1,6 +1,7 @@
 body {
   background-color: #272822;
   margin: 0;
+	font-family: "Pretendard";
 }
 
 /* hide minimap on firefox and < 1400px*/

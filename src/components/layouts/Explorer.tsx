@@ -61,7 +61,7 @@ const Aside = styled.aside<{ doShow: boolean }>`
   user-select: none;
   display: flex;
   flex-direction: column;
-  font-family: "Pretendard";
+
   @media (max-width: 1050px) {
     z-index: 10;
     position: fixed;

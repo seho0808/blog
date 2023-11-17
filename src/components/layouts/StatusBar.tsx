@@ -47,7 +47,6 @@ export default function StatusBar() {
 const Layout = styled.div`
   width: 100vw;
   height: 24px;
-  font-family: "Pretendard";
   background-color: #414339;
   position: fixed;
   bottom: 0;
