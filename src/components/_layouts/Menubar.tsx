@@ -30,16 +30,20 @@ export default function Menubar({
 
   return (
     <Nav>
-      <Icon
-        src="/icons/folder-menu.svg"
-        onClick={folderClickHandler}
-        alt="folder-icon"
-      />
-      <Icon
-        src="/icons/magnify.svg"
-        onClick={searchClickHandler}
-        alt="folder-icon"
-      />
+      <IconWrapper selected={explorerType === "file"}>
+        <Icon
+          src="/icons/folder-menu.svg"
+          onClick={folderClickHandler}
+          alt="folder-icon"
+        />
+      </IconWrapper>
+      <IconWrapper selected={explorerType === "search"}>
+        <Icon
+          src="/icons/magnify.svg"
+          onClick={searchClickHandler}
+          alt="folder-icon"
+        />
+      </IconWrapper>
       <MediaLinks>
         <Github href="https://github.com/seho0808">
           <Icon src="/images/github.png" alt="github" />
@@ -56,7 +60,7 @@ const Nav = styled.nav`
   padding-top: 12px;
   background-color: #272822;
   display: flex;
-  gap: 6px;
+  gap: 16px;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
@@ -76,14 +80,24 @@ const Nav = styled.nav`
   }
 `;
 
+const IconWrapper = styled.div<{ selected: boolean }>`
+  border-left: ${(props) =>
+    props.selected ? "2px solid #ccc" : "2px solid transparent"};
+  border-right: 2px solid transparent;
+  width: calc(100% - 4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: 1050px) {
+    width: fit-content;
+    border: none;
+  }
+`;
+
 const Icon = styled.img`
   width: 24px;
-  margin-bottom: 10px;
   cursor: pointer;
-  @media (max-width: 1050px) {
-    margin-right: 10px;
-    margin-bottom: 0px;
-  }
 `;
 
 const MediaLinks = styled.div`
@@ -92,7 +106,7 @@ const MediaLinks = styled.div`
   flex-direction: column;
   padding-bottom: 48px;
   align-items: center;
-  gap: 6px;
+  gap: 16px;
 
   @media (max-width: 1050px) {
     flex-direction: row;
