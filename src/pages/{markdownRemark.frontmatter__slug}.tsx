@@ -16,16 +16,26 @@ export default function BlogPostTemplate({
 }: {
   data: BlogMarkdownRemark;
 }) {
-  // explorer toggle logic
-  const isMobile = () => window.innerWidth <= 1050;
-  const [showExplorer, setShowExplorer] = useState<boolean>(!isMobile());
-
   // this is for minimap scroll tracking
   const contentRef = useRef<HTMLDivElement>(null);
 
   // markdown data
   const { markdownRemark } = data; // data.markdownRemark holds your post data
   const { frontmatter, html } = markdownRemark;
+
+  // explorer toggle logic
+  const [showExplorer, setShowExplorer] = useState<boolean>(true);
+  useEffect(() => {
+    const isMobile = window.innerWidth <= 1050;
+    setShowExplorer(!isMobile);
+
+    // resize handling
+    const handleResize = () => {
+      setShowExplorer(window.innerWidth > 1050);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <OuterLayout>
