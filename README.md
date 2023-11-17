@@ -1,4 +1,4 @@
-## Tech Blog Repo [@🌵](https://seholee.com)
+## Tech Blog Repo [🌵@](https://seholee.com)
 
 #### Launch Project Locally
 

@@ -2,6 +2,7 @@ export type TabsInfo = {
   title: string;
   slug: string;
   date: string;
+  subtitle: string;
 };
 export type BlogMarkdownRemark = {
   markdownRemark: {

@@ -39,7 +39,7 @@ export default function Menubar({
 
   return (
     <StyledAside>
-      <StyledImage src="/folder_sax.svg" onClick={folderClickHandler} />
+      <StyledImage src="/icons/folder_sax.svg" onClick={folderClickHandler} />
     </StyledAside>
   );
 }

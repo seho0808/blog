@@ -40,12 +40,12 @@ export default function Explorer({ showExplorer }: { showExplorer: boolean }) {
       <Aside doShow={showExplorer}>
         <Title>EXPLORER</Title>
         <SubTitle>
-          <ArrowImg src="/arrow-down.svg" />
+          <ArrowImg src="/icons/arrow-down.svg" />
           LOCAL &#40;seholee.com&#41;
         </SubTitle>
         <PostList />
         <LegacyLink href="https://legacy.seholee.com">
-          <ArrowImg src="/arrow-right-1.svg" />
+          <ArrowImg src="/icons/arrow-right-1.svg" />
           <LegacyDiv>Legacy Website</LegacyDiv>
         </LegacyLink>
       </Aside>

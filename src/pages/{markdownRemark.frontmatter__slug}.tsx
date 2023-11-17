@@ -10,6 +10,7 @@ import TabsWrapper from "../components/Tabs/TabsWrapper";
 import Footer from "../components/layouts/Footer";
 import Minimap from "../components/Minimap/Minimap";
 import StatusBar from "../components/layouts/StatusBar";
+import { SEO } from "../components/SEO/SEO";
 
 export default function BlogPostTemplate({
   data, // this prop will be injected by the GraphQL query below.
@@ -39,6 +40,11 @@ export default function BlogPostTemplate({
 
   return (
     <OuterLayout>
+      <SEO
+        title={frontmatter.title}
+        pathname={frontmatter.slug}
+        description={frontmatter.subtitle}
+      />
       <WindowsLayout>
         {/* explorer, search selector */}
         <Menubar setShowExplorer={setShowExplorer} />
@@ -70,6 +76,7 @@ export const pageQuery = graphql`
         date(formatString: "MMMM DD, YYYY")
         slug
         title
+        subtitle
       }
     }
   }

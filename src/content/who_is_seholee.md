@@ -1,7 +1,8 @@
 ---
 slug: "/"
 date: "1997-08-08"
-title: "who_is_seholee"
+title: "who_is_seholee.cv"
+subtitle: "CV"
 ---
 
 ## 안녕하세요, <br/> **웹 개발자 이세호** 입니다.
@@ -26,7 +27,7 @@ SW 개발병 &nbsp;2022-01&#126;2023-07 <br/>
 
   - <span class="text-red">초 단위</span>로 업데이트되는 대시보드를 <span class="text-yellow">순수 JS</span>와 <span class="text-orange">WebAPI</span>만으로 개발
   - CPU 데이터를 표기해주는 차트를 Chart.js로 구현
-  - Figma를 통한 기초적인 화면 디자인 <a href="https://www.figma.com/proto/7rmPe8ksPJyFLjVAxSOuI9/aimon?type=design&node-id=20-1070&t=qH1siTP1d4N3EDII-1&scaling=min-zoom&page-id=0%3A1&starting-point-node-id=42%3A885&show-proto-sidebar=1&mode=design"><img class="link-icon" src="/link-variant.svg" alt="link"/></a>
+  - Figma를 통한 기초적인 화면 디자인 <a href="https://www.figma.com/proto/7rmPe8ksPJyFLjVAxSOuI9/aimon?type=design&node-id=20-1070&t=qH1siTP1d4N3EDII-1&scaling=min-zoom&page-id=0%3A1&starting-point-node-id=42%3A885&show-proto-sidebar=1&mode=design"><img class="link-icon" src="/icons/link-variant.svg" alt="link"/></a>
 
 - AI 모니터링 체계 백엔드 개발 <br/>
 
@@ -77,6 +78,8 @@ SW 개발병 &nbsp;2022-01&#126;2023-07 <br/>
   - 커밋 컨벤션을 정하여 티켓 번호와 태그가 포함된 커밋 메시지 규칙 정립
   - 기술문서 작성 제도를 정립하여 전체적인 아키텍처, 기능 별 작동 플로우, 작동 세부사항 정리
 
+- 산업기능요원 현역 TO 취득
+
 <br/>
 
 **윌비시티필드** &nbsp;<span class="text-grey">시드 투자 20억의 테크 스타트업</span> <br/>
@@ -97,7 +100,7 @@ SW 개발병 &nbsp;2022-01&#126;2023-07 <br/>
 
 <h2 class="subtitle"> &lt;/&gt; 사이드 프로젝트 </h2>
 
-**VHUB 글로벌 버튜버 플랫폼** <a href="https://vhub.club"><img class="link-icon" src="/link-variant.svg" alt="link"/></a> &nbsp;2023-07&#126;2023-09 <br/>
+**VHUB 글로벌 버튜버 플랫폼** <a href="https://vhub.club"><img class="link-icon" src="/icons/link-variant.svg" alt="link"/></a> &nbsp;2023-07&#126;2023-09 <br/>
 <span class="text-grey">Next.js 13, Supabase, Node.js</span> <br/>
 
 - 기획, 디자인, 개발 모두 1인으로 <span class="text-blue">9주</span> 동안 진행한 플랫폼
@@ -108,7 +111,7 @@ SW 개발병 &nbsp;2022-01&#126;2023-07 <br/>
 
 <br/>
 
-**군용 채팅앱 미어캣** <a href="https://github.com/osamhack2022-v2/APP_Meerkat_IQDan"><img class="link-icon" src="/link-variant.svg" alt="link"/></a> &nbsp;2022-11 <br/>
+**군용 채팅앱 미어캣** <a href="https://github.com/osamhack2022-v2/APP_Meerkat_IQDan"><img class="link-icon" src="/icons/link-variant.svg" alt="link"/></a> &nbsp;2022-11 <br/>
 <span class="text-grey">React Native, MariaDB, Prisma</span> <br/>
 
 - 2022 군장병 공개 SW 해커톤 <span class="text-orange">3등</span> (정보통신산업진흥원장상)
@@ -141,7 +144,7 @@ SW 개발병 &nbsp;2022-01&#126;2023-07 <br/>
 - 지하 3km 지열 예측을 위해 기존의 물리 모델을 머신러닝으로 정확도 개선
 - 2023년 기준 <span class="text-pink">16회의 인용</span>을 받았습니다
 
-**2016 IEEE 논문 기고 <a href="https://ieeexplore.ieee.org/document/7428573"><img class="link-icon" src="/link-variant.svg" alt="link"/></a>**
+**2016 IEEE 논문 기고 <a href="https://ieeexplore.ieee.org/document/7428573"><img class="link-icon" src="/icons/link-variant.svg" alt="link"/></a>**
 
 - 목소리 감정인식 알고리즘의 기초적인 하이브리드 알고리즘이 컨퍼런스에서 통과되어 아카이빙
 

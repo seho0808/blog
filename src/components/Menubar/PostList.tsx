@@ -190,7 +190,7 @@ const RenderTree = ({
             <FolderLine selected={currSlug === f.slug}>
               {/* file hierarchy indent is done like this to keep the background color fully colored when selected */}
               <FileIcon
-                src="/file-document.svg"
+                src="/icons/file-document.svg"
                 depth={depth} // file hierarchy indent
               />
               {f.title}

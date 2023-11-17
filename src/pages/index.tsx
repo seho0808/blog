@@ -16,8 +16,6 @@ const layoutStyle = {
 const IndexPage: React.FC<PageProps> = () => {
   return (
     <div style={layoutStyle}>
-      <Menubar />
-      <Explorer />
       <CodeSpace />
     </div>
   );
