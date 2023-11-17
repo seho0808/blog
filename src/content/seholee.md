@@ -1,7 +1,7 @@
 ---
 slug: "/"
 date: "1997-08-08"
-title: "who_is_seholee.cv"
+title: "seholee.cv"
 subtitle: "Web Dev / Software Engineer Seho Lee's Website"
 ---
 

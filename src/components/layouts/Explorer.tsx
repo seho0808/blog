@@ -37,10 +37,10 @@ export default function Explorer({ showExplorer }: { showExplorer: boolean }) {
       }}
       onResizeStop={resizeHandler}
     >
-      <Aside doShow={showExplorer}>
+      <Nav doShow={showExplorer}>
         <Title>EXPLORER</Title>
         <SubTitle>
-          <ArrowImg src="/icons/arrow-down.svg" />
+          <ArrowImg src="/icons/arrow-down.svg" alt="arrow-down" />
           LOCAL &#40;seholee.com&#41;
         </SubTitle>
         <PostList />
@@ -48,15 +48,15 @@ export default function Explorer({ showExplorer }: { showExplorer: boolean }) {
           href="https://d1ykeqyorqdego.cloudfront.net."
           rel="no-follow"
         >
-          <ArrowImg src="/icons/arrow-right-1.svg" />
+          <ArrowImg src="/icons/arrow-right-1.svg" alt="arrow-right" />
           <LegacyDiv>Legacy Website</LegacyDiv>
         </LegacyLink>
-      </Aside>
+      </Nav>
     </Resizable>
   );
 }
 
-const Aside = styled.aside<{ doShow: boolean }>`
+const Nav = styled.nav<{ doShow: boolean }>`
   background-color: #1e1f1c;
   height: 100%;
   color: #ccc;

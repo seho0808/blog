@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import * as React from "react";
 
-const StyledAside = styled.aside`
+const Nav = styled.nav`
   background-color: #272822;
   display: flex;
   justify-content: center;
@@ -20,7 +20,7 @@ const StyledAside = styled.aside`
   }
 `;
 
-const StyledImage = styled.img`
+const Icon = styled.img`
   padding-top: 10px;
   @media (max-width: 1050px) {
     padding-right: 10px;
@@ -38,8 +38,12 @@ export default function Menubar({
   };
 
   return (
-    <StyledAside>
-      <StyledImage src="/icons/folder_sax.svg" onClick={folderClickHandler} />
-    </StyledAside>
+    <Nav>
+      <Icon
+        src="/icons/folder_sax.svg"
+        onClick={folderClickHandler}
+        alt="folder-icon"
+      />
+    </Nav>
   );
 }

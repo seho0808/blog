@@ -180,23 +180,24 @@ const RenderTree = ({
     <Ul>
       {/* first, render the file list */}
       {files.map((f) => (
-        <Link
-          to={f.slug}
-          style={{ textDecoration: "none", color: "#ccc" }}
-          key={f.slug}
-        >
-          <li>
+        <li>
+          <Link
+            to={f.slug}
+            style={{ textDecoration: "none", color: "#ccc" }}
+            key={f.slug}
+          >
             {/* color background if the file is selected. */}
             <FolderLine selected={currSlug === f.slug}>
               {/* file hierarchy indent is done like this to keep the background color fully colored when selected */}
               <FileIcon
                 src="/icons/file-document.svg"
+                alt="file-icon"
                 depth={depth} // file hierarchy indent
               />
               {f.title}
             </FolderLine>
-          </li>
-        </Link>
+          </Link>
+        </li>
       ))}
       {/* secondly, render the directory(folders) list */}
       {dirs.map((d) => {

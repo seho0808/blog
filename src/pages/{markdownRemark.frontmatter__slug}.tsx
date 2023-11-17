@@ -54,7 +54,7 @@ export default function BlogPostTemplate({
         <ContentWindow>
           <TabsWrapper frontmatter={frontmatter} />
           <ContentWrapper ref={contentRef}>
-            <div
+            <article
               className="markdown-content"
               dangerouslySetInnerHTML={{ __html: html }}
             />
@@ -106,7 +106,7 @@ const ContentWindow = styled.div`
   }
 `;
 
-const ContentWrapper = styled.div`
+const ContentWrapper = styled.main`
   position: relative;
   padding: 0px 30px;
   height: calc(100% - 36px);

@@ -85,7 +85,10 @@ const Minimap = ({
   }, [isDragging]);
 
   return (
-    <div className="minimap-container hide-on-firefox hide-on-1400">
+    <div
+      className="minimap-container hide-on-firefox hide-on-1400"
+      data-nosnippet
+    >
       <div
         className="minimap-box"
         onMouseDown={handleMouseDown}
