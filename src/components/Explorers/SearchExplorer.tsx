@@ -48,8 +48,10 @@ export default function SearchExplorer() {
         {searchRes.map((f) => {
           return (
             <Li>
-              <Icon src="file-document.svg" />
-              {f.title}
+              <StyledA href={f.slug}>
+                <Icon src="/icons/file-document.svg" />
+                {f.title}
+              </StyledA>
             </Li>
           );
         })}
@@ -78,11 +80,16 @@ const Ul = styled.ul`
 const Li = styled.li`
   font-size: 12px;
   padding: 4px 0px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
 `;
 
 const Icon = styled.img`
   width: 16px;
+`;
+
+const StyledA = styled.a`
+  text-decoration: none;
+  color: #ccc;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 `;

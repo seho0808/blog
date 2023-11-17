@@ -2,14 +2,14 @@ import "../markdownStyle.css";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
 import { graphql } from "gatsby";
-import CodeSpace from "../components/layouts/CodeSpace";
+import CodeSpace from "../components/_layouts/CodeSpace";
 import Explorer from "../components/Explorers/Explorer";
-import Menubar from "../components/layouts/Menubar";
+import Menubar from "../components/_layouts/Menubar";
 import { BlogMarkdownRemark, TabsInfo } from "../types/types";
 import TabsWrapper from "../components/Tabs/TabsWrapper";
-import Footer from "../components/layouts/Footer";
+import Footer from "../components/_layouts/Footer";
 import Minimap from "../components/Minimap/Minimap";
-import StatusBar from "../components/layouts/StatusBar";
+import StatusBar from "../components/_layouts/StatusBar";
 import { SEO } from "../components/SEO/SEO";
 import FileExplorer from "../components/Explorers/Explorer";
 

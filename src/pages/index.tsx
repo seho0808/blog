@@ -1,8 +1,8 @@
 import * as React from "react";
 import type { HeadFC, PageProps } from "gatsby";
-import CodeSpace from "../components/layouts/CodeSpace";
+import CodeSpace from "../components/_layouts/CodeSpace";
 import Explorer from "../components/Explorers/SearchExplorer";
-import Menubar from "../components/layouts/Menubar";
+import Menubar from "../components/_layouts/Menubar";
 
 const layoutStyle = {
   display: "flex",

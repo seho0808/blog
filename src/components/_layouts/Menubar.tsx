@@ -60,7 +60,7 @@ const Nav = styled.nav`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  height: 100vh;
+  height: calc(100vh - 12px);
   width: 48px;
   user-select: none;
 
