@@ -44,7 +44,7 @@ export default function Explorer({ showExplorer }: { showExplorer: boolean }) {
           LOCAL &#40;seholee.com&#41;
         </SubTitle>
         <PostList />
-        <LegacyLink href="https://legacy.seholee.com">
+        <LegacyLink href="d1ykeqyorqdego.cloudfront.net." rel="no-follow">
           <ArrowImg src="/icons/arrow-right-1.svg" />
           <LegacyDiv>Legacy Website</LegacyDiv>
         </LegacyLink>
