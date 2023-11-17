@@ -167,6 +167,7 @@ const RenderTree = ({
   if (currSlug === "") currSlug = "/"; // exception for main page
   return (
     <Ul>
+      {/* ============ FILE RENDER ============ */}
       {/* first, render the file list */}
       {files.map((f) => (
         <li key={f.slug}>
@@ -184,6 +185,7 @@ const RenderTree = ({
           </Link>
         </li>
       ))}
+      {/* ============ DIRECTORY RENDER ============ */}
       {/* secondly, render the directory(folders) list */}
       {dirs.map((d) => {
         const isOpen = openTrees.includes(d.dirname);
@@ -198,7 +200,7 @@ const RenderTree = ({
                 src={isOpen ? "/folder-open.svg" : "/folder.svg"}
                 depth={depth} // file hierarchy indent
               />
-              {d.dirname}
+              {d.dirname} ({Object.keys(d.tree).length})
             </FolderLine>
             {/* render children if folder is open */}
             <div style={isOpen ? {} : { display: "none" }}>
