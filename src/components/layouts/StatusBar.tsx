@@ -35,10 +35,10 @@ export default function StatusBar() {
           <div>Latest Commit</div>
           <div>{last_commit_id}</div>
         </Summary>
-        <Summary style={{ marginLeft: "auto" }}>
+        <SummaryRight>
           <div>{last_commit_author}</div>
           <div>{last_commit_time}</div>
-        </Summary>
+        </SummaryRight>
       </StyledA>
     </Layout>
   );
@@ -70,6 +70,9 @@ const Icon = styled.div`
   justify-content: center;
   align-items: center;
   padding: 0px 6px;
+  @media (max-width: 768px) {
+    font-size: 10px;
+  }
 `;
 
 const Summary = styled.div`
@@ -79,4 +82,14 @@ const Summary = styled.div`
   padding-right: 20px;
   color: #ccc;
   gap: 10px;
+  @media (max-width: 768px) {
+    font-size: 10px;
+  }
+`;
+
+const SummaryRight = styled(Summary)`
+  margin-left: auto;
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
