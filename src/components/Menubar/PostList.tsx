@@ -187,14 +187,7 @@ const RenderTree = ({
         >
           <li>
             {/* color background if the file is selected. */}
-            <FolderLine
-              selected={currSlug === f.slug}
-              // style={
-              //   currSlug === f.slug
-              //     ? { ...lineStyle, backgroundColor: "#414339" }
-              //     : lineStyle
-              // }
-            >
+            <FolderLine selected={currSlug === f.slug}>
               {/* file hierarchy indent is done like this to keep the background color fully colored when selected */}
               <FileIcon
                 src="/file-document.svg"

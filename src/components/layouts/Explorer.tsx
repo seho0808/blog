@@ -55,7 +55,7 @@ export default function Explorer({ showExplorer }: { showExplorer: boolean }) {
 
 const Aside = styled.aside<{ doShow: boolean }>`
   background-color: #1e1f1c;
-  height: 100vh;
+  height: 100%;
   color: #ccc;
   cursor: default;
   user-select: none;
@@ -66,7 +66,7 @@ const Aside = styled.aside<{ doShow: boolean }>`
     z-index: 10;
     position: fixed;
     top: 48px;
-    height: calc(100vh - 48px);
+    height: calc(100% - 48px);
     width: 100vw;
     display: ${(props) => (props.doShow ? "block" : "none")};
   }
