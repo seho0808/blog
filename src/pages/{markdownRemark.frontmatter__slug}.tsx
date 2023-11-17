@@ -1,5 +1,5 @@
 import "../markdownStyle.css";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
 import { graphql } from "gatsby";
 import CodeSpace from "../components/layouts/CodeSpace";
@@ -15,15 +15,24 @@ export default function BlogPostTemplate({
 }: {
   data: BlogMarkdownRemark;
 }) {
+  // explorer toggle logic
+  const isMobile = () => window.innerWidth <= 1050;
+  const [showExplorer, setShowExplorer] = useState<boolean>(!isMobile());
+
+  // this is for minimap scroll tracking
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  // markdown data
   const { markdownRemark } = data; // data.markdownRemark holds your post data
   const { frontmatter, html } = markdownRemark;
 
-  const contentRef = useRef<HTMLDivElement>(null);
-
   return (
     <Layout>
-      <Menubar />
-      <Explorer />
+      {/* explorer, search selector */}
+      <Menubar setShowExplorer={setShowExplorer} />
+      {/* explorer window */}
+      <Explorer showExplorer={showExplorer} />
+      {/* content window */}
       <ContentWindow>
         <TabsWrapper frontmatter={frontmatter} />
         <ContentWrapper ref={contentRef}>
@@ -75,4 +84,12 @@ const ContentWrapper = styled.div`
   padding: 0px 30px;
   height: calc(100vh - 36px);
   overflow-y: auto;
+
+  @media (max-width: 1050px) {
+    height: calc(100vh - 36px - 48px);
+  }
+
+  @media (max-width: 768px) {
+    height: calc(100vh - 48px);
+  }
 `;

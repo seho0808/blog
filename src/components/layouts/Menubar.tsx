@@ -28,10 +28,18 @@ const StyledImage = styled.img`
   }
 `;
 
-export default function Menubar() {
+export default function Menubar({
+  setShowExplorer,
+}: {
+  setShowExplorer: Function;
+}) {
+  const folderClickHandler = () => {
+    setShowExplorer((v: boolean) => !v);
+  };
+
   return (
     <StyledAside>
-      <StyledImage src="/folder_sax.svg" />
+      <StyledImage src="/folder_sax.svg" onClick={folderClickHandler} />
     </StyledAside>
   );
 }
