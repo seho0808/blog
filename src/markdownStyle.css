@@ -2,6 +2,22 @@
   color: white;
   font-family: "Pretendard";
   font-size: 18px;
+  max-width: 1100px;
+  min-height: calc(100vh - 200px)
+}
+
+@media (max-width: 1050px) {
+  .markdown-content{
+    min-height: calc(100vh - 250px);
+    max-width: 100%;
+  }
+}
+
+@media (max-width:768px) {
+  .markdown-content{
+    min-height: calc(100vh - 200px);
+    max-width: 100%;
+  }
 }
 
 .markdown-content h2,
@@ -32,6 +48,16 @@
   }
 }
 
+.markdown-content a {
+  color: #a6e22e;
+  text-decoration: underline #a6e22e;
+}
+
+.markdown-content .text-time {
+  font-size: 14px;
+  margin: 0px;
+  color: #b4b4b4;
+}
 
 .link-icon {
   width: 18px;

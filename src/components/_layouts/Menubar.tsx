@@ -82,7 +82,7 @@ const Nav = styled.nav`
 
 const IconWrapper = styled.div<{ selected: boolean }>`
   border-left: ${(props) =>
-    props.selected ? "2px solid #ccc" : "2px solid transparent"};
+    props.selected ? "2px solid #aaa" : "2px solid transparent"};
   border-right: 2px solid transparent;
   width: calc(100% - 4px);
   display: flex;
