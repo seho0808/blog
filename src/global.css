@@ -1,3 +1,5 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+
 body {
   background-color: #272822;
   margin: 0;
@@ -67,12 +69,12 @@ body {
 	src: url(/fonts/Pretendard-Black.woff2) format('woff2');
 } */
 
-@font-face {
+/* @font-face {
 	font-family: 'Pretendard';
 	font-weight: 800;
 	font-display: swap;
 	src: url(/fonts/Pretendard-ExtraBold.woff2) format('woff2')
-}
+} */
 
 /* @font-face {
 	font-family: 'Pretendard';
@@ -81,12 +83,12 @@ body {
 	src: url(/fonts/Pretendard-Bold.woff2) format('woff2')
 } */
 
-@font-face {
+/* @font-face {
 	font-family: 'Pretendard';
 	font-weight: 600;
 	font-display: swap;
 	src: url(/fonts/Pretendard-SemiBold.woff2) format('woff2')
-}
+} */
 /* 
 @font-face {
 	font-family: 'Pretendard';
@@ -95,7 +97,7 @@ body {
 	src: url(/fonts/Pretendard-Medium.woff2) format('woff2')
 } */
 
-@font-face {
+/* @font-face {
 	font-family: 'Pretendard';
 	font-weight: 400;
 	font-display: swap;
@@ -107,7 +109,7 @@ body {
 	font-weight: 300;
 	font-display: swap;
 	src: url(/fonts/Pretendard-Light.woff2) format('woff2')
-}
+} */
 
 /* @font-face {
 	font-family: 'Pretendard';
