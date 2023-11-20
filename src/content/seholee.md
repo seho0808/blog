@@ -65,7 +65,8 @@ SW 개발병 &nbsp;2022-01&#126;2023-07 <br/>
 
   - PHP로 개발된 기존 웹사이트를 재개발하여 <span class="text-red">5초가 넘게 걸리던 초기 렌더링을</span> <span class="text-green">0.2~0.5초로 감소</span> (FCP 기준)
   - 2021년 배포한 상태에서 큰 업데이트 없이, 2023년 10월 기준 <span class="text-yellow">누적 5만명의 유저</span>와 <span class="text-orange">일일 수천명의 접속자</span>를 기록
-  - 이미지가 많은 플랫폼이었기에, 이미지 별 압축 알고리즘을 상이하게 적용시켜 <span class="text-blue">로드 속도를 최적화</span>
+  - 이미지가 많은 플랫폼이었기에, 이미지 별 압축 알고리즘을 상이하게 적용시켜 <span class="text-blue">로드 속도 최적화</span>
+  - 캠페인 페이지(/campaign)의 스크롤 Lazy Loading, UI Skeleton 구현으로 로드 속도 개선
   - 장기적 생산성을 높이기 위해 <span class="text-skyblue">수시로 리팩토링과 추상화</span>
   - 무통장 입금 API 연동, PASS 인증 API 연동
 
@@ -104,8 +105,15 @@ SW 개발병 &nbsp;2022-01&#126;2023-07 <br/>
 <span class="text-grey">Next.js 13, Supabase, Node.js</span> <br/>
 
 - 기획, 디자인, 개발 모두 1인으로 <span class="text-blue">9주</span> 동안 진행한 플랫폼
-- Next.js와 Supabase 연동 중 <span class="text-red">공식 문서가 부족</span>한 상태에서 소스코드를 읽으며 <span class="text-green">직접 분석하여 효율적으로 연동</span>
+- Next.js와 Supabase 연동 중 <span class="text-red">공식 문서가 부족</span>한 상태에서 소스 코드를 읽으며 <span class="text-green">직접 분석하여 효율적으로 연동</span>
+
+  - React cache로 createServerComponentClient를 래핑하여 <span class="text-orange">요청 당 하나의 DB 커넥션</span>이 유지되도록 구현
+  - 소스 코드에서 싱글톤 체크를 확인하여 createClientComponentClient를 useEffect로 컴포넌트 별 구현
+
 - 최소한의 리소스로 안정적인 서비스를 유지하기 위해 백엔드와 프론트엔드에서 <span class="text-skyblue">단계적인 캐싱을 설계</span>
+  - 프론트엔드에서 반복 사용되는 데이터는 레이아웃 컴포넌트에 useSWR로 캐싱
+  - 동일한 유명 버튜버가 자주 검색되는 점을 파악하여 Nex.js 13 fetch 웹 서버 캐싱을 이용하여 <br/>
+    <span class="text-green">API 응답 속도 250% 개선</span> (뉴욕 서버, 뉴욕 클라이언트 기준 100ms에서 40ms로 개선) 및 DB 부하 분산
 - 유튜브, 트위치의 실시간 방송 관련 API 연동
 - 데이터 수집을 위해 웹사이트들을 실시간으로 크롤링 하는 각종 스크립트 개발 (10분~1시간 주기)
 
