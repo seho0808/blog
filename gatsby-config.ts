@@ -10,9 +10,23 @@ const config: GatsbyConfig = {
         path: `${__dirname}/src/content`,
       },
     },
-    `gatsby-transformer-remark`,
     `gatsby-plugin-sitemap`,
     `gatsby-plugin-react-helmet`,
+    {
+      resolve: `gatsby-transformer-remark`,
+      options: {
+        plugins: [
+          {
+            resolve: `gatsby-remark-highlight-code`,
+            options: {
+              terminal: "carbon",
+              theme: "monokai",
+              lineNumbers: true,
+            },
+          },
+        ],
+      },
+    },
   ],
   siteMetadata: {
     author: `Seho Lee`,

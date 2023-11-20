@@ -13,6 +13,9 @@ import StatusBar from "../components/_layouts/StatusBar";
 import { SEO } from "../components/SEO/SEO";
 import FileExplorer from "../components/Explorers/Explorer";
 
+import { defineCustomElements as deckDeckGoHighlightElement } from "@deckdeckgo/highlight-code/dist/loader";
+deckDeckGoHighlightElement();
+
 export default function BlogPostTemplate({
   data, // this prop will be injected by the GraphQL query below.
 }: {
