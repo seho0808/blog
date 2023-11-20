@@ -1,18 +1,27 @@
-import "../markdownStyle.css";
+// core
 import React, { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
 import { graphql } from "gatsby";
-import CodeSpace from "../components/_layouts/CodeSpace";
+
+// types
+import { BlogMarkdownRemark } from "../types/types";
+
+// components
 import Explorer from "../components/Explorers/Explorer";
 import Menubar from "../components/_layouts/Menubar";
-import { BlogMarkdownRemark, TabsInfo } from "../types/types";
 import TabsWrapper from "../components/Tabs/TabsWrapper";
 import Footer from "../components/_layouts/Footer";
 import Minimap from "../components/Minimap/Minimap";
 import StatusBar from "../components/_layouts/StatusBar";
 import { SEO } from "../components/SEO/SEO";
-import FileExplorer from "../components/Explorers/Explorer";
 
+// markdown custom css
+import "../markdownStyle.css";
+
+// katex support
+import "katex/dist/katex.min.css";
+
+// deckdeckgo code highlight support
 import { defineCustomElements as deckDeckGoHighlightElement } from "@deckdeckgo/highlight-code/dist/loader";
 deckDeckGoHighlightElement();
 

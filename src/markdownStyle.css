@@ -1,3 +1,7 @@
+:root {
+  --deckgo-highlight-code-font-family: consolas, sans-serif;
+}
+
 .markdown-content {
   color: white;
   font-family: "Pretendard";
