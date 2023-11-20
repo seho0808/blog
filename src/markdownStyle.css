@@ -6,6 +6,12 @@
   min-height: calc(100vh - 200px)
 }
 
+@media (max-width: 1670px) {
+  .markdown-content{
+    max-width: 800px;
+  }
+}
+
 @media (max-width: 1050px) {
   .markdown-content{
     min-height: calc(100vh - 250px);
