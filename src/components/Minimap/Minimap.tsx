@@ -36,26 +36,37 @@ const Minimap = ({
      */
     const updateMinimap = () => {
       let elem = contentRef.current;
-      if (
-        !elem ||
-        !minimapBoxRef.current ||
-        !overlayRef.current ||
-        !minimapContRef.current
-      )
-        return;
+      if (!elem || !minimapBoxRef.current || !minimapContRef.current) return;
       const curr = elem.scrollTop;
       const total = elem.scrollHeight;
       const view = elem.clientHeight;
       minimapBoxRef.current.style.height = (view / total) * 100 + "%";
-      minimapBoxRef.current.style.top = (curr / total) * 100 + "%";
+      const actualMinimapContHeight =
+        minimapContRef.current.scrollHeight + 24 + 36;
+      minimapBoxRef.current.style.top =
+        (curr / total) * actualMinimapContHeight + "px";
 
-      // overlay height fix
+      // update MinimapContainer's scrollTop
+      const maxScrollable =
+        actualMinimapContHeight - minimapContRef.current.clientHeight;
+
+      minimapContRef.current.scrollTop = (curr / total) * maxScrollable;
+    };
+
+    /**
+     * ClickPreventOverlay is absolute and its parent is fixed.
+     * Overlay's height gets rendered to the height of the viewport initially.
+     * To extend Overlay's height beyond the viewport, we trigger resizing of Overlay when
+     * deckdeckgo and katex is rendered.
+     */
+    const updateOverlayHeight = () => {
+      if (!overlayRef.current || !minimapContRef.current) return;
       overlayRef.current.style.height =
         minimapContRef.current.clientHeight + "px";
     };
 
     /**
-     * This resizeObserver handles two things
+     * This resizeObserver handles three things
      * 1. it resizes minimap-box & overlay on deckdeckgo and katex redering
      * 2. it resizes minimap-box & overlay on window resizing
      */
@@ -64,6 +75,7 @@ const Minimap = ({
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => {
         updateMinimap();
+        updateOverlayHeight();
       }, 100); // debouncing with 0.1 second timeout
     });
     resizeObserver.observe(contentRef.current);
