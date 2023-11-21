@@ -6,19 +6,6 @@ body {
 	font-family: "Pretendard";
 }
 
-/* hide minimap on firefox and < 1400px*/
-@-moz-document url-prefix() {
-	.hide-on-firefox {
-			display: none;
-	}
-}
-
-@media (max-width: 1400px) {
-	.hide-on-1400 {
-			display: none;
-	}
-}
-
 /* re-resizable explorer resizing option. this option blocks height drag*/
 .pointer-events-none {
   pointer-events: none;
@@ -48,18 +35,6 @@ body {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
 	background: #555;
-}
-
-
-/* minimap logic */
-.minimap-container {
-	position: fixed;
-	top: 36px;
-	right: 40px;
-}
-
-.minimap-container .markdown-content {
-	zoom: 0.15;
 }
 
 /* @font-face {

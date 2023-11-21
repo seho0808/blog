@@ -1,3 +1,4 @@
+import styled from "@emotion/styled";
 import React, { useState, useEffect, useRef } from "react";
 
 /**
@@ -16,6 +17,7 @@ const Minimap = ({
   html: string;
 }) => {
   const minimapBoxRef = useRef<HTMLDivElement>(null);
+  const minimapContRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
 
   /**
@@ -70,7 +72,7 @@ const Minimap = ({
   }, [contentRef]);
 
   /**
-   * PART2: handle minimap scroll
+   * PART2: handle minimap drag scroll
    * minimap-box drag triggers ContentWrapper scroll which in turn triggers minimap-box top change.
    */
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -80,16 +82,10 @@ const Minimap = ({
 
   const handleMouseMove = (e: MouseEvent) => {
     if (!isDragging) return;
-    if (!minimapBoxRef.current || !contentRef.current) return;
+    if (!contentRef.current) return;
 
     // Calculate new scroll position
-    const totalHeight = contentRef.current.scrollHeight;
-    const viewHeight = contentRef.current.clientHeight;
-    const deltaY = e.movementY / 3;
-
-    // Adjust the scroll position of content based on drag
-    const scrollPercentage = deltaY / minimapBoxRef.current.offsetHeight;
-    contentRef.current.scrollTop += scrollPercentage * totalHeight;
+    contentRef.current.scrollTop += e.movementY * 6.5;
   };
 
   const handleMouseUp = () => {
@@ -107,31 +103,66 @@ const Minimap = ({
     };
   }, [isDragging]);
 
+  /**
+   * PART 3: handle click minimap target scroll
+   */
+  const targetScroll = (e: React.MouseEvent<HTMLDivElement>) => {
+    console.log(e.pageX, e.screenX, e.clientX);
+  };
+
   return (
-    <div
-      className="minimap-container hide-on-firefox hide-on-1400"
-      data-nosnippet
-    >
-      <div
-        className="minimap-box"
-        onMouseDown={handleMouseDown}
-        ref={minimapBoxRef}
-        style={{
-          backgroundColor: "rgba(0, 0, 0, 0.15)",
-          width: "100%",
-          position: "absolute",
-          right: 0,
-          top: 0,
-          zIndex: 10,
-        }}
-      ></div>
-      <div
+    <MinimapContainer data-nosnippet ref={minimapContRef}>
+      <MinimapBox onMouseDown={handleMouseDown} ref={minimapBoxRef} />
+      <PreventClickOverlay />
+      <MinimapMarkdownContent
+        onClick={targetScroll}
         className="markdown-content"
         style={{ userSelect: "none", padding: "0px 30px" }}
         dangerouslySetInnerHTML={{ __html: html }}
       />
-    </div>
+    </MinimapContainer>
   );
 };
 
 export default Minimap;
+
+const MinimapContainer = styled.div`
+  position: fixed;
+  top: 36px;
+  right: 40px;
+  max-height: 100vh;
+
+  overflow: auto; /* Enable scrolling */
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+  ::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
+  }
+
+  @-moz-document url-prefix() {
+    display: none;
+  }
+
+  @media (max-width: 1400px) {
+    display: none;
+  }
+`;
+
+const MinimapBox = styled.div`
+  background-color: rgba(0, 0, 0, 0.2);
+  width: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 10;
+`;
+
+const PreventClickOverlay = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 1);
+`;
+
+const MinimapMarkdownContent = styled.div`
+  zoom: 0.15;
+`;
