@@ -19,36 +19,59 @@ const Minimap = ({
   const [isDragging, setIsDragging] = useState(false);
 
   /**
-   * PART1: send original scroll info to minimap
+   * PART1: minimap sizing and resizing
    */
-  const updateMinimap = (curr: number, total: number, view: number) => {
-    if (!minimapBoxRef.current) return;
-    minimapBoxRef.current.style.height = (view / total) * 100 + "%";
-    minimapBoxRef.current.style.top = (curr / total) * 100 + "%";
-  };
-
   useEffect(() => {
     if (!contentRef.current) return;
-    const handleScroll = () => {
+
+    /**
+     * update Minimap is triggered in four situations
+     * 1. scrollListener: When markdown(ContentWrapper) is scrolled by the user
+     * 2. When minimap-box is scrolled by the user => triggers markdown scroll so #1 is triggerd
+     * 3. resizeObserver: When user resizes the browser and ContentWrapper is resized
+     * 4. resizeObserver: When components inside ContentWrapper is rendered (i.e. deckdeckgo, latex)
+     */
+    const updateMinimap = () => {
       let elem = contentRef.current;
-      if (!elem) return;
-      updateMinimap(elem.scrollTop, elem.scrollHeight, elem.clientHeight);
+      if (!elem || !minimapBoxRef.current) return;
+      const curr = elem.scrollTop;
+      const total = elem.scrollHeight;
+      const view = elem.clientHeight;
+      minimapBoxRef.current.style.height = (view / total) * 100 + "%";
+      minimapBoxRef.current.style.top = (curr / total) * 100 + "%";
     };
 
-    handleScroll(); // run once on initial render
+    /**
+     * This resizeObserver handles two things
+     * 1. it resizes minimap-box on deckdeckgo and katex redering
+     * 2. it resizes minimap-box on window resizing
+     */
+    let resizeTimer: ReturnType<typeof setInterval>;
+    const resizeObserver = new ResizeObserver((entries) => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        updateMinimap();
+      }, 100); // debouncing with 0.1 second timeout
+    });
+    resizeObserver.observe(contentRef.current);
 
     // Add event listener
     const contentElement = contentRef.current;
-    contentElement.addEventListener("scroll", handleScroll);
+    contentElement.addEventListener("scroll", updateMinimap);
 
     return () => {
       // Remove event listener on cleanup
-      contentElement.removeEventListener("scroll", handleScroll);
+      contentElement.removeEventListener("scroll", updateMinimap);
+      // end observer
+      resizeObserver.disconnect();
+      // clear timeout
+      clearInterval(resizeTimer);
     };
   }, [contentRef]);
 
   /**
    * PART2: handle minimap scroll
+   * minimap-box drag triggers ContentWrapper scroll which in turn triggers minimap-box top change.
    */
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     setIsDragging(true);
@@ -99,6 +122,7 @@ const Minimap = ({
           position: "absolute",
           right: 0,
           top: 0,
+          zIndex: 10,
         }}
       ></div>
       <div
