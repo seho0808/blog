@@ -18,6 +18,7 @@ const Minimap = ({
 }) => {
   const minimapBoxRef = useRef<HTMLDivElement>(null);
   const minimapContRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
 
   /**
@@ -35,18 +36,28 @@ const Minimap = ({
      */
     const updateMinimap = () => {
       let elem = contentRef.current;
-      if (!elem || !minimapBoxRef.current) return;
+      if (
+        !elem ||
+        !minimapBoxRef.current ||
+        !overlayRef.current ||
+        !minimapContRef.current
+      )
+        return;
       const curr = elem.scrollTop;
       const total = elem.scrollHeight;
       const view = elem.clientHeight;
       minimapBoxRef.current.style.height = (view / total) * 100 + "%";
       minimapBoxRef.current.style.top = (curr / total) * 100 + "%";
+
+      // overlay height fix
+      overlayRef.current.style.height =
+        minimapContRef.current.clientHeight + "px";
     };
 
     /**
      * This resizeObserver handles two things
-     * 1. it resizes minimap-box on deckdeckgo and katex redering
-     * 2. it resizes minimap-box on window resizing
+     * 1. it resizes minimap-box & overlay on deckdeckgo and katex redering
+     * 2. it resizes minimap-box & overlay on window resizing
      */
     let resizeTimer: ReturnType<typeof setInterval>;
     const resizeObserver = new ResizeObserver((entries) => {
@@ -113,7 +124,7 @@ const Minimap = ({
   return (
     <MinimapContainer data-nosnippet ref={minimapContRef}>
       <MinimapBox onMouseDown={handleMouseDown} ref={minimapBoxRef} />
-      <PreventClickOverlay />
+      <PreventClickOverlay ref={overlayRef} />
       <MinimapMarkdownContent
         onClick={targetScroll}
         className="markdown-content"
@@ -130,7 +141,7 @@ const MinimapContainer = styled.div`
   position: fixed;
   top: 36px;
   right: 40px;
-  max-height: 100vh;
+  max-height: calc(100vh - 36px - 24px);
 
   overflow: auto; /* Enable scrolling */
   scrollbar-width: none; /* For Firefox */
@@ -158,9 +169,10 @@ const MinimapBox = styled.div`
 `;
 
 const PreventClickOverlay = styled.div`
+  position: absolute;
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 255, 255, 1);
+  background-color: rgba(255, 255, 255, 0);
 `;
 
 const MinimapMarkdownContent = styled.div`
