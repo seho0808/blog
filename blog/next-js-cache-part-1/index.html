@@ -329,6 +329,7 @@ unexpected behavior이 많이 일어날 수 있을 것 같은 느낌이었다. f
 </tbody>
 </table>
 <p>*Navigation 마다 호출되지만 cache가 fresh한 상태면 요청이 실제로 가지는 않는다.</p>
+<p>우리는 보통 useSWR의 fetcher함수에 axios 혹은 fetch를 사용한다. 그렇기에 클라이언트 컴포넌트를 사용할지라도 <span class="text-red">useSWR + axios/fetch의 2중 캐싱 나생문을 거치기 때문에 디버깅 시 주의</span>할 필요가 있다!! Router Cache가 사용되는 컴포넌트의 경우, 그 내부에서 사용되는 fetch는 서버 fetch이기 때문에 구현 자체가 다르다. 이에 대해서는 3편에서 살펴보도록하자.</p>
 <p>참고자료:</p>
 <ul>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching#fresh_and_stale_based_on_age">MDN HTTP Caching</a></li>
@@ -672,6 +673,7 @@ unexpected behavior이 많이 일어날 수 있을 것 같은 느낌이었다. f
 </tbody>
 </table>
 <p>*Navigation 마다 호출되지만 cache가 fresh한 상태면 요청이 실제로 가지는 않는다.</p>
+<p>우리는 보통 useSWR의 fetcher함수에 axios 혹은 fetch를 사용한다. 그렇기에 클라이언트 컴포넌트를 사용할지라도 <span class="text-red">useSWR + axios/fetch의 2중 캐싱 나생문을 거치기 때문에 디버깅 시 주의</span>할 필요가 있다!! Router Cache가 사용되는 컴포넌트의 경우, 그 내부에서 사용되는 fetch는 서버 fetch이기 때문에 구현 자체가 다르다. 이에 대해서는 3편에서 살펴보도록하자.</p>
 <p>참고자료:</p>
 <ul>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching#fresh_and_stale_based_on_age">MDN HTTP Caching</a></li>
