@@ -206,11 +206,6 @@ useSWR과 Router Cache가 엮일 수가 없다. useSWR은 API 요청의 결과�
 </thead>
 <tbody>
 <tr>
-<td>데이터 로딩 타이밍</td>
-<td>스켈레톤 로딩</td>
-<td>페이지 접속 초기 로딩</td>
-</tr>
-<tr>
 <td>데이터 로딩 위치</td>
 <td>브라우저</td>
 <td>서버</td>
@@ -289,7 +284,51 @@ Etag를 같이 보내고, 그걸 서버에서 체크한 뒤에 fresh하면 304 N
 </ul>
 <p>사용자가 instruction을 주었을 시에는 어느정도 컨트롤할 수 있지만, 이마저도 서버에서 리턴해주는 헤더 값에 따라 좌지우지되며
 unexpected behavior이 많이 일어날 수 있을 것 같은 느낌이었다. fetch 쿼리를 브라우저에서 사용할 때 서버에서 어떤 헤더가 날아오고 어떻게 반응하는지 한 번씩 테스팅 해보는 것이 좋을 것 같다.
-또한, <span class="text-orange">axios의 경우 브라우저에서 사용 시 무조건 <code>Cache-Control: default</code>라고 하니 주의하자.</span></p>
+또한, <span class="text-orange">axios의 경우 fetch처럼 브라우저에서 사용 시 기본값은 <code>Cache-Control: default</code>라고 하니 주의하자.</span></p>
+<p>테이블을 업데이트해보자.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>useSWR</th>
+<th>Router Cache</th>
+<th>browser fetch</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>데이터 로딩 위치</td>
+<td>브라우저</td>
+<td>서버</td>
+<td>브라우저</td>
+</tr>
+<tr>
+<td>onFocus Revalidation</td>
+<td>o</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td>interval Revalidation</td>
+<td>원하는 길이</td>
+<td>30초 / 5분</td>
+<td>서버 헤더에 따라 결정</td>
+</tr>
+<tr>
+<td>reconnect Revalidation</td>
+<td>o</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td>Navigation 시 유지</td>
+<td>레이아웃일 때만</td>
+<td>항상</td>
+<td>x*</td>
+</tr>
+</tbody>
+</table>
+<p>*Navigation 마다 호출되지만 cache가 fresh한 상태면 요청이 실제로 가지는 않는다.</p>
 <p>참고자료:</p>
 <ul>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching#fresh_and_stale_based_on_age">MDN HTTP Caching</a></li>
@@ -297,7 +336,7 @@ unexpected behavior이 많이 일어날 수 있을 것 같은 느낌이었다. f
 </ul>
 <br/>
 <h4>마치며</h4>
-<p>위에서 fetch에 대한 설명이 부족한 것은 3편에서 다뤄질 예정이다.</p>
+<p>위에서 다뤄지지 않은 서버에서의 fetch는 3편에서 다뤄질 예정이다.</p>
 <p>업로드 예정:</p>
 <ul>
 <li>2편 - Full Route Cache</li>
@@ -510,11 +549,6 @@ useSWR과 Router Cache가 엮일 수가 없다. useSWR은 API 요청의 결과�
 </thead>
 <tbody>
 <tr>
-<td>데이터 로딩 타이밍</td>
-<td>스켈레톤 로딩</td>
-<td>페이지 접속 초기 로딩</td>
-</tr>
-<tr>
 <td>데이터 로딩 위치</td>
 <td>브라우저</td>
 <td>서버</td>
@@ -593,7 +627,51 @@ Etag를 같이 보내고, 그걸 서버에서 체크한 뒤에 fresh하면 304 N
 </ul>
 <p>사용자가 instruction을 주었을 시에는 어느정도 컨트롤할 수 있지만, 이마저도 서버에서 리턴해주는 헤더 값에 따라 좌지우지되며
 unexpected behavior이 많이 일어날 수 있을 것 같은 느낌이었다. fetch 쿼리를 브라우저에서 사용할 때 서버에서 어떤 헤더가 날아오고 어떻게 반응하는지 한 번씩 테스팅 해보는 것이 좋을 것 같다.
-또한, <span class="text-orange">axios의 경우 브라우저에서 사용 시 무조건 <code>Cache-Control: default</code>라고 하니 주의하자.</span></p>
+또한, <span class="text-orange">axios의 경우 fetch처럼 브라우저에서 사용 시 기본값은 <code>Cache-Control: default</code>라고 하니 주의하자.</span></p>
+<p>테이블을 업데이트해보자.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>useSWR</th>
+<th>Router Cache</th>
+<th>browser fetch</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>데이터 로딩 위치</td>
+<td>브라우저</td>
+<td>서버</td>
+<td>브라우저</td>
+</tr>
+<tr>
+<td>onFocus Revalidation</td>
+<td>o</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td>interval Revalidation</td>
+<td>원하는 길이</td>
+<td>30초 / 5분</td>
+<td>서버 헤더에 따라 결정</td>
+</tr>
+<tr>
+<td>reconnect Revalidation</td>
+<td>o</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td>Navigation 시 유지</td>
+<td>레이아웃일 때만</td>
+<td>항상</td>
+<td>x*</td>
+</tr>
+</tbody>
+</table>
+<p>*Navigation 마다 호출되지만 cache가 fresh한 상태면 요청이 실제로 가지는 않는다.</p>
 <p>참고자료:</p>
 <ul>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching#fresh_and_stale_based_on_age">MDN HTTP Caching</a></li>
@@ -601,7 +679,7 @@ unexpected behavior이 많이 일어날 수 있을 것 같은 느낌이었다. f
 </ul>
 <br/>
 <h4>마치며</h4>
-<p>위에서 fetch에 대한 설명이 부족한 것은 3편에서 다뤄질 예정이다.</p>
+<p>위에서 다뤄지지 않은 서버에서의 fetch는 3편에서 다뤄질 예정이다.</p>
 <p>업로드 예정:</p>
 <ul>
 <li>2편 - Full Route Cache</li>
