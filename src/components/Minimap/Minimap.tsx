@@ -58,18 +58,6 @@ const Minimap = ({
     };
 
     /**
-     * ClickPreventOverlay is absolute and its parent is fixed.
-     * Overlay's height gets rendered to the height of the viewport initially.
-     * To extend Overlay's height beyond the viewport, we trigger resizing of Overlay when
-     * deckdeckgo and katex is rendered.
-     */
-    const updateOverlayHeight = () => {
-      if (!overlayRef.current || !minimapContRef.current) return;
-      overlayRef.current.style.height =
-        minimapContRef.current.scrollHeight + "px";
-    };
-
-    /**
      * This resizeObserver handles three things
      * 1. it resizes minimap-box & overlay on deckdeckgo and katex redering
      * 2. it resizes minimap-box & overlay on window resizing
@@ -97,6 +85,18 @@ const Minimap = ({
       clearInterval(resizeTimer);
     };
   }, [contentRef]);
+
+  /**
+   * ClickPreventOverlay is absolute and its parent is fixed.
+   * Overlay's height gets rendered to the height of the viewport initially.
+   * To extend Overlay's height beyond the viewport, we trigger resizing of Overlay when
+   * deckdeckgo and katex is rendered.
+   */
+  const updateOverlayHeight = () => {
+    if (!overlayRef.current || !minimapContRef.current) return;
+    overlayRef.current.style.height =
+      minimapContRef.current.scrollHeight + "px";
+  };
 
   /**
    * PART2: handle minimap drag scroll
@@ -135,6 +135,8 @@ const Minimap = ({
    */
   const targetScroll = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!contentRef.current || !minimapContRef.current) return;
+
+    updateOverlayHeight();
 
     // Get the Y position of the click relative to the minimap
     const minimapRect = minimapContRef.current.getBoundingClientRect();

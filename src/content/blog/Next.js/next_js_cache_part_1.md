@@ -99,7 +99,7 @@ RSC 페이로드는 React Server Component가 등장하면서 부분적으로 �
 
   => 각 세그먼트(이동 하면서 저장된 모든 페이지) 마다 <span class="text-orange">dynamic일 경우 30초, static일 경우 5분 주기</span>로 캐싱됩니다.
 
-**<span class="text-orange">Router Cache 한줄 요약: 앱에서 방문한 모든 페이지를 캐싱하여 페이지 재방문 시 로딩을 빠르게 해주고, 새로고침 시 & 주기적으로 데이터를 새로 가져와서 페이지 별 cache가 refresh(invalidate)된다.</span>**
+**<span class="text-orange">Router Cache 한줄 요약: 앱에서 방문한 모든 페이지의 리액트 서버 컴포넌트를 캐싱하여 페이지 재방문 시 로딩을 빠르게 해주고, 새로고침 시 & 주기적으로 데이터를 새로 가져와서 페이지 별 cache가 refresh(invalidate)된다.</span>**
 
 위에서 빠진 디테일:
 
@@ -107,6 +107,8 @@ RSC 페이로드는 React Server Component가 등장하면서 부분적으로 �
    자동으로 Router Cache에 의해 캐싱이 된다!!!
 
 2. 애초에 Router Cache는 RSC 페이로드를 저장하는 것이기 때문에 서버 컴포넌트가 아닌 <span class="text-red">클라이언트 컴포넌트("use client")에서 작동하는 코드는 캐싱되지 않는다!!!</span>
+
+3. Router Cache는 절대로 Opt Out이 안된다. React Server Component가 있으면 무조건 사용된다.
 
 <br/>
 
@@ -178,7 +180,7 @@ export default function Home() {
 먼저 `app/api/getTime`은 Route Handler 형식으로, Next.js 웹 서버에서 핸들링하는 API 엔드포인트이다. 시간을 리턴한다.
 이 데이터를 각각 <span class="text-blue">서버 컴포넌트와 클라이언트 컴포넌트에서 똑같이 가져와서 표기해준다.</span> 그리고 이 두 개의 컴포넌트를 `app/page.tsx`에서 가져오는데, 해당 페이지의 링크로 다른 페이지와 갔다가 왔다가 해보면 클라이언트 컴포넌트<span class="text-red">만</span> 시간이 계속 바뀌는 것을 볼 수 있다.
 
-바로 Router Cache 때문에 서버 컴포넌트의 RSC가 캐싱되는 것이다.
+바로 Router Cache 때문에 서버 컴포넌트의 RSC 페이로드가 캐싱되는 것이다.
 
 <div class="image-container">
   <img class="md-image" style="width:50%;" src="/images/router-cache-sc.png" alt="next_js_caching_flow"/>
@@ -215,28 +217,27 @@ server.listen(8001, () => {
 
 ## **<4> useSWR과의 관계**
 
-useSWR은 브라우저에서 API 결과 데이터를 저장하고 특정 조건에 따라서 다시 데이터를 가져오는 형식이다. Router Cache는 서버에서 가져온 RSC Payload를 캐싱하는 것이기 떄문에
+useSWR은 클라이언트 컴포넌트에서 API 결과 데이터를 저장하고 특정 조건에 따라서 다시 데이터를 가져오는 형식이다. Router Cache는 서버 컴포넌트에서 가져온 RSC Payload를 캐싱하는 것이기 떄문에
 useSWR과 Router Cache가 엮일 수가 없다. useSWR은 API 요청의 결과값을 저장하지만, Router Cache는 리액트 렌더링에 필요한 컴포넌트 자료를 캐싱하는 것이다. 둘은 디버깅 시에는 서로 거의 간섭이 없다고 봐도될 것 같다.
 
 대신 둘은 서로 대체제가 될 수 있다. Fetch를 서버에서 한 후에 RSC로 브라우저에서 30초 / 5분 간 렌더링 된 상태를 저장하기 vs 브라우저에서 Fetch한 후 useSWR로 데이터를 저장하기로 서로
 상황에 맞게 사용하면 된다.
 
-|                        | useSWR          | Router Cache          |
-| ---------------------- | --------------- | --------------------- |
-| 데이터 로딩 타이밍     | 스켈레톤 로딩   | 페이지 접속 초기 로딩 |
-| 데이터 로딩 위치       | 브라우저        | 서버                  |
-| onFocus Revalidation   | o               | x                     |
-| interval Revalidation  | 원하는 길이     | 30초 / 5분            |
-| reconnect Revalidation | o               | x                     |
-| Navigation 시 유지     | 레이아웃일 때만 | 항상                  |
+|                        | useSWR          | Router Cache |
+| ---------------------- | --------------- | ------------ |
+| 데이터 로딩 위치       | 브라우저        | 서버         |
+| onFocus Revalidation   | o               | x            |
+| interval Revalidation  | 원하는 길이     | 30초 / 5분   |
+| reconnect Revalidation | o               | x            |
+| Navigation 시 유지     | 레이아웃일 때만 | 항상         |
 
-전반적으로 보면 useSWR은 변화가 자주 일어나는 컴포넌트에 쓰면 더 좋고 (주식 가격, 실시간 온라인 유튜버 등) Router Cache는 자주 안바뀔 때 쓰면 좋을 것 같다(넷플릭스 영상 목록 등).
+전반적으로 보면 <span class="text-orange">useSWR은 변화가 자주 일어나는 컴포넌트에 쓰면 더 좋고 (주식 가격, 실시간 온라인 유튜버 등) Router Cache는 자주 안바뀔 때 쓰면 좋을 것 같다(넷플릭스 영상 목록 등).</span>
 
 <br/>
 
 ## **<5> 브라우저에서의 fetch**
 
-브라우저 fetch는 기본적으로 cache 옵션이 켜져있다! 그런데 위에서 봤던 useSWR이나 Router Cache와 다르게 <span class="text-red">서버 응답 헤더에 의존한다</span>.
+브라우저 fetch는 기본적으로 cache 옵션이 켜져있다! 그런데 위에서 봤던 useSWR이나 Router Cache와 다르게 <span class="text-red">서버 응답 헤더에 의존한다.</span>
 브라우저의 fetch 또한 머리 아플 정도로 여러가지 변수가 있다.
 브라우저의 fetch는 응답 헤더에 있는 Cache-Control, Age, Expires, Last-Modified, ETag 등을 사용한다고 한다.
 그리고 아래의 설명 또한 브라우저 마다 조금씩 다를 수 있다.
@@ -256,7 +257,7 @@ Age: 86400
 
 <br/>
 
-위 응답의 경우 604800-86400=518400이 앞으로 브라우저가 캐싱할 시간이라고 한다.
+fetch의 서버 응답 헤더가 위와 같을 경우 604800-86400=518400이 앞으로 브라우저가 캐싱할 시간이라고 한다.
 
 대부분의 브라우저들은 아래와 같은 로직을 따르는 것으로 보인다:
 
@@ -267,7 +268,7 @@ Age: 86400
 - no-cache: 데이터를 사용할 때 마다 낡았는지 체크하고 캐시된 값 업데이트/유지 후 리턴
 
   - no-cache라는 용어 보다 refresh-cache같은 용어가 훨씬 잘 어울리는 것 같다. cache는 사용하되, 낡았는지 매번 체크한다.
-    그럼 매번 어차피 body 다 가져오면 cache 하나마나 리소스 오고가는 양은 똑같은 것 아님? 아니라고 한다. no-cache로 서버에 요청할 때에는, If-Modified-Since 혹은
+    그럼 매번 어차피 body 다 가져오면 cache 하나 마나 리소스 오고가는 양은 똑같은 것 아님? 아니라고 한다. no-cache로 서버에 요청할 때에는, If-Modified-Since 혹은
     Etag를 같이 보내고, 그걸 서버에서 체크한 뒤에 fresh하면 304 Not Modified와 함께 빈 body를, stale하면 200 OK와 함께 데이터가 있는 body를 보낸다고 한다.
 
 - force-cache: 낡은 데이터든 새로운 데이터든 상관안하고 캐시에 있으면 무조건 반환, 아예 없으면 서버에 요청.
@@ -281,7 +282,21 @@ Age: 86400
 
 사용자가 instruction을 주었을 시에는 어느정도 컨트롤할 수 있지만, 이마저도 서버에서 리턴해주는 헤더 값에 따라 좌지우지되며
 unexpected behavior이 많이 일어날 수 있을 것 같은 느낌이었다. fetch 쿼리를 브라우저에서 사용할 때 서버에서 어떤 헤더가 날아오고 어떻게 반응하는지 한 번씩 테스팅 해보는 것이 좋을 것 같다.
-또한, <span class="text-orange">axios의 경우 브라우저에서 사용 시 무조건 `Cache-Control: default`라고 하니 주의하자.</span>
+또한, <span class="text-orange">axios의 경우 fetch처럼 브라우저에서 사용 시 기본값은 `Cache-Control: default`라고 하니 주의하자.</span>
+
+테이블을 업데이트해보자.
+
+|                        | useSWR          | Router Cache | browser fetch         |
+| ---------------------- | --------------- | ------------ | --------------------- |
+| 데이터 로딩 위치       | 브라우저        | 서버         | 브라우저              |
+| onFocus Revalidation   | o               | x            | x                     |
+| interval Revalidation  | 원하는 길이     | 30초 / 5분   | 서버 헤더에 따라 결정 |
+| reconnect Revalidation | o               | x            | x                     |
+| Navigation 시 유지     | 레이아웃일 때만 | 항상         | x\*                   |
+
+\*Navigation 마다 호출되지만 cache가 fresh한 상태면 요청이 실제로 가지는 않는다.
+
+우리는 보통 useSWR의 fetcher함수에 axios 혹은 fetch를 사용한다. 그렇기에 클라이언트 컴포넌트를 사용할지라도 <span class="text-red">useSWR + axios/fetch의 2중 캐싱 나생문을 거치기 때문에 디버깅 시 주의</span>할 필요가 있다!! Router Cache가 사용되는 컴포넌트의 경우, 그 내부에서 사용되는 fetch는 서버 fetch이기 때문에 구현 자체가 다르다. 이에 대해서는 3편에서 살펴보도록하자.
 
 참고자료:
 
@@ -292,7 +307,7 @@ unexpected behavior이 많이 일어날 수 있을 것 같은 느낌이었다. f
 
 #### 마치며
 
-위에서 fetch에 대한 설명이 부족한 것은 3편에서 다뤄질 예정이다.
+위에서 다뤄지지 않은 서버에서의 fetch는 3편에서 다뤄질 예정이다.
 
 업로드 예정:
 
