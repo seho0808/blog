@@ -70,6 +70,16 @@
   color: #b4b4b4;
 }
 
+.markdown-content table {
+  border-collapse: collapse; /* Ensures that the border is clean and joined */
+}
+
+.markdown-content table th,
+.markdown-content table td {
+  border: 1px solid #aaa; /* Sets the border color for table cells */
+  padding: 8px; /* Adds some padding inside cells for better readability */
+}
+
 .link-icon {
   width: 18px;
   vertical-align: text-bottom;

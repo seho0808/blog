@@ -189,7 +189,7 @@ export default function Home() {
 
 > <span class="text-grey">참고사항 2: 빌드를 하고 싶을 시 위 코드로는 circular dependency(빌드하면서 서버 컴포넌트에서 프로젝트 내부 api를 스스로 호출하고 있음)가 존재해서 빌드가 안된다. 그래서 timestamp를 리턴해주는 node 서버를 따로 열어서 빌드해주어야 한다. 아래와 같이 node서버를 열면 http://localhost:8001/ 엔드포인트로 시간정보를 받을 수 있다. 서버 컴포넌트의 엔드포인트를 8001로 수정하고 빌드해보자. 여기서 또 클라이언트는 CORS 때문에 8001쓰면 안되고 기존 엔드포인트(http://localhost:3000/api/getDate) 써야된다!!!</span>
 
-> <span class="text-grey">참고사항 3: 클라이언트 컴포넌트의 fetch는 브라우저 원래 기본 fetch이고, 서버 컴포넌트에서의 fetch는 Next.js가 직접 수정한 캐싱기능이 들어간 fetch이다. 지금은 모두 cache: no-store로 사용하고 3편에서 자세히 알아보자.</span>
+> <span class="text-grey">참고사항 3: 클라이언트 컴포넌트의 fetch는 브라우저 원래의 fetch이고, 서버 컴포넌트에서의 fetch는 Next.js가 직접 수정한 캐싱기능이 들어간 fetch이다. 지금은 모두 cache: no-store로 사용하고 3편에서 자세히 알아보자.</span>
 
 ```javascript
 // 참고용 node server
@@ -216,7 +216,77 @@ server.listen(8001, () => {
 ## **<4> useSWR과의 관계**
 
 useSWR은 브라우저에서 API 결과 데이터를 저장하고 특정 조건에 따라서 다시 데이터를 가져오는 형식이다. Router Cache는 서버에서 가져온 RSC Payload를 캐싱하는 것이기 떄문에
-useSWR과 Router Cache가 엮일 수가 없다. useSWR은 API 요청의 결과값을 저장하지만, Router Cache는 리액트 렌더링에 필요한 컴포넌트 자료를 캐싱하는 것이다. 둘은 서로 거의 간섭이 없다고 봐도될 것 같다.
+useSWR과 Router Cache가 엮일 수가 없다. useSWR은 API 요청의 결과값을 저장하지만, Router Cache는 리액트 렌더링에 필요한 컴포넌트 자료를 캐싱하는 것이다. 둘은 디버깅 시에는 서로 거의 간섭이 없다고 봐도될 것 같다.
+
+대신 둘은 서로 대체제가 될 수 있다. Fetch를 서버에서 한 후에 RSC로 브라우저에서 30초 / 5분 간 렌더링 된 상태를 저장하기 vs 브라우저에서 Fetch한 후 useSWR로 데이터를 저장하기로 서로
+상황에 맞게 사용하면 된다.
+
+|                        | useSWR          | Router Cache          |
+| ---------------------- | --------------- | --------------------- |
+| 데이터 로딩 타이밍     | 스켈레톤 로딩   | 페이지 접속 초기 로딩 |
+| 데이터 로딩 위치       | 브라우저        | 서버                  |
+| onFocus Revalidation   | o               | x                     |
+| interval Revalidation  | 원하는 길이     | 30초 / 5분            |
+| reconnect Revalidation | o               | x                     |
+| Navigation 시 유지     | 레이아웃일 때만 | 항상                  |
+
+전반적으로 보면 useSWR은 변화가 자주 일어나는 컴포넌트에 쓰면 더 좋고 (주식 가격, 실시간 온라인 유튜버 등) Router Cache는 자주 안바뀔 때 쓰면 좋을 것 같다(넷플릭스 영상 목록 등).
+
+<br/>
+
+## **<5> 브라우저에서의 fetch**
+
+브라우저 fetch는 기본적으로 cache 옵션이 켜져있다! 그런데 위에서 봤던 useSWR이나 Router Cache와 다르게 <span class="text-red">서버 응답 헤더에 의존한다</span>.
+브라우저의 fetch 또한 머리 아플 정도로 여러가지 변수가 있다.
+브라우저의 fetch는 응답 헤더에 있는 Cache-Control, Age, Expires, Last-Modified, ETag 등을 사용한다고 한다.
+그리고 아래의 설명 또한 브라우저 마다 조금씩 다를 수 있다.
+
+<br/>
+
+```bash
+HTTP/1.1 200 OK
+Content-Type: text/html
+Content-Length: 1024
+Date: Tue, 22 Feb 2022 22:22:22 GMT
+Cache-Control: max-age=604800
+Age: 86400
+…
+
+```
+
+<br/>
+
+위 응답의 경우 604800-86400=518400이 앞으로 브라우저가 캐싱할 시간이라고 한다.
+
+대부분의 브라우저들은 아래와 같은 로직을 따르는 것으로 보인다:
+
+<1> 사용자가 브라우저에서 실행한 fetch에 옵션이 달려있을 시,
+
+- default: 2번으로 감.
+- no-store: 캐싱을 아예 사용하지 않음. 무조건 서버에 새로 요청.
+- no-cache: 데이터를 사용할 때 마다 낡았는지 체크하고 캐시된 값 업데이트/유지 후 리턴
+
+  - no-cache라는 용어 보다 refresh-cache같은 용어가 훨씬 잘 어울리는 것 같다. cache는 사용하되, 낡았는지 매번 체크한다.
+    그럼 매번 어차피 body 다 가져오면 cache 하나마나 리소스 오고가는 양은 똑같은 것 아님? 아니라고 한다. no-cache로 서버에 요청할 때에는, If-Modified-Since 혹은
+    Etag를 같이 보내고, 그걸 서버에서 체크한 뒤에 fresh하면 304 Not Modified와 함께 빈 body를, stale하면 200 OK와 함께 데이터가 있는 body를 보낸다고 한다.
+
+- force-cache: 낡은 데이터든 새로운 데이터든 상관안하고 캐시에 있으면 무조건 반환, 아예 없으면 서버에 요청.
+- only-if-cached: 낡은 데이터든 새로운 데이터든 상관안하고 캐시에 있으면 무조건 반환, 아예 없으면 504 Gateway timeout 에러 반환.
+
+<2> 사용자가 지정한 옵션이 없을 시, 서버 응답 헤더에 따라서 브라우저가 결정
+
+- 위에서 본 예시처럼 Cache-Control에 max-age와 Age가 있을 시 뺄셈을 해서 캐싱 시간을 구할 수 있다.
+- Cache-Control에는 다양한 옵션 (max-age, no-cache, no-store, no-transform, 등 10개 이상)이 있을 수 있다.
+- 데이터가 stale한지 fresh한지는 브라우저 마다, 상황에 따라 조금씩 달라질 수 있다. => 모든 브라우저에서 통일된 정확한 best practice가 없는 듯 했다.
+
+사용자가 instruction을 주었을 시에는 어느정도 컨트롤할 수 있지만, 이마저도 서버에서 리턴해주는 헤더 값에 따라 좌지우지되며
+unexpected behavior이 많이 일어날 수 있을 것 같은 느낌이었다. fetch 쿼리를 브라우저에서 사용할 때 서버에서 어떤 헤더가 날아오고 어떻게 반응하는지 한 번씩 테스팅 해보는 것이 좋을 것 같다.
+또한, <span class="text-orange">axios의 경우 브라우저에서 사용 시 무조건 `Cache-Control: default`라고 하니 주의하자.</span>
+
+참고자료:
+
+- [MDN HTTP Caching](https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching#fresh_and_stale_based_on_age)
+- [MDN Reqeust: cache property](https://developer.mozilla.org/en-US/docs/Web/API/Request/cache)
 
 <br/>
 
