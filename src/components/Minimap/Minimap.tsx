@@ -40,13 +40,18 @@ const Minimap = ({
       const curr = elem.scrollTop;
       const total = elem.scrollHeight;
       const view = elem.clientHeight;
-      minimapBoxRef.current.style.height = (view / total) * 100 + "%";
+      // minimapBox Height
+      const minimapBoxHeight = (view / total) * view;
+      minimapBoxRef.current.style.height = minimapBoxHeight + "px";
+
+      // minimap Box scrollTop
       const actualMinimapContHeight =
-        minimapContRef.current.scrollHeight + 24 + 36;
+        minimapContRef.current.scrollHeight + 36 + 24 + 22.41 / 6.67; // tab size + statusbar + h2 top margin from markdown
       minimapBoxRef.current.style.top =
         (curr / total) * actualMinimapContHeight + "px";
 
       // update MinimapContainer's scrollTop
+      // from minimapContainer's perspective, clientHeight is the scroll thumb height.
       const maxScrollable =
         actualMinimapContHeight - minimapContRef.current.clientHeight;
 
@@ -62,7 +67,7 @@ const Minimap = ({
     const updateOverlayHeight = () => {
       if (!overlayRef.current || !minimapContRef.current) return;
       overlayRef.current.style.height =
-        minimapContRef.current.clientHeight + "px";
+        minimapContRef.current.scrollHeight + "px";
     };
 
     /**
@@ -140,7 +145,6 @@ const Minimap = ({
       <MinimapMarkdownContent
         onClick={targetScroll}
         className="markdown-content"
-        style={{ userSelect: "none", padding: "0px 30px" }}
         dangerouslySetInnerHTML={{ __html: html }}
       />
     </MinimapContainer>
@@ -153,7 +157,7 @@ const MinimapContainer = styled.div`
   position: fixed;
   top: 36px;
   right: 40px;
-  max-height: calc(100vh - 36px - 24px);
+  max-height: calc(100vh - 24px - 36px);
 
   overflow: auto; /* Enable scrolling */
   scrollbar-width: none; /* For Firefox */
@@ -189,4 +193,6 @@ const PreventClickOverlay = styled.div`
 
 const MinimapMarkdownContent = styled.div`
   zoom: 0.15;
+  user-select: none;
+  padding: 0px 30px;
 `;
