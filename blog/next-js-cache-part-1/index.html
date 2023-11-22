@@ -268,7 +268,7 @@ Age: 86400
 <p>no-cache: 데이터를 사용할 때 마다 낡았는지 체크하고 캐시된 값 업데이트/유지 후 리턴</p>
 <ul>
 <li>no-cache라는 용어 보다 refresh-cache같은 용어가 훨씬 잘 어울리는 것 같다. cache는 사용하되, 낡았는지 매번 체크한다.
-그럼 매번 어차피 body 다 가져오면 cache 하나마나 리소스 오고가는 양은 똑같은 것 아님? 아니라고 한다. no-cache로 서버에 요청할 때에는, If-Modified-Since 혹은
+그럼 매번 어차피 body 다 가져오면 cache 하나 마나 리소스 오고가는 양은 똑같은 것 아님? 아니라고 한다. no-cache로 서버에 요청할 때에는, If-Modified-Since 혹은
 Etag를 같이 보내고, 그걸 서버에서 체크한 뒤에 fresh하면 304 Not Modified와 함께 빈 body를, stale하면 200 OK와 함께 데이터가 있는 body를 보낸다고 한다.</li>
 </ul>
 </li>
@@ -615,7 +615,7 @@ Age: 86400
 <p>no-cache: 데이터를 사용할 때 마다 낡았는지 체크하고 캐시된 값 업데이트/유지 후 리턴</p>
 <ul>
 <li>no-cache라는 용어 보다 refresh-cache같은 용어가 훨씬 잘 어울리는 것 같다. cache는 사용하되, 낡았는지 매번 체크한다.
-그럼 매번 어차피 body 다 가져오면 cache 하나마나 리소스 오고가는 양은 똑같은 것 아님? 아니라고 한다. no-cache로 서버에 요청할 때에는, If-Modified-Since 혹은
+그럼 매번 어차피 body 다 가져오면 cache 하나 마나 리소스 오고가는 양은 똑같은 것 아님? 아니라고 한다. no-cache로 서버에 요청할 때에는, If-Modified-Since 혹은
 Etag를 같이 보내고, 그걸 서버에서 체크한 뒤에 fresh하면 304 Not Modified와 함께 빈 body를, stale하면 200 OK와 함께 데이터가 있는 body를 보낸다고 한다.</li>
 </ul>
 </li>
