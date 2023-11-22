@@ -5,9 +5,9 @@ title: "Next js 13에서 추가된 캐싱 기능들을 정리해보자 [1편]"
 subtitle: "Next js 13에서 추가된 캐싱 기능들을 정리해보자 [1편]"
 ---
 
-## **Next js 13에서 추가된 캐싱 기능들을 정리해보자 \[1편\] - WIP**
+## **Next js 13에서 추가된 캐싱 기능들을 정리해보자 \[1편\]**
 
-<p class="text-time">최초 업로드 2023-11-21 / 마지막 수정 2023-11-21</p>
+<p class="text-time">최초 업로드 2023-11-21 / 마지막 수정 2023-11-22</p>
 
 <br/>
 
@@ -55,7 +55,7 @@ Next.js로 개발하는 사람들은 상당수가 풀스택에 가까운 프론�
 <br/>
 
 <div class="image-container">
-  <img class="md-image" src="/images/caching-overview-fixed.png" alt="next_js_caching_flow"/>
+  <img class="md-image" src="/images/caching-overview-fixed.jpg" alt="next_js_caching_flow"/>
   <sub class>그림 2. 실제로 고려해야되는 캐싱들</a></sub>
 </div>
 
@@ -127,7 +127,7 @@ export async function GET() {
 // 서버에서 api를 호출 후 렌더링!
 export default async function FromServer() {
   const data = await fetch("http://localhost:3000/api/getTime", {
-    cache: "no-store", // fetch에 대한 설명은 다음 챕터에서 보고, 일단은 넘어가자.
+    cache: "no-store", // fetch에 대한 설명은 3편에서 보고, 일단은 넘어가자.
   });
   const { timestamp } = await data.json();
   return <div>{timestamp}</div>;
@@ -142,7 +142,7 @@ export default function FromClient() {
   useEffect(() => {
     const getData = async () => {
       const data = await fetch("http://localhost:3000/api/getTime", {
-        cache: "no-store", // fetch에 대한 설명은 다음 챕터에서 보고, 일단은 넘어가자.
+        cache: "no-store", // fetch에 대한 설명은 3편에서 보고, 일단은 넘어가자.
       });
       const { timestamp } = await data.json();
       setTimestamp(timestamp);
@@ -189,6 +189,8 @@ export default function Home() {
 
 > <span class="text-grey">참고사항 2: 빌드를 하고 싶을 시 위 코드로는 circular dependency(빌드하면서 서버 컴포넌트에서 프로젝트 내부 api를 스스로 호출하고 있음)가 존재해서 빌드가 안된다. 그래서 timestamp를 리턴해주는 node 서버를 따로 열어서 빌드해주어야 한다. 아래와 같이 node서버를 열면 http://localhost:8001/ 엔드포인트로 시간정보를 받을 수 있다. 서버 컴포넌트의 엔드포인트를 8001로 수정하고 빌드해보자. 여기서 또 클라이언트는 CORS 때문에 8001쓰면 안되고 기존 엔드포인트(http://localhost:3000/api/getDate) 써야된다!!!</span>
 
+> <span class="text-grey">참고사항 3: 클라이언트 컴포넌트의 fetch는 브라우저 원래 기본 fetch이고, 서버 컴포넌트에서의 fetch는 Next.js가 직접 수정한 캐싱기능이 들어간 fetch이다. 지금은 모두 cache: no-store로 사용하고 3편에서 자세히 알아보자.</span>
+
 ```javascript
 // 참고용 node server
 const http = require("http");
@@ -211,184 +213,18 @@ server.listen(8001, () => {
 
 <br/>
 
-## **<4> Fetch의 정체**
+## **<4> useSWR과의 관계**
 
-브라우저에서의 fetch
+useSWR은 브라우저에서 API 결과 데이터를 저장하고 특정 조건에 따라서 다시 데이터를 가져오는 형식이다. Router Cache는 서버에서 가져온 RSC Payload를 캐싱하는 것이기 떄문에
+useSWR과 Router Cache가 엮일 수가 없다. useSWR은 API 요청의 결과값을 저장하지만, Router Cache는 리액트 렌더링에 필요한 컴포넌트 자료를 캐싱하는 것이다. 둘은 서로 거의 간섭이 없다고 봐도될 것 같다.
 
-1. 기본 브라우저 fetch
+<br/>
 
-서버에서의 fetch
+#### 마치며
 
-1. node.js의 fetch
+위에서 fetch에 대한 설명이 부족한 것은 3편에서 다뤄질 예정이다.
 
-2. react.js의 fetch
+업로드 예정:
 
-3. next.js의 fetch
-
-브라우저에서의 fetch
-
-1. 기본 브라우저 fetch
-
-서버에서의 fetch
-
-1. node.js의 fetch
-
-2. react.js의 fetch
-
-3. next.js의 fetch
-
-브라우저에서의 fetch
-
-1. 기본 브라우저 fetch
-
-서버에서의 fetch
-
-1. node.js의 fetch
-
-2. react.js의 fetch
-
-3. next.js의 fetch
-
-브라우저에서의 fetch
-
-1. 기본 브라우저 fetch
-
-서버에서의 fetch
-
-1. node.js의 fetch
-
-2. react.js의 fetch
-
-3. next.js의 fetch
-
-브라우저에서의 fetch
-
-1. 기본 브라우저 fetch
-
-서버에서의 fetch
-
-1. node.js의 fetch
-
-2. react.js의 fetch
-
-3. next.js의 fetch
-
-브라우저에서의 fetch
-
-1. 기본 브라우저 fetch
-
-서버에서의 fetch
-
-1. node.js의 fetch
-
-2. react.js의 fetch
-
-3. next.js의 fetch
-
-브라우저에서의 fetch
-
-1. 기본 브라우저 fetch
-
-서버에서의 fetch
-
-1. node.js의 fetch
-
-2. react.js의 fetch
-
-3. next.js의 fetch
-
-브라우저에서의 fetch
-
-1. 기본 브라우저 fetch
-
-서버에서의 fetch
-
-1. node.js의 fetch
-
-2. react.js의 fetch
-
-3. next.js의 fetch
-
-브라우저에서의 fetch
-
-1. 기본 브라우저 fetch
-
-서버에서의 fetch
-
-1. node.js의 fetch
-
-2. react.js의 fetch
-
-3. next.js의 fetch
-
-브라우저에서의 fetch
-
-1. 기본 브라우저 fetch
-
-서버에서의 fetch
-
-1. node.js의 fetch
-
-2. react.js의 fetch
-
-3. next.js의 fetch
-
-브라우저에서의 fetch
-
-1. 기본 브라우저 fetch
-
-서버에서의 fetch
-
-1. node.js의 fetch
-
-2. react.js의 fetch
-
-3. next.js의 fetch
-
-브라우저에서의 fetch
-
-1. 기본 브라우저 fetch
-
-서버에서의 fetch
-
-1. node.js의 fetch
-
-2. react.js의 fetch
-
-3. next.js의 fetch
-
-브라우저에서의 fetch
-
-1. 기본 브라우저 fetch
-
-서버에서의 fetch
-
-1. node.js의 fetch
-
-2. react.js의 fetch
-
-3. next.js의 fetch
-
-브라우저에서의 fetch
-
-1. 기본 브라우저 fetch
-
-서버에서의 fetch
-
-1. node.js의 fetch
-
-2. react.js의 fetch
-
-3. next.js의 fetch
-
-브라우저에서의 fetch
-
-1. 기본 브라우저 fetch
-
-서버에서의 fetch
-
-1. node.js의 fetch
-
-2. react.js의 fetch
-
-3. next.js의 fetch
+- 2편 - Full Route Cache
+- 3편 - Request Memoization & Data Cache (feat. fetch)

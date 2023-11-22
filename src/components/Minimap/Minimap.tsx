@@ -41,7 +41,6 @@ const Minimap = ({
       const total = elem.scrollHeight;
       const view = elem.clientHeight;
       // minimapBox Height
-      const minimapBoxHeight = (view / total) * view;
       minimapBoxRef.current.style.height = (view / total) * 100 + "%";
 
       // minimap Box scrollTop
