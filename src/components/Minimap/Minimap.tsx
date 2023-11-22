@@ -45,7 +45,11 @@ const Minimap = ({
       minimapBoxRef.current.style.height = (view / total) * 100 + "%";
 
       // minimap Box scrollTop
-      const actualMinimapContHeight = minimapContRef.current.scrollHeight; // legacy: tab size + statusbar + h2 top margin from markdown
+      const actualMinimapContHeight =
+        minimapContRef.current.scrollHeight >
+        minimapContRef.current.clientHeight
+          ? minimapContRef.current.scrollHeight + 36 + 24 + 22.41 / 6.67 // tab size + statusbar + h2 top margin from markdown
+          : minimapContRef.current.scrollHeight;
       minimapBoxRef.current.style.top =
         (curr / total) * actualMinimapContHeight + "px";
 
@@ -134,15 +138,27 @@ const Minimap = ({
    * PART 3: handle click minimap target scroll
    */
   const targetScroll = (e: React.MouseEvent<HTMLDivElement>) => {
-    console.log(e.pageX, e.screenX, e.clientX);
+    if (!contentRef.current || !minimapContRef.current) return;
+
+    // Get the Y position of the click relative to the minimap
+    const minimapRect = minimapContRef.current.getBoundingClientRect();
+    const clickYRelativeToMinimap = e.clientY - minimapRect.top;
+
+    // Calculate the ratio
+    const scrollRatio = clickYRelativeToMinimap / minimapRect.height;
+
+    // Apply this ratio to the main content's scrollable height
+    const targetScrollTop =
+      scrollRatio *
+      (contentRef.current.scrollHeight - contentRef.current.clientHeight);
+    contentRef.current.scrollTop = targetScrollTop;
   };
 
   return (
     <MinimapContainer data-nosnippet ref={minimapContRef}>
       <MinimapBox onMouseDown={handleMouseDown} ref={minimapBoxRef} />
-      <PreventClickOverlay ref={overlayRef} />
+      <PreventClickOverlay ref={overlayRef} onClick={targetScroll} />
       <MinimapMarkdownContent
-        onClick={targetScroll}
         className="markdown-content"
         dangerouslySetInnerHTML={{ __html: html }}
       />
@@ -180,7 +196,7 @@ const MinimapBox = styled.div`
   position: absolute;
   right: 0;
   top: 0;
-  z-index: 10;
+  z-index: 11;
 `;
 
 const PreventClickOverlay = styled.div`
@@ -188,6 +204,7 @@ const PreventClickOverlay = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(255, 255, 255, 0);
+  z-index: 10;
 `;
 
 const MinimapMarkdownContent = styled.div`
