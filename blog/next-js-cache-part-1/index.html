@@ -169,7 +169,7 @@ export default function Home() {
 <p><span class="text-grey">참고사항 2: 빌드를 하고 싶을 시 위 코드로는 circular dependency(빌드하면서 서버 컴포넌트에서 프로젝트 내부 api를 스스로 호출하고 있음)가 존재해서 빌드가 안된다. 그래서 timestamp를 리턴해주는 node 서버를 따로 열어서 빌드해주어야 한다. 아래와 같이 node서버를 열면 <a href="http://localhost:8001/">http://localhost:8001/</a> 엔드포인트로 시간정보를 받을 수 있다. 서버 컴포넌트의 엔드포인트를 8001로 수정하고 빌드해보자. 여기서 또 클라이언트는 CORS 때문에 8001쓰면 안되고 기존 엔드포인트(<a href="http://localhost:3000/api/getDate">http://localhost:3000/api/getDate</a>) 써야된다!!!</span></p>
 </blockquote>
 <blockquote>
-<p><span class="text-grey">참고사항 3: 클라이언트 컴포넌트의 fetch는 브라우저 원래 기본 fetch이고, 서버 컴포넌트에서의 fetch는 Next.js가 직접 수정한 캐싱기능이 들어간 fetch이다. 지금은 모두 cache: no-store로 사용하고 3편에서 자세히 알아보자.</span></p>
+<p><span class="text-grey">참고사항 3: 클라이언트 컴포넌트의 fetch는 브라우저 원래의 fetch이고, 서버 컴포넌트에서의 fetch는 Next.js가 직접 수정한 캐싱기능이 들어간 fetch이다. 지금은 모두 cache: no-store로 사용하고 3편에서 자세히 알아보자.</span></p>
 </blockquote>
 <deckgo-highlight-code language="javascript" terminal="carbon" theme="monokai" line-numbers="true"  >
           <code slot="code">// 참고용 node server
@@ -193,7 +193,10 @@ server.listen(8001, () =&gt; {
 <br/>
 <h2><strong>&#x3C;4> useSWR과의 관계</strong></h2>
 <p>useSWR은 브라우저에서 API 결과 데이터를 저장하고 특정 조건에 따라서 다시 데이터를 가져오는 형식이다. Router Cache는 서버에서 가져온 RSC Payload를 캐싱하는 것이기 떄문에
-useSWR과 Router Cache가 엮일 수가 없다. useSWR은 API 요청의 결과값을 저장하지만, Router Cache는 리액트 렌더링에 필요한 컴포넌트 자료를 캐싱하는 것이다. 둘은 서로 거의 간섭이 없다고 봐도될 것 같다.</p>
+useSWR과 Router Cache가 엮일 수가 없다. useSWR은 API 요청의 결과값을 저장하지만, Router Cache는 리액트 렌더링에 필요한 컴포넌트 자료를 캐싱하는 것이다. 둘은 디버깅 시에는 서로 거의 간섭이 없다고 봐도될 것 같다.</p>
+<p>VHUB에서 Next.js와 useSWR을 같이 사용해보았었는데, useSWR은 주로 Layout 컴포넌트에 넣어서 페이지 이동 시 중복되는 쿼리를 계속 갖고있게하는 용도로 사용했다. 만약 Router Cache를 사용하고 싶다면
+useSWR을 사용하는 클라이언트 컴포넌트로 된 Layout 대신 서버 컴포넌트로 된 Layout을 사용하면 될 것 같다. 이런 면에서는 서로 대체제가 될 수 있다고 본다.</p>
+<h2></h2>
 <br/>
 <h4>마치며</h4>
 <p>위에서 fetch에 대한 설명이 부족한 것은 3편에서 다뤄질 예정이다.</p>
@@ -372,7 +375,7 @@ export default function Home() {
 <p><span class="text-grey">참고사항 2: 빌드를 하고 싶을 시 위 코드로는 circular dependency(빌드하면서 서버 컴포넌트에서 프로젝트 내부 api를 스스로 호출하고 있음)가 존재해서 빌드가 안된다. 그래서 timestamp를 리턴해주는 node 서버를 따로 열어서 빌드해주어야 한다. 아래와 같이 node서버를 열면 <a href="http://localhost:8001/">http://localhost:8001/</a> 엔드포인트로 시간정보를 받을 수 있다. 서버 컴포넌트의 엔드포인트를 8001로 수정하고 빌드해보자. 여기서 또 클라이언트는 CORS 때문에 8001쓰면 안되고 기존 엔드포인트(<a href="http://localhost:3000/api/getDate">http://localhost:3000/api/getDate</a>) 써야된다!!!</span></p>
 </blockquote>
 <blockquote>
-<p><span class="text-grey">참고사항 3: 클라이언트 컴포넌트의 fetch는 브라우저 원래 기본 fetch이고, 서버 컴포넌트에서의 fetch는 Next.js가 직접 수정한 캐싱기능이 들어간 fetch이다. 지금은 모두 cache: no-store로 사용하고 3편에서 자세히 알아보자.</span></p>
+<p><span class="text-grey">참고사항 3: 클라이언트 컴포넌트의 fetch는 브라우저 원래의 fetch이고, 서버 컴포넌트에서의 fetch는 Next.js가 직접 수정한 캐싱기능이 들어간 fetch이다. 지금은 모두 cache: no-store로 사용하고 3편에서 자세히 알아보자.</span></p>
 </blockquote>
 <deckgo-highlight-code language="javascript" terminal="carbon" theme="monokai" line-numbers="true"  >
           <code slot="code">// 참고용 node server
@@ -396,7 +399,10 @@ server.listen(8001, () =&gt; {
 <br/>
 <h2><strong>&#x3C;4> useSWR과의 관계</strong></h2>
 <p>useSWR은 브라우저에서 API 결과 데이터를 저장하고 특정 조건에 따라서 다시 데이터를 가져오는 형식이다. Router Cache는 서버에서 가져온 RSC Payload를 캐싱하는 것이기 떄문에
-useSWR과 Router Cache가 엮일 수가 없다. useSWR은 API 요청의 결과값을 저장하지만, Router Cache는 리액트 렌더링에 필요한 컴포넌트 자료를 캐싱하는 것이다. 둘은 서로 거의 간섭이 없다고 봐도될 것 같다.</p>
+useSWR과 Router Cache가 엮일 수가 없다. useSWR은 API 요청의 결과값을 저장하지만, Router Cache는 리액트 렌더링에 필요한 컴포넌트 자료를 캐싱하는 것이다. 둘은 디버깅 시에는 서로 거의 간섭이 없다고 봐도될 것 같다.</p>
+<p>VHUB에서 Next.js와 useSWR을 같이 사용해보았었는데, useSWR은 주로 Layout 컴포넌트에 넣어서 페이지 이동 시 중복되는 쿼리를 계속 갖고있게하는 용도로 사용했다. 만약 Router Cache를 사용하고 싶다면
+useSWR을 사용하는 클라이언트 컴포넌트로 된 Layout 대신 서버 컴포넌트로 된 Layout을 사용하면 될 것 같다. 이런 면에서는 서로 대체제가 될 수 있다고 본다.</p>
+<h2></h2>
 <br/>
 <h4>마치며</h4>
 <p>위에서 fetch에 대한 설명이 부족한 것은 3편에서 다뤄질 예정이다.</p>
@@ -410,4 +416,4 @@ useSWR과 Router Cache가 엮일 수가 없다. useSWR은 API 요청의 결과�
           >
             window.___chunkMapping="{\"app\":[\"/app-1bccb436559567aeb2c8.js\"],\"component---src-pages-404-tsx\":[\"/component---src-pages-404-tsx-b12b6d6f8d3d31a356dd.js\"],\"component---src-pages-markdown-remark-frontmatter-slug-tsx\":[\"/component---src-pages-markdown-remark-frontmatter-slug-tsx-380b67b99ecf43419187.js\"]}";
           </script>
-        <script>window.___webpackCompilationHash="03f2e347c07b79dc306a";</script><script src="/webpack-runtime-fb33ceadec5d6093005e.js" async></script><script src="/framework-d5a6dbf82e59c48838fd.js" async></script><script src="/app-1bccb436559567aeb2c8.js" async></script><!-- slice-end id="_gatsby-scripts-1" --></body></html>
+        <script>window.___webpackCompilationHash="88ef4555e7b539ba9670";</script><script src="/webpack-runtime-fb33ceadec5d6093005e.js" async></script><script src="/framework-d5a6dbf82e59c48838fd.js" async></script><script src="/app-1bccb436559567aeb2c8.js" async></script><!-- slice-end id="_gatsby-scripts-1" --></body></html>
