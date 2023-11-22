@@ -42,11 +42,10 @@ const Minimap = ({
       const view = elem.clientHeight;
       // minimapBox Height
       const minimapBoxHeight = (view / total) * view;
-      minimapBoxRef.current.style.height = minimapBoxHeight + "px";
+      minimapBoxRef.current.style.height = (view / total) * 100 + "%";
 
       // minimap Box scrollTop
-      const actualMinimapContHeight =
-        minimapContRef.current.scrollHeight + 36 + 24 + 22.41 / 6.67; // tab size + statusbar + h2 top margin from markdown
+      const actualMinimapContHeight = minimapContRef.current.scrollHeight; // legacy: tab size + statusbar + h2 top margin from markdown
       minimapBoxRef.current.style.top =
         (curr / total) * actualMinimapContHeight + "px";
 
