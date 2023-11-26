@@ -70,6 +70,16 @@
   color: #b4b4b4;
 }
 
+.markdown-content img {
+  /* max-width: 1100px; */
+}
+
+/* .markdown-content .sub {
+  text-align: center;
+  width : 100%;
+  font-size: 16px;
+} */
+
 .markdown-content table {
   border-collapse: collapse; /* Ensures that the border is clean and joined */
 }

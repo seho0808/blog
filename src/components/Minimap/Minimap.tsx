@@ -28,6 +28,17 @@ const Minimap = ({
     if (!contentRef.current) return;
 
     /**
+     * overlay update happens only whenever updateMinimap happens.
+     */
+    let overlayTimer: ReturnType<typeof setInterval>;
+    const updateOverlayHeightWithDebounce = () => {
+      clearTimeout(overlayTimer);
+      overlayTimer = setTimeout(() => {
+        updateOverlayHeight();
+      }, 100); // debouncing with 0.1 second timeout
+    };
+
+    /**
      * update Minimap is triggered in four situations
      * 1. scrollListener: When markdown(ContentWrapper) is scrolled by the user
      * 2. When minimap-box is scrolled by the user => triggers markdown scroll so #1 is triggerd
@@ -55,6 +66,8 @@ const Minimap = ({
         actualMinimapContHeight - minimapContRef.current.clientHeight;
 
       minimapContRef.current.scrollTop = (curr / total) * maxScrollable;
+
+      updateOverlayHeightWithDebounce();
     };
 
     /**
@@ -67,7 +80,6 @@ const Minimap = ({
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => {
         updateMinimap();
-        updateOverlayHeight();
       }, 100); // debouncing with 0.1 second timeout
     });
     resizeObserver.observe(contentRef.current);
@@ -135,8 +147,6 @@ const Minimap = ({
    */
   const targetScroll = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!contentRef.current || !minimapContRef.current) return;
-
-    updateOverlayHeight();
 
     // Get the Y position of the click relative to the minimap
     const minimapRect = minimapContRef.current.getBoundingClientRect();
