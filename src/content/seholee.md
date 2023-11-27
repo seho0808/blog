@@ -163,3 +163,4 @@ SW 개발병 &nbsp;2022-01&#126;2023-07 <br/>
 
 - 정보처리기사 (2020년)
 - IBT TOEFL 108 점 - Reading 27, Listening 29, Speaking 29, Writing 23 (2020년)
+- AWS Certified Solutions Architect Associate (2020년)

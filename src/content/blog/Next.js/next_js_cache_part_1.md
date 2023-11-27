@@ -7,7 +7,7 @@ subtitle: "Next js 13에서 추가된 캐싱 기능들을 정리해보자 [1편]
 
 ## **Next js 13에서 추가된 캐싱 기능들을 정리해보자 \[1편\]**
 
-<p class="text-time">최초 업로드 2023-11-21 / 마지막 수정 2023-11-22</p>
+<p class="text-time">최초 업로드 2023-11-21 / 마지막 수정 2023-11-27</p>
 
 <br/>
 
@@ -230,6 +230,7 @@ useSWR과 Router Cache가 엮일 수가 없다. useSWR은 API 요청의 결과�
 
 |                        | useSWR          | Router Cache |
 | ---------------------- | --------------- | ------------ |
+| 저장하는 것            | https 응답      | RSC Payload  |
 | 데이터 로딩 위치       | 브라우저        | 서버         |
 | onFocus Revalidation   | o               | x            |
 | interval Revalidation  | 원하는 길이     | 30초 / 5분   |
@@ -293,6 +294,7 @@ unexpected behavior이 많이 일어날 수 있을 것 같은 느낌이었다. f
 
 |                        | useSWR          | Router Cache | browser fetch         |
 | ---------------------- | --------------- | ------------ | --------------------- |
+| 저장하는 것            | http 응답       | RSC Payload  | http 응답             |
 | 데이터 로딩 위치       | 브라우저        | 서버         | 브라우저              |
 | onFocus Revalidation   | o               | x            | x                     |
 | interval Revalidation  | 원하는 길이     | 30초 / 5분   | 서버 헤더에 따라 결정 |
