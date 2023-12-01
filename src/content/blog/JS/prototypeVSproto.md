@@ -1,7 +1,7 @@
 ---
 slug: "/blog/prototype-vs-proto"
 date: "2023-12-01"
-title: "prototype과 __proto__의 구조 시험"
+title: "prototype vs __proto__"
 subtitle: "__proto__는 상속느낌이고 prototype은 전수의 느낌이다."
 ---
 
@@ -16,7 +16,12 @@ JS는 모든 객체에서 `__proto__` 혹은 `Object.getPrototypeOf`로 `[[Proto
 - <span class="text-orange">함수의 `.prototype`는 언제나 `Function.prototype`을 반환</span>한다.
 
 고로, 어떤 함수 객체가 생성할 객체의 프로토타입 체인을 보고싶으면 `__proto__`가 아닌 `prototype`을 호출해야한다.
-아래 예시는 두 개의 차이점을 보기 위해 만들어보았다.
+
+자세히 생각해보면 자연스러운 흐름이다. 프로토타입 객체는 `constructor`와 다른 함수들을 가지고 있는 객체이다. `constructor`필드는 해당 프로토타입을
+기반으로 객체를 만들면 만들어지는 것을 보여주는 공장 라인과도 같다. 그렇다면 함수 객체의 프로토타입은 반드시 함수를 만드는 `constructor`을 가지고 있어야하며,
+이는 함수의 `prototype`과 `__proto__`가 다른 값으로 분리되는 것이 자연스럽다.
+
+아래 예시는 두 개의 차이점을 직접 보기 위해 만들어보았다.
 
 <br/>
 
