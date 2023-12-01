@@ -20,25 +20,6 @@ subtitle: "Next js 13에서 추가된 캐싱 기능들을 정리해보자 [1편]
 
 ## **<2> 개략적 흐름**
 
-<style>
-  .image-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-  }
-  .image-container img {
-    width: 100%;
-  }
-  @media (max-width :1050px) {
-    .image-container{
-      width: 100%;
-    }
-  }
-</style>
-
 <!-- ![temp](../../../../static/images/caching-overview.jpg)
 
 ![temp](/images/caching-overview.jpg) -->
