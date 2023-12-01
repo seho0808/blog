@@ -17,7 +17,7 @@ JS는 모든 객체에서 `__proto__` 혹은 `Object.getPrototypeOf`로 `[[Proto
 
 고로, 어떤 함수 객체가 생성할 객체의 프로토타입 체인을 보고싶으면 `__proto__`가 아닌 `prototype`을 호출해야한다.
 
-자세히 생각해보면 자연스러운 흐름이다. 프로토타입 객체는 `constructor`와 다른 함수들을 가지고 있는 객체이다. `constructor`필드는 해당 프로토타입을
+자세히 생각해보면 자연스러운 흐름이다. 보통 프로토타입 객체는 `constructor`를 가지고 있는 객체이다. `constructor`필드는 해당 프로토타입을
 기반으로 객체를 만들면 만들어지는 것을 보여주는 공장 라인과도 같다. 그렇다면 함수 객체의 프로토타입은 반드시 <span class="text-orange">함수를 만드는</span> `constructor`를 가지고 있어야하며,
 함수 객체의 `__proto__`가 `Function.prototype`이 되는 것이 매우 자연스럽다는 것을 보여준다. 함수에 `__proto__`만 있고 `prototype`이 없다면 함수 객체가 만들어내는 객체의 프로토타입 체인을
 확인할 길이 없으니, `prototype`이 존재하는 것 또한 자연스러워진다.
