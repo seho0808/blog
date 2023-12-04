@@ -11,7 +11,7 @@ subtitle: "Variable Environment"
 
 VariableEnvironment의 존재 이유는 무엇일까?
 
-ECMAScript의 Execution Context 부분을 2회독하였지만 명확하게 이해하기 어려웠다. 그래서 임우찬님의 [블로그](https://m.blog.naver.com/dlaxodud2388/222655214381)에서 Variable Environment의 존재 의의를 찾았는데, 이분이 말씀하신 작동 원리의 출처는 블로그 내에서는 불명확했다. 스택오버플로우를 찾던 중 [비슷한 글](https://stackoverflow.com/questions/69417158/how-will-the-lexical-environment-and-the-variable-environment-will-look-like-at)을 발견하여 두 개의 글을 합쳐서 정리해본다.
+ECMAScript의 Execution Context 부분을 2회독하였지만 관련 내용은 찾기가 힘들었다. 그래서 임우찬님의 [블로그](https://m.blog.naver.com/dlaxodud2388/222655214381)에서 Variable Environment의 존재 의의를 찾았는데, 이분이 말씀하신 작동 원리의 출처는 블로그 내에서는 불명확했다. 스택오버플로우를 찾던 중 [비슷한 글](https://stackoverflow.com/questions/69417158/how-will-the-lexical-environment-and-the-variable-environment-will-look-like-at)을 발견하여 두 개의 글을 합쳐서 정리해본다.
 
 <br/>
 
