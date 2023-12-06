@@ -7,13 +7,13 @@ subtitle: "__proto__는 상속느낌이고 prototype은 전수의 느낌이다."
 
 ## **prototype vs \_\_proto\_\_**
 
-<p class="text-time">최초 업로드 2023-12-01 / 마지막 수정 2023-12-01</p>
+<p class="text-time">최초 업로드 2023-12-01 / 마지막 수정 2023-12-06</p>
 
 JS는 모든 객체에서 `__proto__` 혹은 `Object.getPrototypeOf`로 `[[Prototype]]`내부 슬롯을 볼 수 있다.
 `__proto__`와는 사뭇 다른 `prototype`은 함수 객체에만 존재한다.
 
 - <span class="text-orange">함수의 `.prototype`는 본인이 `new`로 생성할 객체의 프로토타입을 반환</span>하고
-- <span class="text-orange">함수의 `.__proto__`는 언제나 `Function.prototype`을 반환</span>한다.
+- <span class="text-orange">함수의 `.__proto__`는 따로 설정해주지 않으면 언제나 `Function.prototype`을 반환</span>한다.
 
 고로, 어떤 함수 객체가 생성할 객체의 프로토타입 체인을 보고싶으면 `__proto__`가 아닌 `prototype`을 호출해야한다.
 
@@ -85,4 +85,12 @@ console.log(
 
 <br/>
 
-함수 객체의 `__proto__`는 언제나 `Function.prototype`을 가리키고 있다는 사실을 명심하자.
+함수 객체의 `__proto__`는 수동으로 설정해주지 않는 이상 언제나 `Function.prototype`을 가리키고 있다는 사실을 명심하자.
+
+#### **클래스의 경우**
+
+클래스의 경우 함수 객체이지만 `__proto__`가 상위 클래스를 가리킨다. 생성자 함수에서 위 코드 처럼 pseudo-classical inheritance를 하는 것과는 정반대로,
+클래스 함수 객체는 extend할 때 마다 상위 클래스 함수 객체를 가리키게된다. 그래서 상위 클래스의 스태틱 함수를 접근할 수 있다. 그래서 클래스가 생성하는 객체들끼리의
+프로토타입 체인과 클래스 자체의 프로토타입 체인, 이 두 가지 체이 존재한다.
+
+<span class="text-orange">클래스는 프로토타입 체인이 두 개이고, 생성자 함수로 만든 pseudo-classical inheritance는 프로토타입 체인이 하나이다.</span>
