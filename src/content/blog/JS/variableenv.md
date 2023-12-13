@@ -7,7 +7,7 @@ subtitle: "Variable Environment"
 
 ## **Variable Environment**
 
-<p class="text-time">최초 업로드 2023-12-03 / 마지막 수정 2023-12-03</p>
+<p class="text-time">최초 업로드 2023-12-03 / 마지막 수정 2023-12-13</p>
 
 VariableEnvironment의 존재 이유는 무엇일까?
 
@@ -37,7 +37,7 @@ function a() {
 위의 코드를 보면 블록 스코프는 여러개이고 함수 스코프는 단 한개만 있다. 우리가 이미 알다시피 콜 스택에 쌓이는 Execution Context는 함수 마다 한 개씩 존재하고
 Execution Context안에는 Lexical Environment 한 개와 Variable Environment 한 개가 존재한다. 여기서 문제는 블록 스코프가 여러 개 생겼을 때 블록 스코프마다
 Execution Context를 달아주어야하는가이다. JS는 그렇게 설계되어있지 않다고 한다. 함수 스코프 내부의 블록 스코프에는 Execution Context 없이 새로운 Lexical Environment가 생성되고, Outer Lexical
-Environment는 외부 블록 스코프를 호출한다고 한다. let과 const는 블록 스코프 단위이기 때문에 블록 스코프 마다 한 개씩 생성되는 Lexical Environment의 Record에서 관리하고, var은 함수 스코프 단위이기 때문에 함수 스코프 마다 한 개씩 생성되는 Variable Environment의 Record에서 관리한다고 한다.
+Environment는 외부 블록 스코프를 호출한다고 한다. let과 const는 블록 스코프 단위이기 때문에 블록 스코프 마다 한 개씩 생성되는 Lexical Environment의 Record에서 주로 관리하고, var은 함수 스코프 단위이기 때문에 함수 스코프 마다 한 개씩 생성되는 Variable Environment의 Record에서 주로 관리한다고 한다. (Lexical Environment에서 var 초기화도 된다는 내용들도 있어서 "주로"라고 표현했다. 내부에 복합적으로 돌아가는 로직들이 있는듯하다.)
 
 ECMAScript를 다 샅샅이 뒤지기 어렵고 한 번 읽는다고 이해되는 것이 아니기에, 꼬리를 무는 궁금증을 갖기 시작하면 답을 찾기 어려운 것을 깨달았다. 내부 로직에는 디테일이 많아서
 명쾌한 설명이 적고 스택오버플로우/블로그 포스트도 적은 것 같다.
