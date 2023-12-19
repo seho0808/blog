@@ -59,7 +59,7 @@ SW 개발병 &nbsp;2022-01&#126;2023-07 <br/>
 
 **스마일드래곤** &nbsp;<span class="text-grey">다수의 마케팅 플랫폼으로 연 매출 80억 이상을 달성한 회사</span> <br/>
 풀스택 개발자 &nbsp;2021-01&#126;2021-09 <br/>
-<span class="text-grey">Next.js 10, Maria DB</span> <br/>
+<span class="text-grey">Next.js 10, MariaDB</span> <br/>
 
 - 체험뷰 <a href="https://chvu.co.kr"><img class="link-icon" src="/link-variant.svg" alt="link"/></a> 4인 개발 총괄
 
@@ -150,7 +150,7 @@ SW 개발병 &nbsp;2022-01&#126;2023-07 <br/>
 
 - 학부 4학년 때 박사, 교수님들이 정립한 이론을 바탕으로 <span class="text-purple">직접</span> 지열 예측 머신러닝 모델을 구현/훈련
 - 지하 3km 지열 예측을 위해 기존의 물리 모델을 머신러닝으로 정확도 개선
-- 2023년 기준 <span class="text-pink">16회의 인용</span>을 받았습니다
+- 2023년 기준 <span class="text-pink">16회의 인용</span>
 
 **2016 IEEE 논문 기고 <a href="https://ieeexplore.ieee.org/document/7428573"><img class="link-icon" src="/icons/link-variant.svg" alt="link"/></a>**
 
