@@ -33,6 +33,7 @@ export default function Explorer({
         height: "calc(90vh)",
       }}
       maxWidth="40%"
+      minWidth="10%"
       handleClasses={{
         top: "pointer-events-none",
         bottom: "pointer-events-none",
