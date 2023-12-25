@@ -124,7 +124,14 @@ const Minimap = ({
     if (!contentRef.current) return;
 
     // Calculate new scroll position
-    contentRef.current.scrollTop += e.movementY * 6.5;
+    const minimapHeight = minimapContRef.current?.offsetHeight || 0;
+    const boxHeight = minimapBoxRef.current?.offsetHeight || 0;
+    const relativeMovement = e.movementY / (minimapHeight - boxHeight);
+    const customConstant = 0.9; // custom constant for speed management
+
+    // this makes it almost same speed for all markdown length, but not 100% same speed.
+    contentRef.current.scrollTop +=
+      customConstant * relativeMovement * contentRef.current.scrollHeight;
   };
 
   const handleMouseUp = () => {
