@@ -7,7 +7,7 @@ subtitle: "Next js 13에서 추가된 캐싱 기능들을 정리해보자 [1편]
 
 ## **Next js 13에서 추가된 캐싱 기능들을 정리해보자 \[1편\]**
 
-<p class="text-time">최초 업로드 2023-11-21 / 마지막 수정 2023-11-27</p>
+<p class="text-time">최초 업로드 2023-11-21 / 마지막 수정 2023-12-28</p>
 
 <br/>
 
@@ -115,7 +115,7 @@ export async function GET() {
 // 서버에서 api를 호출 후 렌더링!
 export default async function FromServer() {
   const data = await fetch("http://localhost:3000/api/getTime", {
-    cache: "no-store", // fetch에 대한 설명은 3편에서 보고, 일단은 넘어가자.
+    cache: "no-store", // fetch에 대한 설명은 2편에서 보고, 일단은 넘어가자.
   });
   const { timestamp } = await data.json();
   return <div>{timestamp}</div>;
@@ -130,7 +130,7 @@ export default function FromClient() {
   useEffect(() => {
     const getData = async () => {
       const data = await fetch("http://localhost:3000/api/getTime", {
-        cache: "no-store", // fetch에 대한 설명은 3편에서 보고, 일단은 넘어가자.
+        cache: "no-store", // fetch에 대한 설명은 2편에서 보고, 일단은 넘어가자.
       });
       const { timestamp } = await data.json();
       setTimestamp(timestamp);
@@ -177,7 +177,7 @@ export default function Home() {
 
 > <span class="text-grey">참고사항 2: 빌드를 하고 싶을 시 위 코드로는 circular dependency(빌드하면서 서버 컴포넌트에서 프로젝트 내부 api를 스스로 호출하고 있음)가 존재해서 빌드가 안된다. 그래서 timestamp를 리턴해주는 node 서버를 따로 열어서 빌드해주어야 한다. 아래와 같이 node서버를 열면 http://localhost:8001/ 엔드포인트로 시간정보를 받을 수 있다. 서버 컴포넌트의 엔드포인트를 8001로 수정하고 빌드해보자. 여기서 또 클라이언트는 CORS 때문에 8001쓰면 안되고 기존 엔드포인트(http://localhost:3000/api/getDate) 써야된다!!!</span>
 
-> <span class="text-grey">참고사항 3: 클라이언트 컴포넌트의 fetch는 브라우저 원래의 fetch이고, 서버 컴포넌트에서의 fetch는 Next.js가 직접 수정한 캐싱기능이 들어간 fetch이다. 지금은 모두 cache: no-store로 사용하고 3편에서 자세히 알아보자.</span>
+> <span class="text-grey">참고사항 3: 클라이언트 컴포넌트의 fetch는 브라우저 원래의 fetch이고, 서버 컴포넌트에서의 fetch는 Next.js가 직접 수정한 캐싱기능이 들어간 fetch이다. 지금은 모두 cache: no-store로 사용하고 2편에서 자세히 알아보자.</span>
 
 ```javascript
 // 참고용 node server
@@ -295,9 +295,8 @@ unexpected behavior이 많이 일어날 수 있을 것 같은 느낌이었다. f
 
 #### 마치며
 
-위에서 다뤄지지 않은 서버에서의 fetch는 3편에서 다뤄질 예정이다.
+위에서 다뤄지지 않은 서버에서의 fetch는 2편에서 다뤄질 예정이다.
 
 업로드 예정:
 
-- 2편 - Full Route Cache
-- 3편 - Request Memoization & Data Cache (feat. fetch)
+- 2편 - Full Route Cache & Request Memoization & Data Cache (feat. fetch)

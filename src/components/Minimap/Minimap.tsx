@@ -129,7 +129,7 @@ const Minimap = ({
     const relativeMovement = e.movementY / (minimapHeight - boxHeight);
     const customConstant = 0.9; // custom constant for speed management
 
-    // this makes it almost same speed for all markdown length, but not 100% same speed.
+    // this makes it almost same speed for all markdown length, but not 100%. still needs much more improvement.
     contentRef.current.scrollTop +=
       customConstant * relativeMovement * contentRef.current.scrollHeight;
   };
