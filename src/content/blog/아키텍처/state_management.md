@@ -40,7 +40,7 @@ subtitle: "다양한 상태 관리 라이브러리들을 비교해보자."
 | ----------- | ---------------------- | ----------- | ----------------------- | ------------------------------- |
 | Redux       | Subscription으로 파악  | 단방향      | -                       | Flux-inspired                   |
 | React Hooks | UI Tree 위치로 파악    | 단방향      | JSX (AST)               | Component-based                 |
-| Angular     | Observer로 파악 (RxJS) | 양방향      | Angular Templates (AST) | MVVM-inspired                   |
+| Angular     | Observer로 파악 (RxJS) | 단방향      | Angular Templates (AST) | MVVM-inspired                   |
 | Svelte      | Reactive Assignment    | 단방향      | Svelte Custom (AST)     | Reactive/Compiler               |
 | 취사선택    | Reactive Assignment    | 단방향      | 새로 제작 (AST)         | MVC-inspired or Component-based |
 
