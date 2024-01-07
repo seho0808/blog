@@ -1,6 +1,6 @@
 ---
 slug: "/blog/state-management"
-date: "2024-01-0"
+date: "2024-01-07"
 title: "[FE] 상태 관리에 대한 고찰"
 subtitle: "다양한 상태 관리 라이브러리들을 비교해보자."
 ---
