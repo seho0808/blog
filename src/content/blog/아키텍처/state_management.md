@@ -20,8 +20,8 @@ subtitle: "다양한 상태 관리 라이브러리들을 비교해보자."
 그래서 우리는 가수이름, 혹은 앨범 이름으로 부르는 것을 점차 선호하게 되었다. 이제는 앨범마다도 워낙 느낌이 달라서 각 앨범 고유의 영역들이 생겨났다.
 이것과 정말 비슷하게도, React, Redux, Mobx, Angular, Vue를 어디 하나의 아키텍처에 꼭 맞게 설명한다는 것이 어렵다. 그래서 내가 내린 결론은 아래와 같다.
 
-1. 상태관리를 직접 구현해야 한다면, 먼저 참고할 라이브러리들을 종이에 나열해본다.
-2. 라이브러리들 마다 고려할 점들을 표로 정리해서 각 라이브러리들 마다 특정 부분(Aspect라 칭하자)이 어떤식으로 구현되어있는지 조사한다.
+1. 상태관리를 직접 구현해야 한다면, 먼저 참고할 라이브러리/아키텍처들을 종이에 나열해본다.
+2. 라이브러리/아키텍처들 마다 고려할 점들을 표로 정리해서 각 라이브러리들 마다 특정 부분(Aspect라 칭하자)이 어떤식으로 구현되어있는지 조사한다.
 3. 각 Aspect 마다 한 개 선택 or 복수 선택 or 새로 구현을 체크한다.
 4. 그렇게 짜여진 새로운 레시피로 상태관리를 구현한다.
 
@@ -34,16 +34,14 @@ subtitle: "다양한 상태 관리 라이브러리들을 비교해보자."
 
 <br/>
 
-직접 상태 관리 라이브러리를 조합해서 만들어보자. 일단 그러려면 라이브러리 vs Aspect 형태의 표를 만들어야한다.
+직접 상태 관리 라이브러리를 조합해서 만들어보자. 일단 그러려면 Aspect 표를 만들어야한다.
 
-| Approach | Description |
-| -------- | ----------- |
-| MVC      | Title       |
-| MVVM     | Text        |
-| Flux     | Text        |
-| React    | Text        |
-| Redux    | Text        |
-| Mobx     | Text        |
-| Angular  | Text        |
-| Vue      | Text        |
-| Svelte   | Text        |
+| Approach    | 컴포넌트-상태 바인딩   | 데이터 흐름 | UI 문법                 | Architecture                    |
+| ----------- | ---------------------- | ----------- | ----------------------- | ------------------------------- |
+| Redux       | Subscription으로 파악  | 단방향      | -                       | Flux-inspired                   |
+| React Hooks | UI Tree 위치로 파악    | 단방향      | JSX (AST)               | Component-based                 |
+| Angular     | Observer로 파악 (RxJS) | 양방향      | Angular Templates (AST) | MVVM-inspired                   |
+| Svelte      | Reactive Assignment    | 단방향      | Svelte Custom (AST)     | Reactive/Compiler               |
+| 취사선택    | Reactive Assignment    | 단방향      | 새로 제작 (AST)         | MVC-inspired or Component-based |
+
+더 다양한 열들을 추가할 수 있지만, 현재로서는 떠오르는 것이 크게 없다.
