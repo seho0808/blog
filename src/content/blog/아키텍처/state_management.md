@@ -36,12 +36,12 @@ subtitle: "다양한 상태 관리 라이브러리들을 비교해보자."
 
 직접 상태 관리 라이브러리를 조합해서 만들어보자. 일단 그러려면 Aspect 표를 만들어야한다.
 
-| Approach    | 컴포넌트-상태 바인딩   | 데이터 흐름 | UI 문법                 | Architecture                    |
-| ----------- | ---------------------- | ----------- | ----------------------- | ------------------------------- |
-| Redux       | Subscription으로 파악  | 단방향      | -                       | Flux-inspired                   |
-| React Hooks | UI Tree 위치로 파악    | 단방향      | JSX (AST)               | Component-based                 |
-| Angular     | Observer로 파악 (RxJS) | 단방향      | Angular Templates (AST) | MVVM-inspired                   |
-| Svelte      | Reactive Assignment    | 단방향      | Svelte Custom (AST)     | Reactive/Compiler               |
-| 취사선택    | Reactive Assignment    | 단방향      | 새로 제작 (AST)         | MVC-inspired or Component-based |
+| Approach    | 컴포넌트-상태 바인딩     | 데이터 흐름 | UI 문법                 | Architecture                    |
+| ----------- | ------------------------ | ----------- | ----------------------- | ------------------------------- |
+| Redux       | Subscription으로 파악    | 단방향      | -                       | Flux-inspired                   |
+| React Hooks | UI Tree 위치로 파악      | 단방향      | JSX (AST)               | Component-based                 |
+| Angular     | Observable로 파악 (RxJS) | 단방향      | Angular Templates (AST) | MVVM-inspired                   |
+| Svelte      | Reactive Assignment      | 단방향      | Svelte Custom (AST)     | Reactive/Compiler               |
+| 취사선택    | Reactive Assignment      | 단방향      | 새로 제작 (AST)         | MVC-inspired or Component-based |
 
 더 다양한 열들을 추가할 수 있지만, 현재로서는 떠오르는 것이 크게 없다.
