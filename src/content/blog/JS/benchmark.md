@@ -11,7 +11,7 @@ subtitle: "JS 코드의 속도를 비교 테스팅해보자"
 
 innerHTML vs createElement 속도 비교가 궁금해서 테스팅해보았다.
 
-```html
+```js
 <html>
   <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
