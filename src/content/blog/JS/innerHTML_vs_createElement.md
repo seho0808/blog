@@ -1,15 +1,22 @@
 ---
 slug: "/blog/benchmark-js"
 date: "2024-02-12"
-title: "JS 벤치마킹"
-subtitle: "JS 코드의 속도를 비교 테스팅해보자"
+title: "innerHTML vs createElement 속도 벤치마킹"
+subtitle: "JS 코드의 속도를 비교 테스팅해보자 - innerHTML vs createElement"
 ---
 
-## **JS로 벤치마킹 해보기**
+## **innerHTML vs createElement 벤치마킹 해보기**
 
 <p class="text-time">최초 업로드 2023-02-12 / 마지막 수정 2023-02-12</p>
 
 innerHTML vs createElement 속도 비교가 궁금해서 테스팅해보았다.
+
+- 단 하나의 createElement는 단 한 줄의 innerHTML 보다 빠르다.
+- 4~5개의 createElement는 4~5줄의 innerHTML과 속도가 비슷하다.
+- 100줄의 createelement는 100줄의 innerHTML 보다 훨씬 느리다.
+
+결론: 속도 면에서는 innerHTML이 절대 뒤지는 편이 아니다. 대신 innerHTML을 한줄씩 계속 파싱하면 조금 느리긴하다. 하지만
+대량의 html 스트링을 한 번에 파싱할 때에는 createElement 보다 innerHTML이 월등히 좋다.
 
 ```js
 <html>
