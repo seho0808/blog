@@ -197,7 +197,7 @@ const RenderTree = ({
               onClick={() => handleFolderClick(d.dirname)}
             >
               <FileIcon
-                src={isOpen ? "/folder-open.svg" : "/folder.svg"}
+                src={isOpen ? "/icons/folder-open.svg" : "/icons/folder.svg"}
                 depth={depth} // file hierarchy indent
               />
               {d.dirname} ({Object.keys(d.tree).length})
