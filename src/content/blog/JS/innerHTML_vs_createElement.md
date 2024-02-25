@@ -1,5 +1,5 @@
 ---
-slug: "/blog/benchmark-js"
+slug: "/blog/innerHTML-vs-createElement"
 date: "2024-02-12"
 title: "innerHTML vs createElement 속도"
 subtitle: "JS 코드의 속도를 비교 테스팅해보자 - innerHTML vs createElement"
