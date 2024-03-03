@@ -159,7 +159,7 @@ SW 개발병 &nbsp;2022-01&#126;2023-07 <br/>
 <br/>
 <br/>
 
-<h2 class="subtitle"> &lt;/&gt; 기타 경력 </h2>
+<h2 class="subtitle"> &lt;/&gt; 자격증 및 시험 </h2>
 
 - 정보처리기사 (2020년)
 - IBT TOEFL 108 점 - Reading 27, Listening 29, Speaking 29, Writing 23 (2020년)
