@@ -61,7 +61,7 @@ SW 개발병 &nbsp;2022-01&#126;2023-07 <br/>
 풀스택 개발자 &nbsp;2021-01&#126;2021-09 <br/>
 <span class="text-grey">Next.js 10, MariaDB</span> <br/>
 
-- 체험뷰 <a href="https://chvu.co.kr"><img class="link-icon" src="/link-variant.svg" alt="link"/></a> 4인 개발 총괄
+- 체험뷰 <a href="https://chvu.co.kr"><img class="link-icon" src="/icons/link-variant.svg" alt="link"/></a> 4인 개발 총괄
 
   - PHP로 개발된 기존 웹사이트를 재개발하여 <span class="text-red">5초가 넘게 걸리던 초기 렌더링을</span> <span class="text-green">0.2~0.5초로 감소</span> (FCP 기준)
   - 2021년 배포한 상태에서 큰 업데이트 없이, 2023년 10월 기준 <span class="text-yellow">누적 5만명의 유저</span>와 <span class="text-orange">일일 수천명의 접속자</span>를 기록
@@ -146,11 +146,11 @@ SW 개발병 &nbsp;2022-01&#126;2023-07 <br/>
 
 <h2 class="subtitle"> &lt;/&gt; 출판 </h2>
 
-**2021 Geothermal Energy 논문 기고** <a href="https://geothermal-energy-journal.springeropen.com/articles/10.1186/s40517-021-00200-4"><img class="link-icon" src="/link-variant.svg" alt="link"/></a>
+**2021 Geothermal Energy 논문 기고** <a href="https://geothermal-energy-journal.springeropen.com/articles/10.1186/s40517-021-00200-4"><img class="link-icon" src="/icons/link-variant.svg" alt="link"/></a>
 
 - 학부 4학년 때 박사, 교수님들이 정립한 이론을 바탕으로 <span class="text-purple">직접</span> 지열 예측 머신러닝 모델을 구현/훈련
 - 지하 3km 지열 예측을 위해 기존의 물리 모델을 머신러닝으로 정확도 개선
-- 2023년 기준 <span class="text-pink">16회의 인용</span>
+- 2024년 3월 기준 <span class="text-pink">21회의 인용</span>
 
 **2016 IEEE 논문 기고 <a href="https://ieeexplore.ieee.org/document/7428573"><img class="link-icon" src="/icons/link-variant.svg" alt="link"/></a>**
 
