@@ -21,7 +21,7 @@ subtitle: "Home | Web Dev / Software Engineer Seho Lee"
 
 **카카오** &nbsp;<span class="text-grey">카카오 커머스기술팀</span> <br/>
 FE 인턴 &nbsp;2024-01&#126;2024-02 <br/>
-<span class="text-grey">Vanilla JS</span> <br/>
+<span class="text-grey">Vanilla JS, Typescript</span> <br/>
 
 - 페이지 빌더 개발 <br/>
 
@@ -72,7 +72,7 @@ SW 개발병 &nbsp;2022-01&#126;2023-07 <br/>
 
 **스마일드래곤** &nbsp;<span class="text-grey">다수의 마케팅 플랫폼으로 연 매출 80억 이상을 달성한 회사</span> <br/>
 풀스택 개발자 &nbsp;2021-01&#126;2021-09 <br/>
-<span class="text-grey">Next.js 10, MariaDB</span> <br/>
+<span class="text-grey">Next.js 10, MariaDB, Typescript</span> <br/>
 
 - 체험뷰 <a href="https://chvu.co.kr"><img class="link-icon" src="/icons/link-variant.svg" alt="link"/></a> 4인 개발 총괄
 
