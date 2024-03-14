@@ -150,10 +150,6 @@ SW 개발병 &nbsp;2022-01&#126;2023-07 <br/>
 - 부전공 - Computer Science, Mathematics, and Statistics
 - 학점 - 3.39/4.00
 
-**용인외고(외대부고)** &nbsp;2013-03&#126;2016-02 <br/>
-
-- 국제과정
-
 <br/>
 <br/>
 
