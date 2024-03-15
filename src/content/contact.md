@@ -5,4 +5,4 @@ title: "contact"
 subtitle: "Contact | Web Dev / Software Engineer Seho Lee's Website"
 ---
 
-Email: koolee33@gmail.com / seho0808@vt.edu
+Email: seho0808@vt.edu
