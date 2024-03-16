@@ -37,7 +37,7 @@ RAW가 비트맵 형식에 가까운 형식이다. 사진 촬영 시에 렌즈�
 소스를 열어보니 두 가지 옵션으로 압축한다.
 
 1. `maxWidthOrHeight`: 새로운 canvas를 생성하고 더 작은 width, height로 브라우저에게 그리도록 한 후 결과물 canvas를 다시 이미지로 변환한다.
-2. `maxSizeMB`: 흥미롭게도 `maxSizeMB`보다 작아질 때까지 루프로 이미지를 조금씩 퀄리티를 낮추는 형식으로 구현되어있다. width, height은 5%씩 줄일 수 있고, quality라는 인자를 통해서 또 매 루프 마다 얼마나 이미지 퀄리티가 줄어드는지 알 수 있다. 해당 라이브러리에서 jpg의 경우에는 `canvas.toDataURL(type, encoderOptions)`함수에서 [두 번째 인자가 quality관련](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL)이라 이것을 사용한다. png의 경우에는 [UPNG](https://github.com/photopea/UPNG.js/blob/f6e5f93da01094b1ffb3cef364abce4d9e758cbf/README.md)의 `cnum`파라미터를 사용해서 압축한다. cnum은 png에서 허용되는 색 범위를 조절해서 압축한다.
+2. `maxSizeMB`: 흥미롭게도 `maxSizeMB`보다 작아질 때까지 루프로 이미지를 조금씩 퀄리티를 낮추는 형식으로 구현되어있다. width, height은 5%씩 줄일 수 있고, quality라는 인자를 통해서 또 매 루프 마다 얼마나 이미지 퀄리티가 줄어드는지 알 수 있다. 해당 라이브러리에서 jpg와 webp의 경우에는 `canvas.toDataURL(type, encoderOptions)`함수에서 [두 번째 인자가 quality관련](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL)이라 이것을 사용한다. png의 경우에는 [UPNG](https://github.com/photopea/UPNG.js/blob/f6e5f93da01094b1ffb3cef364abce4d9e758cbf/README.md)의 `cnum`파라미터를 사용해서 압축한다. cnum은 png에서 허용되는 색 범위를 조절해서 압축한다.
 
 <br/>
 
@@ -131,9 +131,11 @@ export default async function compress(file, options, previousProgress = 0) {
 
 <span class="text-orange">결론 2: 어떤 문제가 생길 때 라이브러리 내부를 모르고 해결하는 것과 내부를 읽어보고 이해하는 것은 천지 이상의 차이임.</span>
 
+<span class="text-orange">결론 3: webp으로의 변환도 좋은 옵션이었을 것임. 사용시 jpg 보다 훨씬 더 많이 용량이 줄어듦. 다시 체험뷰 같은 사이트를 만든다면 jpg에서 webp로 변환 후 추가적인 압축이 필요하다면 browser-image-compression으로 추가 압축을 진행할 것이다.</span>
+
 <br/>
 
-아래 보다시피 png가 같은 용량대비 jpg 보다 퀄리티가 낮다. 그래픽 같은 사진은 괜찮은데 실사 사진이 많이 쓰이는 체험뷰는 jpg만으로 제한했어야했다.
+아래 보다시피 png가 같은 용량대비 jpg 보다 퀄리티가 낮다. 그래픽 같은 사진은 png도 괜찮은데 실사 사진이 많이 쓰이는 체험뷰는 jpg/webp만으로 제한했어야했다.
 
 <br/>
 
@@ -147,4 +149,9 @@ export default async function compress(file, options, previousProgress = 0) {
 <div class="image-container">
   <img class="md-image" src="/images/rock.png" alt="png rock"/>
   <sub class>그림 2. 돌멩이 사진의 png버전 198kb</sub>
+</div>
+
+<div class="image-container">
+  <img class="md-image" src="/images/rock.png" alt="webp rock"/>
+  <sub class>그림 3. 돌멩이 사진의 webp버전 84kb</sub>
 </div>
