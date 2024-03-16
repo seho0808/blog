@@ -116,7 +116,7 @@ export default async function compress(file, options, previousProgress = 0) {
 - jpg는 width 줄인 후에 quality라는 canvas.toDataURL()이라는 함수를 사용함.
 - png는 UPNG로 색 범위를 줄임.
 
-<span class="text-skyblue">가설: png의 경우 복잡한 사진이라면 압축이 많이 안예쁘게 나올 수 있음. jpg의 경우에는 대부분 괜찮을 것이라고 생각됨.</span>
+<span class="text-skyblue">가설: png의 경우 복잡한 사진이라면 압축이 많이 안 예쁘게 나올 수 있음. jpg의 경우에는 대부분 괜찮을 것이라고 생각됨.</span>
 
 직접 실험해보자.
 
@@ -133,7 +133,7 @@ export default async function compress(file, options, previousProgress = 0) {
 
 <br/>
 
-아래 보다시피 png가 같은 용량대비 jpg 보다 퀄리티가 낮다.
+아래 보다시피 png가 같은 용량대비 jpg 보다 퀄리티가 낮다. 그래픽 같은 사진은 괜찮은데 실사 사진이 많이 쓰이는 체험뷰는 jpg만으로 제한했어야했다.
 
 <br/>
 
