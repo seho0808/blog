@@ -113,8 +113,8 @@ export default async function compress(file, options, previousProgress = 0) {
 3년 전 체험뷰 개발 시 휴리스틱하게 어떤 이미지를 넣었을 때 어떤 정도의 용량이 나오는지 체크하고 browser-image-compression의 압축 파라미터 옵션들을 정해주었었다. 라이브러리를 열어보니 더 명확하게 무슨 일이 일어났는지 보인다.
 이제 왜 특정 이미지는 압축 시 다 깨져보였는지 자세히 생각할 수 있다. 체험뷰에서 허용하는 jpg와 png만 생각해보자.
 
-- jpg는 width 줄인 후에 quality라는 canvas.toDataURL()이라는 함수를 사용함.
-- png는 UPNG로 색 범위를 줄임.
+- jpg는 width 줄인 후에 canvas.toDataURL() 함수의 quality라는 인자를 사용함.
+- png는 UPNG의 cnum 인자로 색 범위를 줄임.
 
 <span class="text-skyblue">가설: png의 경우 복잡한 사진이라면 압축이 많이 안 예쁘게 나올 수 있음. jpg의 경우에는 대부분 괜찮을 것이라고 생각됨.</span>
 
