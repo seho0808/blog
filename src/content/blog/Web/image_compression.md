@@ -131,7 +131,7 @@ export default async function compress(file, options, previousProgress = 0) {
 
 <span class="text-orange">결론 2: 어떤 문제가 생길 때 라이브러리 내부를 모르고 해결하는 것과 내부를 읽어보고 이해하는 것은 천지 이상의 차이임.</span>
 
-<span class="text-orange">결론 3: webp으로의 변환도 좋은 옵션이었을 것임. 사용시 jpg 보다 훨씬 더 많이 용량이 줄어듦. 다시 체험뷰 같은 사이트를 만든다면 jpg에서 webp로 변환 후 추가적인 압축이 필요하다면 browser-image-compression으로 추가 압축을 진행할 것이다.</span>
+<span class="text-orange">결론 3: webp으로의 변환도 좋은 옵션이었을 것임. 사용시 jpg 보다 훨씬 더 많이 용량이 줄어듦. 다시 체험뷰 같은 사이트를 만든다면 png나 jpg를 webp로 변환 후 추가적인 압축이 필요하다면 browser-image-compression으로 추가 압축을 진행할 것이다.</span>
 
 <br/>
 
