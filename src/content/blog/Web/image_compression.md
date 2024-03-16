@@ -152,6 +152,6 @@ export default async function compress(file, options, previousProgress = 0) {
 </div>
 
 <div class="image-container">
-  <img class="md-image" src="/images/rock.png" alt="webp rock"/>
+  <img class="md-image" src="/images/rock.webp" alt="webp rock"/>
   <sub class>그림 3. 돌멩이 사진의 webp버전 84kb</sub>
 </div>
