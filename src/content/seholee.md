@@ -19,19 +19,6 @@ subtitle: "Home | Web Dev / Software Engineer Seho Lee"
 
 <h2 class="subtitle"> &lt;/&gt; 직무 경험 </h2>
 
-**카카오** &nbsp;<span class="text-grey">카카오 커머스기술팀</span> <br/>
-FE 인턴 &nbsp;2024-01&#126;2024-02 <br/>
-<span class="text-grey">Vanilla JS, Typescript</span> <br/>
-
-- 페이지 빌더 개발 <br/>
-
-  - 이커머스 페이지를 드래그 드랍으로 구성할 수 있는 <span class="text-pink">노코드 툴 제작 (바닐라 JS)</span>
-  - innerHTML, createElement, Web Component 등의 WebAPI를 비교분석하며 사용. <a href="/blog/inner-html-vs-create-element/"><img class="link-icon" src="/icons/link-variant.svg" alt="link"/></a>
-  - DOM 수동 조작, Diffing, Key 등 <span class="text-green">렌더링 최적화를 위해 여러 구조를 구현</span>해보고 장단점을 비교분석함.
-  - 유지보수의 편의를 위해 커밋과 PR 관리를 잘게 쪼개고 알맞은 단위로 정리하는 방법을 배움.
-
-<br/>
-
 **국방부** &nbsp;<span class="text-grey">대한민국 국방부</span> <br/>
 SW 개발병 &nbsp;2022-01&#126;2023-07 <br/>
 <span class="text-grey">전자정부프레임워크, Spring 3.0&#126;3.8, Cubrid, Tensorflow</span> <br/>
@@ -110,6 +97,22 @@ SW 개발병 &nbsp;2022-01&#126;2023-07 <br/>
 
 - 직장인 테마 MBTI 개발
   - 직장인을 테마로 한 MBTI 테스트를 기획 및 개발하여 <span class="text-yellow">일일 방문자 최고 2천명 기록</span>
+
+<br/>
+<br/>
+
+<h2 class="subtitle"> &lt;/&gt; 유관 경험 </h2>
+
+**카카오** &nbsp;<span class="text-grey">카카오 커머스기술팀</span> <br/>
+FE 인턴 &nbsp;2024-01&#126;2024-02 <br/>
+<span class="text-grey">Vanilla JS, Typescript</span> <br/>
+
+- 페이지 빌더 개발 <br/>
+
+  - 이커머스 페이지를 드래그 드랍으로 구성할 수 있는 <span class="text-pink">노코드 툴 제작 (바닐라 JS)</span>
+  - innerHTML, createElement, Web Component 등의 WebAPI를 비교분석하며 사용. <a href="/blog/inner-html-vs-create-element/"><img class="link-icon" src="/icons/link-variant.svg" alt="link"/></a>
+  - DOM 수동 조작, Diffing, Key 등 <span class="text-green">렌더링 최적화를 위해 여러 구조를 구현</span>해보고 장단점을 비교분석함.
+  - 유지보수의 편의를 위해 커밋과 PR 관리를 잘게 쪼개고 알맞은 단위로 정리하는 방법을 배움.
 
 <br/>
 <br/>
