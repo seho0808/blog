@@ -80,7 +80,7 @@ function setDroppableTranslatesLinear(
 
 첫 pointermove에서는 O(n)으로 해당 Droppable의 모든 자식들의 Translate이 적용된다. 쉽게 설명하자면 Done 목록에서 하나의 카드를 드래그 시작하면 나머지 Done 목록의 모든 자식들이 빠진 카드의 빈 공간 만큼 아래로 Translate되는 것이다. 이걸 적용하는 코드가 위에 내가 4.38ms로 하이라이트한 `getDroppableTranslatesLinear`이다. 그리고 이 함수는 위에서 소스 코드로도 설명했던 코드다. 문제는 보라색 점들이 무수히 찍혀있는 것들이다. `setAttribute`, `getBoundingClientRect`에 의해 트리거된 무수한 보라색 점들이 모두 레이아웃(리플로우)이다. 내가 해당 스크린샷을 찍을 때는 To-dos 목록에 34개의 카드를 넣어두었는데, 카드 수를 늘릴 수록 레이아웃 개수도 늘어나고 4.38ms도 더 큰 숫자가 된다.
 
-그래서 수많은 블로그들에서 읽은 "Layout Thrashing"이라는 것을 완화하기 위해 O(n)으로 모든 요소의 `getBoundingClientRect`를 먼저 읽은(dom read operation) 후 스타일들을 다시 처음부터 순회하며 적용(dom write operation)해주었다.
+그래서 수 많은 블로그들에서 읽은 "Layout Thrashing"이라는 것을 완화하기 위해 O(n)으로 모든 요소의 `getBoundingClientRect`를 먼저 읽은(dom read operation) 후 스타일들을 다시 처음부터 순회하며 적용(dom write operation)해주었다.
 
 <br/>
 
@@ -139,7 +139,7 @@ function setDroppableTranslatesLinear(
       c.setAttribute("style", styleString); // O(1) write 연산
     }
   });
-
+//...
 ```
 
 <br/>
