@@ -149,7 +149,7 @@ function setDroppableTranslatesLinear(
 <br/>
 
 ```ts
-//// 진짜로 무조건 개선되는 코드 (gyujae님의 블로그에서 가져왔습니다)
+//// 진짜로 무조건 개선되는 코드 (아래 링크 마다 똑같은 코드가 다 있습니다. 최초 원본은 web.dev 사이트인 것으로 추정됨.)
 function resizeAllParagraphs() {
   const box = document.getElementById("box");
   const paragraphs = document.querySelectorAll(".paragraph");
