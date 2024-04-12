@@ -11,7 +11,7 @@ subtitle: "드래그 드랍 pointer 이벤트 vs drag 이벤트"
 
 드래그 드랍을 mouse, pointer, drag 이벤트로 각각 구현해보고 나서 느낀점을 적으려고한다.
 
-mouse랑 pointer은 유사하기에 합쳐서 pointer로 부르겠다.
+mouse랑 pointer은 유사하기에 합쳐서 포인터로 부르겠다.
 
 <br/>
 
@@ -37,14 +37,14 @@ mouse랑 pointer은 유사하기에 합쳐서 pointer로 부르겠다.
 
 - 포인터의 경우
 
-  - pointermove마다 체크해주어야한다. => dom tree 크기에 따라 다르겠지만 좀 많은 오퍼레이션을 요할 수도 있겠다.
   - 마우스 위치에서 [elementsFromPoint](https://developer.mozilla.org/en-US/docs/Web/API/Document/elementsFromPoint)를 쓴 후 droppable을 찾기
+  - pointermove마다 체크해주어야한다. => dom tree 크기에 따라 다르겠지만 좀 많은 오퍼레이션을 요할 수도 있겠다.
 
 - 드래그의 경우
 
   - ondragenter과 ondragleave가 자동으로 잡아준다.
 
-이것도 드래그의 경우가 더 유리하지 않나라는 생각이 이제 든다... 나중에 드래그 이벤트로 만든 것을 드래그할 때 어떤 연산을 하는지 performance 체크를 해보아야겠다.
+이것도 드래그의 경우가 더 유리하지 않나라는 생각이 이제 든다... 포인터는 pointermove 마다 커서 아래에 있는 dom 요소 모두를 순회해야된다. 나중에 드래그 이벤트로 만든 것을 드래그할 때 어떤 연산을 하는지 performance 체크를 해보아야겠다.
 
 <br/>
 
@@ -54,6 +54,8 @@ mouse랑 pointer은 유사하기에 합쳐서 pointer로 부르겠다.
 - 드래그 이벤트는 브라우저 바깥으로도 드래그 할 수 있도 바깥에서의 드래그 드롭도 받을 수 있다.
 - 포인터는 모바일에서 세부적인 정보를 추가로 받아서 처리할 수 있다.
 - 드래그 이벤트는 핸들러 종류가 더 많은 대신 코드 정리가 조금은 더 편할 수도 있다. (enter leave 덕분에 droppable 변경 시 자동으로 함수 핸들러가 나뉘기에)
+
+<br/>
 
 ### **결론**
 
