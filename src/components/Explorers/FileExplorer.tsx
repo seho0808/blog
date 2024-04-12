@@ -164,6 +164,21 @@ const RenderTree = ({
     }
   }
 
+  files.sort((a, b) => {
+    if (a.title > b.title) {
+      return 1;
+    } else {
+      return -1;
+    }
+  });
+  dirs.sort((a, b) => {
+    if (a.dirname > b.dirname) {
+      return 1;
+    } else {
+      return -1;
+    }
+  });
+
   if (currSlug === "") currSlug = "/"; // exception for main page
   return (
     <Ul>
