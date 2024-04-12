@@ -176,6 +176,10 @@ function resizeAllParagraphs() {
 
 실용성으로만 치자면 reflow 총합이 8ms 언저리 이내로 일어나면 하나의 프레임 이내에 모든 것을 처리할 수 있을 것이다. 그리고 다른 비동기처리 함수들도 처리할 것을 생각하면 16.67ms에서 한 3ms 이상 정도의 오버헤드를 남겨두는 것은 필수적으로 필요해보인다.
 
+[react-beautiful-dnd](https://react-beautiful-dnd.netlify.app/iframe.html?id=board--simple)에서 performance 측정결과 reflow가 내 앱처럼 연속적으로 발생하지 않는다! ? ? ? ?
+
+조만간 지금 진행 중인 회사들의 면접이 끝나면 라이브러리 내부를 다시 파보는 시도를 해보아야겠다. (지난번에 했었는데 저 에어비엔비 라이브러리 복잡도가 장난이 아니었다.)
+
 <br/>
 
 참고자료:
