@@ -180,12 +180,12 @@ function resizeAllParagraphs() {
 
 참고자료:
 
-[What forces Layout Thrashing](https://gist.github.com/paulirish/5d52fb081b3570c81e3a)
+- [What forces Layout Thrashing](https://gist.github.com/paulirish/5d52fb081b3570c81e3a)
 
-[Avoid Layout Thrashing](https://web.dev/articles/avoid-large-complex-layouts-and-layout-thrashing)
+- [Avoid Layout Thrashing](https://web.dev/articles/avoid-large-complex-layouts-and-layout-thrashing)
 
-[cssTriggers list](https://csstriggers.com/)
+- [cssTriggers list](https://csstriggers.com/)
 
-[gyujae님의 블로그](https://velog.io/@nuo/%EC%9B%B9%ED%8E%98%EC%9D%B4%EC%A7%80-%EB%A0%8C%EB%8D%94%EB%A7%81-%EC%B5%9C%EC%A0%81%ED%99%94)
+- [gyujae님의 블로그](https://velog.io/@nuo/%EC%9B%B9%ED%8E%98%EC%9D%B4%EC%A7%80-%EB%A0%8C%EB%8D%94%EB%A7%81-%EC%B5%9C%EC%A0%81%ED%99%94)
 
-[Toast UI 포트스](https://ui.toast.com/fe-guide/ko_PERFORMANCE)
+- [Toast UI 포트스](https://ui.toast.com/fe-guide/ko_PERFORMANCE)
