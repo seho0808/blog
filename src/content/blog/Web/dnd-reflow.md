@@ -174,7 +174,7 @@ function setDroppableTranslatesLinear(
 
 ## **마치며**
 
-[react-beautiful-dnd](https://react-beautiful-dnd.netlify.app/iframe.html?id=board--simple)에서 performance 측정결과 reflow(layout)가 최적화 전의 나의 앱처럼 연속적으로 발생하지 않는 것을 보고 분명 batch로 스타일 적용이 가능한 방식이 있다고 생각해서 Layout Thrashing 최적화를 다시 시도해봤는데, 결국 해냈다. 하나의 핸들러 안에서 style을 read write 각자의 batch로 적용시켜주면 브라우저는 알아서 묶어서 리플로우(레이아웃)를 진행시켜준다.
+[react-beautiful-dnd](https://react-beautiful-dnd.netlify.app/iframe.html?id=board--simple)에서 performance 측정결과 reflow(layout)가 최적화 전의 나의 앱과는 다르게 연속적으로 발생하지 않는 것을 보고 분명 batch로 스타일 적용이 가능한 방식이 있다고 생각해서 Layout Thrashing 최적화를 다시 시도해봤는데, 결국 해냈다. 하나의 핸들러 안에서 레이아웃을 발생시키는 작업들을 일괄로 read를 먼저 모두 한 후에 write을 일괄 적용시켜주면 브라우저는 알아서 묶어서 하나의 리플로우(레이아웃)로 진행시켜준다.
 
 조만간 지금 진행 중인 회사들의 면접이 끝나면 dnd 라이브러리들의 내부 또한 다시 파보아서 내 코드와 비교해봐야겠다. (지난번에 했었는데 저 에어비엔비 라이브러리 복잡도가 장난이 아니었다.)
 
