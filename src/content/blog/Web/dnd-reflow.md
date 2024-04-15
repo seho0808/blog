@@ -68,7 +68,7 @@ function setDroppableTranslatesLinear(
 
 3. style 자체를 같은 핸들러 내에서 같이 건드리면 디폴트로는 배치로 적용된다. (레이아웃 스래싱이 아니라면)
 
-style 적용을 여러 줄에 거쳐서 해도 브라우저가 알아서 배치로 작동시켜준다. 문제는 read 오퍼레이션이랑 write 오퍼레이션을 따로 묶어서 적용해주어야하는 것이다. 그게 개발자가 코드를 잘 작성해주어야하는 부분이고, 나머지는 브라우저가 알아서 배치로 처리해준다.
+style 적용을 여러 줄에 거쳐서 해도 브라우저가 알아서 배치로 작동시켜준다. (이거는 그 어디서도 깔끔하게 설명안해주길래 내가 직접 코드로 테스팅해보았다.) 문제는 read 오퍼레이션이랑 write 오퍼레이션을 따로 묶어서 적용해주어야하는 것이다. 그게 개발자가 코드를 잘 작성해주어야하는 부분이고, 나머지는 브라우저가 알아서 배치로 처리해준다.
 
 style을 한 번에 적용해야된다는 [글 - Making several style changes at once 섹션 참고](https://dev.opera.com/articles/efficient-javascript/?page=3#stylechanges)이 있는데, 이 글은 2006년에 Opera 개발자에 의해 쓰인 글이라 2024년 기준 거의 공룡급으로 낡은 글이다. (하지만 무수히 많은 현대 블로그 글들에서 인용하고 있었다.) 처음엔 이게 진리인줄알았는데, 꼭 style을 `setAttribute`로 하지 않아도 하나의 핸들러 내에서만 write끼리 묶어서 적용해주면 크롬 브라우저 퍼포먼트 탭에서 하나의 reflow로 잘 취급해주는 것을 확인했다. (여러 줄에 `.style = "somthing"`을 해주어도 된다는 뜻이다. 대신 read operation이 중간에 섞이면 안됨.) `setAttribute`는 하나의 dom요소에는 적용하기 좋은데 여러 개를 loop을 돌며 적용할 때 동시에 하기 불가능하다. 그래서 `.style`을 여러 줄에 쓰고 최신 브라우저 최적화에 맡기는 판단이 최선이 아닐까?라고 생각중이다.
 
@@ -88,7 +88,7 @@ style을 한 번에 적용해야된다는 [글 - Making several style changes at
   <sub class>그림 2. 첫 pointermove 내의 getDroppableTranslatesLinear가 4ms가 걸리는 모습</sub>
 </div>
 
-첫 pointermove에서는 O(n)으로 해당 Droppable의 모든 자식들의 Translate이 적용된다. 쉽게 설명하자면 Done 목록에서 하나의 카드를 드래그 시작하면 나머지 Done 목록의 모든 자식들이 빠진 카드의 빈 공간 만큼 아래로 Translate되는 것이다. 이걸 적용하는 코드가 위에 내가 4.38ms로 하이라이트한 `getDroppableTranslatesLinear`이다. 그리고 이 함수는 위에서 소스 코드로도 설명했던 코드다. 문제는 보라색 점들이 무수히 찍혀있는 것들이다. `setAttribute`, `getBoundingClientRect`에 의해 트리거된 무수한 보라색 점들이 모두 레이아웃(리플로우)이다. 내가 해당 스크린샷을 찍을 때는 To-dos 목록에 34개의 카드를 넣어두었는데, 카드 수를 늘릴 수록 레이아웃 개수도 늘어나고 4.38ms도 더 큰 숫자가 된다.
+첫 pointermove에서는 O(n)으로 해당 Droppable의 모든 자식들의 Translate이 적용된다. 쉽게 설명하자면 Done 목록에서 하나의 카드를 드래그 시작하면 나머지 Done 목록의 모든 자식들이 빠진 카드의 빈 공간 만큼 아래로 Translate되는 것이다. 이걸 적용하는 코드가 위에 내가 4.38ms로 하이라이트한 `getDroppableTranslatesLinear`이다. 그리고 이 함수는 위에서 소스 코드로도 설명했던 코드다. <span class="text-red">문제는 보라색 점들이 무수히 찍혀있는 것들이다.</span> `setAttribute`, `getBoundingClientRect`에 의해 트리거된 무수한 보라색 점들이 모두 레이아웃(리플로우)이다. 내가 해당 스크린샷을 찍을 때는 To-dos 목록에 34개의 카드를 넣어두었는데, 카드 수를 늘릴 수록 레이아웃 개수도 늘어나고 4.38ms도 더 큰 숫자가 된다.
 
 그래서 수 많은 블로그들에서 읽은 "Layout Thrashing"이라는 것을 완화하기 위해 O(n)으로 모든 요소의 `getBoundingClientRect`를 먼저 읽은(dom read operation) 후 스타일들을 다시 처음부터 순회하며 적용(dom write operation)해주었다.
 
