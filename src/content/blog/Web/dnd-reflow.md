@@ -9,7 +9,7 @@ subtitle: "드래그 드랍 리플로우 최적화 - 레이아웃 쓰래싱(Layo
 
 <p class="text-time">최초 업로드 2024-04-11 / 마지막 수정 2024-04-15</p>
 
-_<span class="text-purple">이 글은 Layout Thrashing 최적화를 통해 수백 ms가 걸릴 수 있는 dnd 구조를 4ms짜리 핸들러로 리팩토링하는 과정을 담고 있습니다.</span>_
+_<span class="text-purple">해당 포스트는 Layout Thrashing 최적화를 통해 수백 ms가 걸릴 수 있는 dnd 구조를 4ms짜리 핸들러로 리팩토링하는 과정을 담고 있습니다.</span>_
 
 <div class="video-container">
   <video src="https://d1ykeqyorqdego.cloudfront.net/new-assets/dnd-reflow/main-vid.mp4" controls></video>
