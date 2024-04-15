@@ -2,19 +2,21 @@
 slug: "/blog/drag-drop-reflow-optimization"
 date: "2024-04-11"
 title: "드래그 드랍 리플로우 최적화"
-subtitle: "드래그 드랍 리플로우 최적화"
+subtitle: "드래그 드랍 리플로우 최적화 - 레이아웃 쓰래싱(Layout Thrashing) 최적화"
 ---
 
 ## **드래그 드랍 리플로우 최적화**
 
 <p class="text-time">최초 업로드 2024-04-11 / 마지막 수정 2024-04-11</p>
 
+_<span class="text-purple">이 글은 Layout Thrashing 최적화를 통해 수백 ms가 걸릴 수 있는 dnd 구조를 4ms짜리 핸들러로 리팩토링하는 과정을 담고 있습니다.</span>_
+
 <div class="video-container">
   <video src="https://d1ykeqyorqdego.cloudfront.net/new-assets/dnd-reflow/main-vid.mp4" controls></video>
   <sub class>영상 1. 순수 React로 만든 dnd</sub>
 </div>
 
-최근 모 회사의 과제로 React로 dnd를 만들어보았다. 부드러운 UX를 만드는 것이 생각보다 매우 어려웠는데(~리페인트 맞추기 + 그리디 구현으로 인해 장장 40시간의 여정~), 나름 뿌듯했다. 근데 다 만들고 보니 리플로우 관련해서 큰 문제가 있나 싶어서 좀 파봤다.
+최근 모 회사의 과제로 React로 dnd를 만들어보았다. 부드러운 UX를 만드는 것이 생각보다 매우 어려웠는데(~리페인트 맞추기 + 그리디 구현으로 인해 장장 40시간의 여정~), 나름 뿌듯했다. 근데 다 만들고 보니 리플로우 관련해서 큰 문제가 있나 싶어서 좀 파봤다. 맨 처음 이 포스트를 썼을 때는 실패한 최적화에 대한 글이었는데, 며칠 뒤에 다시 놓친 부분을 수정했더니 극적인 변화를 가져왔다.
 
 아래 코드를 보면 딱봐도 리플로우가 엄청 발생할 것처럼 생겼다. 그래서 코드를 짜면서도 계속 리플로우 발생을 줄이기 위해 batch로 스타일을 적용시키고 싶었는데, 여러 요소에 한 번에 클래스이름이나 스타일을 적용하는 DOM API가 없어서 오또케를 외치며 그냥 최대한 할 수 있는만큼 단순한 DOM Manipulation을 적용했었다.
 
@@ -106,7 +108,7 @@ function setDroppableTranslatesLinear(
     } else {
       let styleString = `transform: translate(0, ${getEmptySpaceWithGap(
         card
-      )}px);`;
+      )}px);`; // 내가 놓치고 있던 O(1) read 연산
       if (!initial) styleString += "transition: 0.25s";
       c.setAttribute("style", styleString); // O(1) write 연산
     }
@@ -123,20 +125,20 @@ function setDroppableTranslatesLinear(
   let orderIdx = 0;
   const cardRect = card.getBoundingClientRect();
   const cardBottomY = cardRect.top + cardRect.height;
-  const rects = children.map((c) => c.getBoundingClientRect()); // O(n) read 연산
+  const cardHeight = getEmptySpaceWithGap(card); // O(1) read (read는 read끼리 위로 빼주기)
+  const rects = children.map((c) => c.getBoundingClientRect()); // O(n) read (read는 read끼리 위로 빼주기)
   children.forEach((c, idx) => {
     if (c === card) return;
     if (c.className === "droppable-placeholder") return;
-    const childBottomY = rects[idx].top + rects[idx].height;
+    const r = rects[idx];
+    const childBottomY = r.top + r.height;
     if (cardBottomY > childBottomY) {
-      c.style.transform = ``; // O(1) write 연산
+      c.style.transform = ``; // O(1) write (write는 write 끼리)
       orderIdx++;
     } else {
-      let styleString = `transform: translate(0, ${getEmptySpaceWithGap(
-        card
-      )}px);`;
-      if (!initial) styleString += "transition: 0.25s";
-      c.setAttribute("style", styleString); // O(1) write 연산
+      let styleString = `transform: translate(0, ${cardHeight}px);`;
+      if (!initial) styleString += "transition: 0.25s"; // O(1) write (write는 write 끼리)
+      c.setAttribute("style", styleString);
     }
   });
 //...
@@ -144,41 +146,29 @@ function setDroppableTranslatesLinear(
 
 <br/>
 
-자 그래서 얼마나 성능 개선이 되었는지가 궁금할 것이다. 놀랍게도 아무런 변화가 없었다...ㅋㅋ 아마 "O(n)으로 두 번 순회하는 코스트 === read write을 batch로 각각 적용 시켜서 얻는 리플로우 개선"인듯하다. 만약 아래 코드 처럼 단 한 번의 read로 줄인다면 무조건 개선이겠지만, 위의 내 코드의 경우에는 세 네번 이상 실험했는데도 4.00ms 대의 실행속도가 변하지 않았다.
+자 그래서 얼마나 성능 개선이 되었는지가 궁금할 것이다. 해당 포스트를 처음 작성했을 당시 처음에 위의 코드를 수정했을 때에는 내가 놓친 부분(getEmptySpaceWithGap가 read 오퍼레이션이라는 것을 까먹음)이 있었어서 잘못 최적화해놓고 효과가 없는 것인 줄 알았다. 근데 며칠 뒤에 코드를 다시 수정 후 제대로 테스팅 해보고 나니 엄청나게 극적으로 성능 개선이 되는 것을 확인했다. 해당 포스트 위쪽에 있던 그림 1, 2와 따로 테스팅 한 그림 3, 4를 아래에 첨부하겠다.
+
+<div class="image-container">
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/dnd-reflow/sc3.png" alt="jpg rock"/>
+  <sub class>그림 3. 최적화 전: 약 330개의 카드 컴포넌트로 테스팅했을 때 함수 하나에 133ms가 나왔다.</sub>
+</div>
+
+<div class="image-container">
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/dnd-reflow/sc4.png" alt="jpg rock"/>
+  <sub class>그림 4. 최적화 후: 레이아웃 쓰래싱(Thrashing) 최적화 후 133ms가 4ms가 되었다! ^______^</sub>
+</div>
 
 <br/>
 
-```ts
-//// 진짜로 무조건 개선되는 코드 (아래 링크 마다 똑같은 코드가 다 있습니다. 최초 원본은 web.dev 사이트인 것으로 추정됨.)
-function resizeAllParagraphs() {
-  const box = document.getElementById("box");
-  const paragraphs = document.querySelectorAll(".paragraph");
-
-  for (let i = 0; i < paragraphs.length; i += 1) {
-    paragraphs[i].style.width = box.offsetWidth + "px";
-  }
-}
-// 레이아웃 스래싱을 개선한 코드
-function resizeAllParagraphs() {
-  const box = document.getElementById("box");
-  const paragraphs = document.querySelectorAll(".paragraph");
-  const width = box.offsetWidth;
-
-  for (let i = 0; i < paragraphs.length; i += 1) {
-    paragraphs[i].style.width = width + "px";
-  }
-}
-```
+결론적으로 나의 최적화 작업은 실패라고 생각했었지만!!! 며칠 뒤에 다시 해보니 성공해버렸다.
 
 <br/>
 
-결론적으로 나의 최적화 작업은 실패로 돌아갔다. 언젠가 또 더 큰 깨달음을 얻어서 코드를 다시 진화시킬 수 있지 않을까 싶다.
+## **마치며**
 
-실용성으로만 치자면 reflow 총합이 8ms 언저리 이내로 일어나면 하나의 프레임 이내에 모든 것을 처리할 수 있을 것이다. 그리고 다른 비동기처리 함수들도 처리할 것을 생각하면 16.67ms에서 한 3ms 이상 정도의 오버헤드를 남겨두는 것은 필수적으로 필요해보인다.
+[react-beautiful-dnd](https://react-beautiful-dnd.netlify.app/iframe.html?id=board--simple)에서 performance 측정결과 reflow(layout)가 최적화 전의 나의 앱처럼 연속적으로 발생하지 않는 것을 보고 분명 batch로 스타일 적용이 가능한 방식이 있다고 생각해서 Layout Thrashing 최적화를 다시 시도해봤는데, 결국 해냈다. 하나의 핸들러 안에서 style을 read write 각자의 batch로 적용시켜주면 브라우저는 알아서 묶어서 리플로우(레이아웃)를 진행시켜준다.
 
-[react-beautiful-dnd](https://react-beautiful-dnd.netlify.app/iframe.html?id=board--simple)에서 performance 측정결과 reflow가 내 앱처럼 연속적으로 발생하지 않는다! ? ? ? ?
-
-조만간 지금 진행 중인 회사들의 면접이 끝나면 라이브러리 내부를 다시 파보는 시도를 해보아야겠다. (지난번에 했었는데 저 에어비엔비 라이브러리 복잡도가 장난이 아니었다.)
+조만간 지금 진행 중인 회사들의 면접이 끝나면 dnd 라이브러리들의 내부 또한 다시 파보아서 내 코드와 비교해봐야겠다. (지난번에 했었는데 저 에어비엔비 라이브러리 복잡도가 장난이 아니었다.)
 
 <br/>
 
