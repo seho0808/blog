@@ -70,7 +70,7 @@ function setDroppableTranslatesLinear(
 
 style 적용을 여러 줄에 거쳐서 해도 브라우저가 알아서 배치로 작동시켜준다. 문제는 read 오퍼레이션이랑 write 오퍼레이션을 따로 묶어서 적용해주어야하는 것이다. 그게 개발자가 코드를 잘 작성해주어야하는 부분이고, 나머지는 브라우저가 알아서 배치로 처리해준다.
 
-style을 한 번에 적용해야된다는 [글 - Making several style changes at once 섹션 참고](https://dev.opera.com/articles/efficient-javascript/?page=3#minimalreflow)이 있는데, 이 글은 2006년에 Opera 개발자에 의해 쓰인 글이라 2024년 기준 거의 공룡급으로 낡은 글이다. (하지만 무수히 많은 현대 블로그 글들에서 인용하고 있었다.) 처음엔 이게 진리인줄알았는데, 꼭 style을 `setAttribute`로 하지 않아도 하나의 핸들러 내에서만 write끼리 묶어서 적용해주면 크롬 브라우저 퍼포먼트 탭에서 하나의 reflow로 잘 취급해주는 것을 확인했다. (여러 줄에 `.style = "somthing"`을 해주어도 된다는 뜻이다. 대신 read operation이 중간에 섞이면 안됨.) `setAttribute`는 하나의 dom요소에는 적용하기 좋은데 여러 개를 loop을 돌며 적용할 때 동시에 하기 불가능하다. 그래서 `.style`을 여러 줄에 쓰고 최신 브라우저 최적화에 맡기는 판단이 최선이 아닐까?라고 생각중이다.
+style을 한 번에 적용해야된다는 [글 - Making several style changes at once 섹션 참고](https://dev.opera.com/articles/efficient-javascript/?page=3#stylechanges)이 있는데, 이 글은 2006년에 Opera 개발자에 의해 쓰인 글이라 2024년 기준 거의 공룡급으로 낡은 글이다. (하지만 무수히 많은 현대 블로그 글들에서 인용하고 있었다.) 처음엔 이게 진리인줄알았는데, 꼭 style을 `setAttribute`로 하지 않아도 하나의 핸들러 내에서만 write끼리 묶어서 적용해주면 크롬 브라우저 퍼포먼트 탭에서 하나의 reflow로 잘 취급해주는 것을 확인했다. (여러 줄에 `.style = "somthing"`을 해주어도 된다는 뜻이다. 대신 read operation이 중간에 섞이면 안됨.) `setAttribute`는 하나의 dom요소에는 적용하기 좋은데 여러 개를 loop을 돌며 적용할 때 동시에 하기 불가능하다. 그래서 `.style`을 여러 줄에 쓰고 최신 브라우저 최적화에 맡기는 판단이 최선이 아닐까?라고 생각중이다.
 
 아무튼 Layout Thrashing 관련 팩트들을 무수한 소스에서 읽고 (링크가 많아서 페이지 맨 아래에 두었다.) 또 개인적으로 테스팅해보았다.
 
