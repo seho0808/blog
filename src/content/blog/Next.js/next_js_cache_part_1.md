@@ -7,7 +7,7 @@ subtitle: "Next js 13에서 추가된 캐싱 기능들을 정리해보자 [1편]
 
 ## **Next js 13에서 추가된 캐싱 기능들을 정리해보자 \[1편\]**
 
-<p class="text-time">최초 업로드 2023-11-21 / 마지막 수정 2023-12-28</p>
+<p class="text-time">최초 업로드 2023-11-21 / 마지막 수정 2024-04-20</p>
 
 <br/>
 
@@ -94,7 +94,7 @@ RSC 페이로드는 React Server Component가 등장하면서 부분적으로 �
 
 2. 애초에 Router Cache는 RSC 페이로드를 저장하는 것이기 때문에 서버 컴포넌트가 아닌 <span class="text-red">클라이언트 컴포넌트("use client")에서 작동하는 코드는 캐싱되지 않는다!!!</span>
 
-3. Router Cache는 절대로 Opt Out이 안된다. React Server Component가 있으면 무조건 사용된다.
+3. Router Cache는 절대로 Opt Out이 안된다. React Server Component가 있으면 무조건 사용된다. (2024년 4월 기준 실험기능으로 해당 시간들을 유저가 수정할 수 있습니다. 즉, router cache가 opt out이 안되던 문제를 vercel에서 해결하려고 하는 듯합니다.)
 
 <br/>
 
