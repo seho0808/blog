@@ -31,7 +31,7 @@ subtitle: "Next js 13에서 추가된 캐싱 기능들을 정리해보자 [1편]
 
 <br/>
 
-[Next.js 13 공식문서]("https://nextjs.org/docs/app/building-your-application/caching")에는 네 개의 캐싱 기법이 정리되어있다. Router Cache, Full Route Cache, Request Memoization, Data Cache 이렇게 네 가지가 공식 문서에
+[Next.js 13 공식문서](https://nextjs.org/docs/app/building-your-application/caching)에는 네 개의 캐싱 기법이 정리되어있다. Router Cache, Full Route Cache, Request Memoization, Data Cache 이렇게 네 가지가 공식 문서에
 소개가 되어있다. 처음 이 내용을 접했을 때, 너무 복잡해서 이해가 어려웠는데, 다행히도 2023년 8월 즈음에 그림들과 함께 설명이 매우 깔끔하게 업데이트되어서 이해가 수월해졌다. 재미있는 점은,
 Next.js로 개발하는 사람들은 상당수가 풀스택에 가까운 프론트엔드 개발자들일 것이라, 해당 그림에서 나오는 캐싱 기법이 전부가 아니다.
 
