@@ -59,7 +59,7 @@ fetch(`https://...`, { cache: "no-store" });
 
 <br/>
 
-주의점은 Opt out 혹은 revalidation을 안할 시 자동으로 <span class="text-red">영원히 런타임 멈출 때까지 첫 요청이 캐싱</span>됩니다. 그렇기 떄문에 fetch를 Next.js 서버 사이드에서 쓸 때 매우 조심해야합니다.
+주의점은 Opt out 혹은 시간을 안 적어두고 수동 revalidation을 안할 시 자동으로 <span class="text-red">영원히 런타임 멈출 때까지 첫 요청이 캐싱</span>된다. 그렇기 떄문에 fetch를 Next.js 서버 사이드에서 쓸 때 매우 조심해야한다.
 
 <br/>
 
