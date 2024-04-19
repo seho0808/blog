@@ -75,7 +75,7 @@ RFC에는 JWT Claim이 정확히 무엇인지 설명이 없다. 하지만 위에
 - "iat" (Issued At) Claim => 발행 시간 (optional)
 - "jti" (JWT ID) Claim => jwt uid (optional)
 
-결국 정보(claim)를 JSON형태로 페이로드에 담는 것이 목표인데, 페이로드에 위와 같은 정보들을 담고 있어야한다는 것이 골자이다. 흥미로운 점은 모든 필드가 optional이어서, 그냥 비어있는 JSON 데이터를 header + 비어있는 payload ({}와 같이) + signature 형태로 서명하면, 그것 또한 JWT의 일종이 된다...허허...
+결국 정보(claim)를 JSON형태로 페이로드에 담는 것이 목표인데, 페이로드에 위와 같은 정보들을 담고 있어야한다는 것이 골자이다. 흥미로운 점은 모든 필드가 optional이어서, 그냥 비어있는 JSON 데이터를 header + 비어있는 payload ({}와 같이) + signature 형태로 서명하면, 그것 또한 JWT의 일종이 된다...
 
 <br/>
 
@@ -156,9 +156,9 @@ BASE64URL(JWE Authentication Tag)
 
 JWE의 생성 로직은 너무 복잡하게 쓰여져있어서 예시를 기반으로 가볍게 읽고 넘어갔다. 나중에 JWE를 쓸 일이 오면 다시 와서 자세히 공부하자.
 
-[JWE 생성 예시](https://datatracker.ietf.org/doc/html/rfc7516#section-3.3)를 기반으로한 요약
+[JWE 생성 예시](https://datatracker.ietf.org/doc/html/rfc7516#section-3.3) + [JWE 생성 방법](https://datatracker.ietf.org/doc/html/rfc7516#section-5.1)을 기반으로한 요약
 
-- 랜덤한 CEK(Content Encryption Key)를 생성한다. (방식은 )
+- 랜덤한 CEK(Content Encryption Key)를 생성한다. (방식은 rfc4086을 참고하라고 적혀있다.)
 - RSA 공개키(혹은 헤더에 정해진 방식)로 CEK를 암호화한다. 이것이 JWE Encrypted Key이다.
 - JWE Encrypted Key를 base64로 변환한다.
 - JWE IV(JWE Initialization Vector)이라는 것을 랜덤하게 생성한다.
