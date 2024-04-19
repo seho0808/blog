@@ -116,12 +116,25 @@ defined in Section 3.1 of [JWA].</p>
 <br/>
 <h3><strong>5. JWS를 쓰며 기억해야할 것들</strong></h3>
 <p>JWE는 내가 한 번도 써본 적이 없어서 사용법을 말하기에는 많이 부족한 것 같고, 적어도 JWS를 쓸 때 조심해야되는 점을 짧게 적고 넘어가려고 한다.</p>
+<br/>
+<h4>5-1. 쿠키 사용시</h4>
 <ul>
 <li>JWS는 평문이기 때문에 signature자체는 내부 정보가 변형되었는지만 확인 가능함.</li>
 <li>그렇기에 JWS는 무조건 https로 전송되어야함. http로 유출 시 문제 생기기 쉬움.</li>
-<li>XSS 공격같은 경우 js를 실행해서 document.cookie에서 JWS를 탈취할 수 있다. 그렇기에 httponly 옵션으로 쿠키를 보호해야한다.</li>
+<li>XSS 공격같은 경우 js를 실행해서 document.cookie에서 JWS를 탈취할 수 있다. 그렇기에 HttpOnly 옵션으로 쿠키를 보호해야한다.</li>
+<li>Secure 옵션으로 https에서만 쿠키가 보내지도록하는 것도 설정해주어야한다.</li>
+<li>SameSite=strict 옵션으로 CSRF 공격에 대비해야한다. (lax는 get만 허용)</li>
 <li>JWS의 expire time을 짧게 잡으면 조금은 더 보안이 나아질 수 있다. 영원히 사용가능으로 해놓으면 해커는 탈취 후 영원히 그 유저인척 살아갈 수 있다.</li>
 </ul>
+<p>예시 => <code>Set-Cookie: token=토큰; Expires=Thu, 21 Oct 2021 07:28:00 GMT; Secure; HttpOnly; SameSite=strict;</code>를 https로 주고 받기.</p>
+<br/>
+<h4>5-2. bearer 사용시</h4>
+<ul>
+<li>똑같이 https 사용 권장.</li>
+<li>cookie가 자동으로 패스되는 점을 악용한 CSRF에는 강하다.</li>
+<li>cookie를 수동으로 헤더에 넣어주어야해서 쿠키가 js로 accessbile해야한다. 고로 XSS에는 약하기에 XSS자체를 차단하는 방법들을 강구해야한다.</li>
+</ul>
+<p>예시 => <code>Authorization: bearer 토큰</code>를 https로 주고 받기</p>
 <br/>
 <h3><strong>여담</strong></h3>
 <blockquote>
@@ -256,12 +269,25 @@ defined in Section 3.1 of [JWA].</p>
 <br/>
 <h3><strong>5. JWS를 쓰며 기억해야할 것들</strong></h3>
 <p>JWE는 내가 한 번도 써본 적이 없어서 사용법을 말하기에는 많이 부족한 것 같고, 적어도 JWS를 쓸 때 조심해야되는 점을 짧게 적고 넘어가려고 한다.</p>
+<br/>
+<h4>5-1. 쿠키 사용시</h4>
 <ul>
 <li>JWS는 평문이기 때문에 signature자체는 내부 정보가 변형되었는지만 확인 가능함.</li>
 <li>그렇기에 JWS는 무조건 https로 전송되어야함. http로 유출 시 문제 생기기 쉬움.</li>
-<li>XSS 공격같은 경우 js를 실행해서 document.cookie에서 JWS를 탈취할 수 있다. 그렇기에 httponly 옵션으로 쿠키를 보호해야한다.</li>
+<li>XSS 공격같은 경우 js를 실행해서 document.cookie에서 JWS를 탈취할 수 있다. 그렇기에 HttpOnly 옵션으로 쿠키를 보호해야한다.</li>
+<li>Secure 옵션으로 https에서만 쿠키가 보내지도록하는 것도 설정해주어야한다.</li>
+<li>SameSite=strict 옵션으로 CSRF 공격에 대비해야한다. (lax는 get만 허용)</li>
 <li>JWS의 expire time을 짧게 잡으면 조금은 더 보안이 나아질 수 있다. 영원히 사용가능으로 해놓으면 해커는 탈취 후 영원히 그 유저인척 살아갈 수 있다.</li>
 </ul>
+<p>예시 => <code>Set-Cookie: token=토큰; Expires=Thu, 21 Oct 2021 07:28:00 GMT; Secure; HttpOnly; SameSite=strict;</code>를 https로 주고 받기.</p>
+<br/>
+<h4>5-2. bearer 사용시</h4>
+<ul>
+<li>똑같이 https 사용 권장.</li>
+<li>cookie가 자동으로 패스되는 점을 악용한 CSRF에는 강하다.</li>
+<li>cookie를 수동으로 헤더에 넣어주어야해서 쿠키가 js로 accessbile해야한다. 고로 XSS에는 약하기에 XSS자체를 차단하는 방법들을 강구해야한다.</li>
+</ul>
+<p>예시 => <code>Authorization: bearer 토큰</code>를 https로 주고 받기</p>
 <br/>
 <h3><strong>여담</strong></h3>
 <blockquote>
@@ -278,7 +304,7 @@ defined in Section 3.1 of [JWA].</p>
 <li><a href="https://datatracker.ietf.org/doc/html/rfc7516">RFC 7516 - JWE</a></li>
 <li><a href="https://datatracker.ietf.org/doc/html/rfc7518">RFC 7518 - JWA</a></li>
 <li><a href="https://datatracker.ietf.org/doc/html/rfc7519">RFC 7519 - JWT</a></li>
-</ul></div></div><style data-emotion="css 6apk4h">.css-6apk4h{height:60px;padding-top:40px;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;color:#b4b4b4;font-size:14px;}</style><div class="css-6apk4h"><span class="text-red">Copyright </span><span class="text-purple">© </span><span class="text-skyblue">2023</span><style data-emotion="css fute3">.css-fute3{-webkit-text-decoration:none;text-decoration:none;color:#a6e22e;}</style><a href="/" class="css-fute3"> Seho Lee </a><span class="text-orange">All Rights Reserved</span><span class="text-yellow">.</span></div></main></div></div><style data-emotion="css 1u8f60p">.css-1u8f60p{width:100vw;height:24px;background-color:#414339;position:fixed;bottom:0;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;font-size:12px;}</style><div class="css-1u8f60p"><style data-emotion="css 1byydgk">.css-1byydgk{background-color:#1e1f1c;color:#ccc;font-size:12px;font-weight:800;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding:0px 6px;}@media (max-width: 768px){.css-1byydgk{font-size:10px;}}</style><div class="css-1byydgk">&lt;/&gt;</div><style data-emotion="css 1k181js">.css-1k181js{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-text-decoration:none;text-decoration:none;width:100%;}</style><a href="https://github.com/seho0808/blog" class="css-1k181js"><style data-emotion="css kr4wdv">.css-kr4wdv{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding-left:10px;padding-right:20px;color:#ccc;gap:10px;}@media (max-width: 768px){.css-kr4wdv{font-size:10px;}}</style><div class="css-kr4wdv"><div>Latest Commit</div><div>a516bac2-cdc1-5878-ad42-cdf8ba130c77</div></div><style data-emotion="css 1lo262">.css-1lo262{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding-left:10px;padding-right:20px;color:#ccc;gap:10px;margin-left:auto;}@media (max-width: 768px){.css-1lo262{font-size:10px;}}@media (max-width: 768px){.css-1lo262{display:none;}}</style><div class="css-1lo262"><div>seho0808</div><div>2024-04-19T09:12:30Z</div></div></a></div></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/blog/jwt-jwe-jws/";/*]]>*/</script><!-- slice-start id="_gatsby-scripts-1" -->
+</ul></div></div><style data-emotion="css 6apk4h">.css-6apk4h{height:60px;padding-top:40px;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;color:#b4b4b4;font-size:14px;}</style><div class="css-6apk4h"><span class="text-red">Copyright </span><span class="text-purple">© </span><span class="text-skyblue">2023</span><style data-emotion="css fute3">.css-fute3{-webkit-text-decoration:none;text-decoration:none;color:#a6e22e;}</style><a href="/" class="css-fute3"> Seho Lee </a><span class="text-orange">All Rights Reserved</span><span class="text-yellow">.</span></div></main></div></div><style data-emotion="css 1u8f60p">.css-1u8f60p{width:100vw;height:24px;background-color:#414339;position:fixed;bottom:0;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;font-size:12px;}</style><div class="css-1u8f60p"><style data-emotion="css 1byydgk">.css-1byydgk{background-color:#1e1f1c;color:#ccc;font-size:12px;font-weight:800;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding:0px 6px;}@media (max-width: 768px){.css-1byydgk{font-size:10px;}}</style><div class="css-1byydgk">&lt;/&gt;</div><style data-emotion="css 1k181js">.css-1k181js{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-text-decoration:none;text-decoration:none;width:100%;}</style><a href="https://github.com/seho0808/blog" class="css-1k181js"><style data-emotion="css kr4wdv">.css-kr4wdv{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding-left:10px;padding-right:20px;color:#ccc;gap:10px;}@media (max-width: 768px){.css-kr4wdv{font-size:10px;}}</style><div class="css-kr4wdv"><div>Latest Commit</div><div>47813bcc-85d9-5f84-8045-fc8b33ed957e</div></div><style data-emotion="css 1lo262">.css-1lo262{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding-left:10px;padding-right:20px;color:#ccc;gap:10px;margin-left:auto;}@media (max-width: 768px){.css-1lo262{font-size:10px;}}@media (max-width: 768px){.css-1lo262{display:none;}}</style><div class="css-1lo262"><div>seho0808</div><div>2024-04-19T09:40:53Z</div></div></a></div></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/blog/jwt-jwe-jws/";/*]]>*/</script><!-- slice-start id="_gatsby-scripts-1" -->
           <script
             id="gatsby-chunk-mapping"
           >
