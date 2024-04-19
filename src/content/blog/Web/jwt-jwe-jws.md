@@ -175,10 +175,28 @@ JWE의 생성 로직은 너무 복잡하게 쓰여져있어서 예시를 기반�
 
 JWE는 내가 한 번도 써본 적이 없어서 사용법을 말하기에는 많이 부족한 것 같고, 적어도 JWS를 쓸 때 조심해야되는 점을 짧게 적고 넘어가려고 한다.
 
+<br/>
+
+#### 5-1. 쿠키 사용시
+
 - JWS는 평문이기 때문에 signature자체는 내부 정보가 변형되었는지만 확인 가능함.
 - 그렇기에 JWS는 무조건 https로 전송되어야함. http로 유출 시 문제 생기기 쉬움.
-- XSS 공격같은 경우 js를 실행해서 document.cookie에서 JWS를 탈취할 수 있다. 그렇기에 httponly 옵션으로 쿠키를 보호해야한다.
+- XSS 공격같은 경우 js를 실행해서 document.cookie에서 JWS를 탈취할 수 있다. 그렇기에 HttpOnly 옵션으로 쿠키를 보호해야한다.
+- Secure 옵션으로 https에서만 쿠키가 보내지도록하는 것도 설정해주어야한다.
+- SameSite=strict 옵션으로 CSRF 공격에 대비해야한다. (lax는 get만 허용)
 - JWS의 expire time을 짧게 잡으면 조금은 더 보안이 나아질 수 있다. 영원히 사용가능으로 해놓으면 해커는 탈취 후 영원히 그 유저인척 살아갈 수 있다.
+
+예시 => `Set-Cookie: token=토큰; Expires=Thu, 21 Oct 2021 07:28:00 GMT; Secure; HttpOnly; SameSite=strict;`를 https로 주고 받기.
+
+<br/>
+
+#### 5-2. bearer 사용시
+
+- 똑같이 https 사용 권장.
+- cookie가 자동으로 패스되는 점을 악용한 CSRF에는 강하다.
+- cookie를 수동으로 헤더에 넣어주어야해서 쿠키가 js로 accessbile해야한다. 고로 XSS에는 약하기에 XSS자체를 차단하는 방법들을 강구해야한다.
+
+예시 => `Authorization: bearer 토큰`를 https로 주고 받기
 
 <br/>
 
