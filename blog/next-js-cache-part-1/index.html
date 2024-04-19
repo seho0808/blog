@@ -10,8 +10,8 @@
 
 ![temp](/images/caching-overview.jpg) -->
 <div class="image-container">
-  <img class="md-image" src="/images/caching-overview.jpg" alt="next_js_caching_flow"/>
-  <sub class>그림 1. Next.js 웹사이트 원본</sub>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/caching-overview.jpg" alt="next_js_caching_flow">
+  <sub class="">그림 1. Next.js 웹사이트 원본</sub>
 </div>
 <br/>
 <p><a href="https://nextjs.org/docs/app/building-your-application/caching">Next.js 13 공식문서</a>에는 네 개의 캐싱 기법이 정리되어있다. Router Cache, Full Route Cache, Request Memoization, Data Cache 이렇게 네 가지가 공식 문서에
@@ -21,8 +21,8 @@ Next.js로 개발하는 사람들은 상당수가 풀스택에 가까운 프론�
 사용해줄 수도 있다. 이에 맞춰서 그림을 조금 수정해보았다.</p>
 <br/>
 <div class="image-container">
-  <img class="md-image" src="/images/caching-overview-fixed.jpg" alt="next_js_caching_flow"/>
-  <sub class>그림 2. 실제로 고려해야되는 캐싱들</a></sub>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/caching-overview-fixed.jpg" alt="next_js_caching_flow">
+  <sub class="">그림 2. 실제로 고려해야되는 캐싱들</sub>
 </div>
 <br/>
 <p>위 그림은 나중에 더 자세히 다루고, 이번 1편 포스트에서는 Router Cache에 대해서 알아보자.</p>
@@ -147,8 +147,8 @@ export default function Home() {
 이 데이터를 각각 <span class="text-blue">서버 컴포넌트와 클라이언트 컴포넌트에서 똑같이 가져와서 표기해준다.</span> 그리고 이 두 개의 컴포넌트를 <code>app/page.tsx</code>에서 가져오는데, 해당 페이지의 링크로 다른 페이지와 갔다가 왔다가 해보면 클라이언트 컴포넌트<span class="text-red">만</span> 시간이 계속 바뀌는 것을 볼 수 있다.</p>
 <p>바로 Router Cache 때문에 서버 컴포넌트의 RSC 페이로드가 캐싱되는 것이다.</p>
 <div class="image-container">
-  <img class="md-image" style="width:50%;" src="/images/router-cache-sc.jpg" alt="next_js_caching_flow"/>
-  <sub class>그림 3. Router Caching...!</a></sub>
+  <img class="md-image" style="width:50%;" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/router-cache-sc.jpg" alt="next_js_caching_flow">
+  <sub class="">그림 3. Router Caching...!</sub>
 </div>
 <blockquote>
 <p><span class="text-grey">참고사항 1: Dynamic 페이지로 빌드 될 경우 30초, Static 페이지로 빌드 될 경우 5분 마다 데이터가 변경될 수 있는 것인데, dev모드와 빌드 후 모두 현재 버그가 있어서 정확한 테스팅이 어렵다. (2023-11-21 기준) 다른 탭에 오래 머물다가 invalidate 시간이 지난 이후 돌아가면 높은 확률로 Router Cache가 아예 작동하지 않는 모습을 보이고 있다. 의도된 것인지 확인된 바는 없다. 임시방편으로 페이지 새로고침을 해주면 다시 Router Cache가 정상작동한다. </span></p>
@@ -352,8 +352,8 @@ unexpected behavior이 많이 일어날 수 있을 것 같은 느낌이었다. f
 
 ![temp](/images/caching-overview.jpg) -->
 <div class="image-container">
-  <img class="md-image" src="/images/caching-overview.jpg" alt="next_js_caching_flow"/>
-  <sub class>그림 1. Next.js 웹사이트 원본</sub>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/caching-overview.jpg" alt="next_js_caching_flow">
+  <sub class="">그림 1. Next.js 웹사이트 원본</sub>
 </div>
 <br/>
 <p><a href="https://nextjs.org/docs/app/building-your-application/caching">Next.js 13 공식문서</a>에는 네 개의 캐싱 기법이 정리되어있다. Router Cache, Full Route Cache, Request Memoization, Data Cache 이렇게 네 가지가 공식 문서에
@@ -363,8 +363,8 @@ Next.js로 개발하는 사람들은 상당수가 풀스택에 가까운 프론�
 사용해줄 수도 있다. 이에 맞춰서 그림을 조금 수정해보았다.</p>
 <br/>
 <div class="image-container">
-  <img class="md-image" src="/images/caching-overview-fixed.jpg" alt="next_js_caching_flow"/>
-  <sub class>그림 2. 실제로 고려해야되는 캐싱들</a></sub>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/caching-overview-fixed.jpg" alt="next_js_caching_flow">
+  <sub class="">그림 2. 실제로 고려해야되는 캐싱들</sub>
 </div>
 <br/>
 <p>위 그림은 나중에 더 자세히 다루고, 이번 1편 포스트에서는 Router Cache에 대해서 알아보자.</p>
@@ -489,8 +489,8 @@ export default function Home() {
 이 데이터를 각각 <span class="text-blue">서버 컴포넌트와 클라이언트 컴포넌트에서 똑같이 가져와서 표기해준다.</span> 그리고 이 두 개의 컴포넌트를 <code>app/page.tsx</code>에서 가져오는데, 해당 페이지의 링크로 다른 페이지와 갔다가 왔다가 해보면 클라이언트 컴포넌트<span class="text-red">만</span> 시간이 계속 바뀌는 것을 볼 수 있다.</p>
 <p>바로 Router Cache 때문에 서버 컴포넌트의 RSC 페이로드가 캐싱되는 것이다.</p>
 <div class="image-container">
-  <img class="md-image" style="width:50%;" src="/images/router-cache-sc.jpg" alt="next_js_caching_flow"/>
-  <sub class>그림 3. Router Caching...!</a></sub>
+  <img class="md-image" style="width:50%;" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/router-cache-sc.jpg" alt="next_js_caching_flow">
+  <sub class="">그림 3. Router Caching...!</sub>
 </div>
 <blockquote>
 <p><span class="text-grey">참고사항 1: Dynamic 페이지로 빌드 될 경우 30초, Static 페이지로 빌드 될 경우 5분 마다 데이터가 변경될 수 있는 것인데, dev모드와 빌드 후 모두 현재 버그가 있어서 정확한 테스팅이 어렵다. (2023-11-21 기준) 다른 탭에 오래 머물다가 invalidate 시간이 지난 이후 돌아가면 높은 확률로 Router Cache가 아예 작동하지 않는 모습을 보이고 있다. 의도된 것인지 확인된 바는 없다. 임시방편으로 페이지 새로고침을 해주면 다시 Router Cache가 정상작동한다. </span></p>
@@ -682,7 +682,7 @@ unexpected behavior이 많이 일어날 수 있을 것 같은 느낌이었다. f
 <p>업로드 예정:</p>
 <ul>
 <li>2편 - Full Route Cache &#x26; Request Memoization &#x26; Data Cache (feat. fetch)</li>
-</ul></div></div><style data-emotion="css 6apk4h">.css-6apk4h{height:60px;padding-top:40px;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;color:#b4b4b4;font-size:14px;}</style><div class="css-6apk4h"><span class="text-red">Copyright </span><span class="text-purple">© </span><span class="text-skyblue">2023</span><style data-emotion="css fute3">.css-fute3{-webkit-text-decoration:none;text-decoration:none;color:#a6e22e;}</style><a href="/" class="css-fute3"> Seho Lee </a><span class="text-orange">All Rights Reserved</span><span class="text-yellow">.</span></div></main></div></div><style data-emotion="css 1u8f60p">.css-1u8f60p{width:100vw;height:24px;background-color:#414339;position:fixed;bottom:0;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;font-size:12px;}</style><div class="css-1u8f60p"><style data-emotion="css 1byydgk">.css-1byydgk{background-color:#1e1f1c;color:#ccc;font-size:12px;font-weight:800;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding:0px 6px;}@media (max-width: 768px){.css-1byydgk{font-size:10px;}}</style><div class="css-1byydgk">&lt;/&gt;</div><style data-emotion="css 1k181js">.css-1k181js{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-text-decoration:none;text-decoration:none;width:100%;}</style><a href="https://github.com/seho0808/blog" class="css-1k181js"><style data-emotion="css kr4wdv">.css-kr4wdv{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding-left:10px;padding-right:20px;color:#ccc;gap:10px;}@media (max-width: 768px){.css-kr4wdv{font-size:10px;}}</style><div class="css-kr4wdv"><div>Latest Commit</div><div>62cd1662-839f-5a83-93c6-11b5a6eb349c</div></div><style data-emotion="css 1lo262">.css-1lo262{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding-left:10px;padding-right:20px;color:#ccc;gap:10px;margin-left:auto;}@media (max-width: 768px){.css-1lo262{font-size:10px;}}@media (max-width: 768px){.css-1lo262{display:none;}}</style><div class="css-1lo262"><div>seho0808</div><div>2024-04-19T15:33:04Z</div></div></a></div></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/blog/next-js-cache-part-1/";/*]]>*/</script><!-- slice-start id="_gatsby-scripts-1" -->
+</ul></div></div><style data-emotion="css 6apk4h">.css-6apk4h{height:60px;padding-top:40px;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;color:#b4b4b4;font-size:14px;}</style><div class="css-6apk4h"><span class="text-red">Copyright </span><span class="text-purple">© </span><span class="text-skyblue">2023</span><style data-emotion="css fute3">.css-fute3{-webkit-text-decoration:none;text-decoration:none;color:#a6e22e;}</style><a href="/" class="css-fute3"> Seho Lee </a><span class="text-orange">All Rights Reserved</span><span class="text-yellow">.</span></div></main></div></div><style data-emotion="css 1u8f60p">.css-1u8f60p{width:100vw;height:24px;background-color:#414339;position:fixed;bottom:0;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;font-size:12px;}</style><div class="css-1u8f60p"><style data-emotion="css 1byydgk">.css-1byydgk{background-color:#1e1f1c;color:#ccc;font-size:12px;font-weight:800;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding:0px 6px;}@media (max-width: 768px){.css-1byydgk{font-size:10px;}}</style><div class="css-1byydgk">&lt;/&gt;</div><style data-emotion="css 1k181js">.css-1k181js{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-text-decoration:none;text-decoration:none;width:100%;}</style><a href="https://github.com/seho0808/blog" class="css-1k181js"><style data-emotion="css kr4wdv">.css-kr4wdv{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding-left:10px;padding-right:20px;color:#ccc;gap:10px;}@media (max-width: 768px){.css-kr4wdv{font-size:10px;}}</style><div class="css-kr4wdv"><div>Latest Commit</div><div>8297d5d6-680b-5f57-8fe8-7a08a2f6aa17</div></div><style data-emotion="css 1lo262">.css-1lo262{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding-left:10px;padding-right:20px;color:#ccc;gap:10px;margin-left:auto;}@media (max-width: 768px){.css-1lo262{font-size:10px;}}@media (max-width: 768px){.css-1lo262{display:none;}}</style><div class="css-1lo262"><div>seho0808</div><div>2024-04-19T16:04:23Z</div></div></a></div></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/blog/next-js-cache-part-1/";/*]]>*/</script><!-- slice-start id="_gatsby-scripts-1" -->
           <script
             id="gatsby-chunk-mapping"
           >

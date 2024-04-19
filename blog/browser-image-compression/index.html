@@ -110,18 +110,18 @@ export default async function compress(file, options, previousProgress = 0) {
 <p>아래 보다시피 png가 같은 용량대비 jpg 보다 퀄리티가 낮다. 그래픽 같은 사진은 png도 괜찮은데 실사 사진이 많이 쓰이는 체험뷰는 jpg/webp만으로 제한했어야했다.</p>
 <br/>
 <div class="image-container">
-  <img class="md-image" src="/images/rock.jpg" alt="jpg rock"/>
-  <sub class>그림 1. 돌멩이 사진의 jpg버전 174kb</sub>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/rock.jpg" alt="jpg rock">
+  <sub class="">그림 1. 돌멩이 사진의 jpg버전 174kb</sub>
 </div>
 <br/>
 <div class="image-container">
-  <img class="md-image" src="/images/rock.png" alt="png rock"/>
-  <sub class>그림 2. 돌멩이 사진의 png버전 198kb</sub>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/rock.png" alt="png rock">
+  <sub class="">그림 2. 돌멩이 사진의 png버전 198kb</sub>
 </div>
 <br/>
 <div class="image-container">
-  <img class="md-image" src="/images/rock.webp" alt="webp rock"/>
-  <sub class>그림 3. 돌멩이 사진의 webp버전 84kb</sub>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/rock.webp" alt="webp rock">
+  <sub class="">그림 3. 돌멩이 사진의 webp버전 84kb</sub>
 </div></article><style data-emotion="css 9hy0l">.css-9hy0l{position:fixed;top:36px;right:40px;max-height:calc(100vh - 24px - 36px);overflow:auto;scrollbar-width:none;-ms-overflow-style:none;}.css-9hy0l::-webkit-scrollbar{display:none;}@-moz-document url-prefix(){.css-9hy0l{display:none;}}@media (max-width: 1400px){.css-9hy0l{display:none;}}</style><div data-nosnippet="true" class="css-9hy0l"><style data-emotion="css jb9iej">.css-jb9iej{background-color:rgba(0, 0, 0, 0.2);width:100%;position:absolute;right:0;top:0;z-index:11;}</style><div class="css-jb9iej"></div><style data-emotion="css 1k1x2bk">.css-1k1x2bk{position:absolute;width:100%;height:100%;background-color:rgba(255, 255, 255, 0);z-index:10;}</style><div class="css-1k1x2bk"></div><style data-emotion="css 1se8enf">.css-1se8enf{zoom:0.15;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;padding:0px 30px;}</style><div class="markdown-content css-1se8enf"><h2><strong>browser-image-compression 분석</strong></h2>
 <p class="text-time">최초 업로드 2024-03-16 / 마지막 수정 2024-03-16</p>
 <p>예전에 <a href="https://chvu.co.kr">체험뷰</a> 개발할 떄 browser-image-compression을 썼었는데, 지금 체험뷰 사이트를 방문해보면 일부 이미지가 이상적인 압축 사이즈인 50kb~300kb를 많이 벗어난 1mb 언저리인 것들도 보인다. 이렇게 일부 이미지들 때문에 페이지 로드 속도가 저하되고 있다. 내가 예전에 구현할 때 썸네일에 2MB까지 자유(maxSizeMB)를 줬었다. 500kb 같이 낮은 숫자가 아니었던 이유는 특정 이미지들의 경우 500kb 미만으로 압축시 너무 화질이 안좋아보여서 웹사이트를 외관상 해친다고 생각했기 때문이다. 그럼 왜 이런 일이 발생했을까? 3년 전에는 내가 라이브러리 내부를 열어본다는 생각까지 못했던 것 같다. 우선 이미지 압축에 대한 용어부터 정리하고 이후 라이브러리 내부를 탐구하자.</p>
@@ -234,19 +234,19 @@ export default async function compress(file, options, previousProgress = 0) {
 <p>아래 보다시피 png가 같은 용량대비 jpg 보다 퀄리티가 낮다. 그래픽 같은 사진은 png도 괜찮은데 실사 사진이 많이 쓰이는 체험뷰는 jpg/webp만으로 제한했어야했다.</p>
 <br/>
 <div class="image-container">
-  <img class="md-image" src="/images/rock.jpg" alt="jpg rock"/>
-  <sub class>그림 1. 돌멩이 사진의 jpg버전 174kb</sub>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/rock.jpg" alt="jpg rock">
+  <sub class="">그림 1. 돌멩이 사진의 jpg버전 174kb</sub>
 </div>
 <br/>
 <div class="image-container">
-  <img class="md-image" src="/images/rock.png" alt="png rock"/>
-  <sub class>그림 2. 돌멩이 사진의 png버전 198kb</sub>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/rock.png" alt="png rock">
+  <sub class="">그림 2. 돌멩이 사진의 png버전 198kb</sub>
 </div>
 <br/>
 <div class="image-container">
-  <img class="md-image" src="/images/rock.webp" alt="webp rock"/>
-  <sub class>그림 3. 돌멩이 사진의 webp버전 84kb</sub>
-</div></div></div><style data-emotion="css 6apk4h">.css-6apk4h{height:60px;padding-top:40px;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;color:#b4b4b4;font-size:14px;}</style><div class="css-6apk4h"><span class="text-red">Copyright </span><span class="text-purple">© </span><span class="text-skyblue">2023</span><style data-emotion="css fute3">.css-fute3{-webkit-text-decoration:none;text-decoration:none;color:#a6e22e;}</style><a href="/" class="css-fute3"> Seho Lee </a><span class="text-orange">All Rights Reserved</span><span class="text-yellow">.</span></div></main></div></div><style data-emotion="css 1u8f60p">.css-1u8f60p{width:100vw;height:24px;background-color:#414339;position:fixed;bottom:0;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;font-size:12px;}</style><div class="css-1u8f60p"><style data-emotion="css 1byydgk">.css-1byydgk{background-color:#1e1f1c;color:#ccc;font-size:12px;font-weight:800;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding:0px 6px;}@media (max-width: 768px){.css-1byydgk{font-size:10px;}}</style><div class="css-1byydgk">&lt;/&gt;</div><style data-emotion="css 1k181js">.css-1k181js{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-text-decoration:none;text-decoration:none;width:100%;}</style><a href="https://github.com/seho0808/blog" class="css-1k181js"><style data-emotion="css kr4wdv">.css-kr4wdv{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding-left:10px;padding-right:20px;color:#ccc;gap:10px;}@media (max-width: 768px){.css-kr4wdv{font-size:10px;}}</style><div class="css-kr4wdv"><div>Latest Commit</div><div>62cd1662-839f-5a83-93c6-11b5a6eb349c</div></div><style data-emotion="css 1lo262">.css-1lo262{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding-left:10px;padding-right:20px;color:#ccc;gap:10px;margin-left:auto;}@media (max-width: 768px){.css-1lo262{font-size:10px;}}@media (max-width: 768px){.css-1lo262{display:none;}}</style><div class="css-1lo262"><div>seho0808</div><div>2024-04-19T15:33:04Z</div></div></a></div></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/blog/browser-image-compression/";/*]]>*/</script><!-- slice-start id="_gatsby-scripts-1" -->
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/rock.webp" alt="webp rock">
+  <sub class="">그림 3. 돌멩이 사진의 webp버전 84kb</sub>
+</div></div></div><style data-emotion="css 6apk4h">.css-6apk4h{height:60px;padding-top:40px;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;color:#b4b4b4;font-size:14px;}</style><div class="css-6apk4h"><span class="text-red">Copyright </span><span class="text-purple">© </span><span class="text-skyblue">2023</span><style data-emotion="css fute3">.css-fute3{-webkit-text-decoration:none;text-decoration:none;color:#a6e22e;}</style><a href="/" class="css-fute3"> Seho Lee </a><span class="text-orange">All Rights Reserved</span><span class="text-yellow">.</span></div></main></div></div><style data-emotion="css 1u8f60p">.css-1u8f60p{width:100vw;height:24px;background-color:#414339;position:fixed;bottom:0;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;font-size:12px;}</style><div class="css-1u8f60p"><style data-emotion="css 1byydgk">.css-1byydgk{background-color:#1e1f1c;color:#ccc;font-size:12px;font-weight:800;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding:0px 6px;}@media (max-width: 768px){.css-1byydgk{font-size:10px;}}</style><div class="css-1byydgk">&lt;/&gt;</div><style data-emotion="css 1k181js">.css-1k181js{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-text-decoration:none;text-decoration:none;width:100%;}</style><a href="https://github.com/seho0808/blog" class="css-1k181js"><style data-emotion="css kr4wdv">.css-kr4wdv{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding-left:10px;padding-right:20px;color:#ccc;gap:10px;}@media (max-width: 768px){.css-kr4wdv{font-size:10px;}}</style><div class="css-kr4wdv"><div>Latest Commit</div><div>8297d5d6-680b-5f57-8fe8-7a08a2f6aa17</div></div><style data-emotion="css 1lo262">.css-1lo262{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding-left:10px;padding-right:20px;color:#ccc;gap:10px;margin-left:auto;}@media (max-width: 768px){.css-1lo262{font-size:10px;}}@media (max-width: 768px){.css-1lo262{display:none;}}</style><div class="css-1lo262"><div>seho0808</div><div>2024-04-19T16:04:23Z</div></div></a></div></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/blog/browser-image-compression/";/*]]>*/</script><!-- slice-start id="_gatsby-scripts-1" -->
           <script
             id="gatsby-chunk-mapping"
           >
