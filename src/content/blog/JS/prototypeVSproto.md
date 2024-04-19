@@ -79,7 +79,7 @@ console.log(
 <br/>
 
 <div class="image-container">
-  <img class="md-image" src="/images/prototype.png" alt="next_js_caching_flow"/>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/prototype.png" alt="next_js_caching_flow"/>
   <sub class>그림 1. 코드를 정리한 그래프</sub>
 </div>
 

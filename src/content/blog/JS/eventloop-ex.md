@@ -92,7 +92,7 @@ console log가 다 나오기 전에 box color이 거의 동시다발적으로 �
 <br/>
 
 <div class="image-container">
-  <img class="md-image" src="/images/event-loop-ex.png" alt="event-loop-example-flow"/>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/event-loop-ex.png" alt="event-loop-example-flow"/>
   <sub class>그림 1. 이벤트 루프 플로우</sub>
 </div>
 

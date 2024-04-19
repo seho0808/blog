@@ -12,7 +12,7 @@ subtitle: "Next js 13에서 추가된 캐싱 기능들을 정리해보자 [2편]
 <br/>
 
 <div class="image-container">
-  <img class="md-image" src="/images/caching-overview-fixed.jpg" alt="next_js_caching_flow"/>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/caching-overview-fixed.jpg"alt="next_js_caching_flow"/>
   <sub class>그림 1. 실제로 고려해야되는 캐싱들</a></sub>
 </div>
 

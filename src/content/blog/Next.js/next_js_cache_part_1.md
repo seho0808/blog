@@ -25,7 +25,7 @@ subtitle: "Next js 13에서 추가된 캐싱 기능들을 정리해보자 [1편]
 ![temp](/images/caching-overview.jpg) -->
 
 <div class="image-container">
-  <img class="md-image" src="/images/caching-overview.jpg" alt="next_js_caching_flow"/>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/caching-overview.jpg" alt="next_js_caching_flow"/>
   <sub class>그림 1. Next.js 웹사이트 원본</sub>
 </div>
 
@@ -41,7 +41,7 @@ Next.js로 개발하는 사람들은 상당수가 풀스택에 가까운 프론�
 <br/>
 
 <div class="image-container">
-  <img class="md-image" src="/images/caching-overview-fixed.jpg" alt="next_js_caching_flow"/>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/caching-overview-fixed.jpg" alt="next_js_caching_flow"/>
   <sub class>그림 2. 실제로 고려해야되는 캐싱들</a></sub>
 </div>
 
@@ -169,7 +169,7 @@ export default function Home() {
 바로 Router Cache 때문에 서버 컴포넌트의 RSC 페이로드가 캐싱되는 것이다.
 
 <div class="image-container">
-  <img class="md-image" style="width:50%;" src="/images/router-cache-sc.jpg" alt="next_js_caching_flow"/>
+  <img class="md-image" style="width:50%;" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/router-cache-sc.jpg" alt="next_js_caching_flow"/>
   <sub class>그림 3. Router Caching...!</a></sub>
 </div>
 

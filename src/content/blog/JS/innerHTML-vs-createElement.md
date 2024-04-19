@@ -26,7 +26,7 @@ innerHTML vs createElement 속도 비교가 궁금해서 테스팅해보았다.
 
 ## **시각화**
 
-<img src="/images/innerHTML-speed.png" style="width: 100%;"/>
+<img src="https://d1ykeqyorqdego.cloudfront.net/new-assets/innerHTML-speed.png" style="width: 100%;"/>
 
 <br/>
 

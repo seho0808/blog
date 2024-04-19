@@ -140,20 +140,20 @@ export default async function compress(file, options, previousProgress = 0) {
 <br/>
 
 <div class="image-container">
-  <img class="md-image" src="/images/rock.jpg" alt="jpg rock"/>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/rock.jpg" alt="jpg rock"/>
   <sub class>그림 1. 돌멩이 사진의 jpg버전 174kb</sub>
 </div>
 
 <br/>
 
 <div class="image-container">
-  <img class="md-image" src="/images/rock.png" alt="png rock"/>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/rock.png" alt="png rock"/>
   <sub class>그림 2. 돌멩이 사진의 png버전 198kb</sub>
 </div>
 
 <br/>
 
 <div class="image-container">
-  <img class="md-image" src="/images/rock.webp" alt="webp rock"/>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/rock.webp" alt="webp rock"/>
   <sub class>그림 3. 돌멩이 사진의 webp버전 84kb</sub>
 </div>
