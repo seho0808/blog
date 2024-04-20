@@ -79,8 +79,42 @@ $$
 
 - $u, v$: 각각 basis function의 행과 열의 인덱스를 나타냄.
 - $B_{uv}(x, y)$: ($N$x$N$ 픽셀일 때) 주파수 u, v에서의 basis function. $B_{00}$은 전체 평균 밝기를 측정한다고 한다.
-- $F(u, v)$: (8x8 픽셀일 때) 주파수 u, v에서의 DCT 계수 => 우리가 결국 구하고자 하는 값임.
+
+- $F(u, v)$: (8x8 픽셀일 때) 주파수 u, v에서의 DCT 계수 => 우리가 결국 구하고자 하는 값임. 공식을 직관적으로 생각하면 8x8 이미지를 8x8 필터에 겹쳐놓고 칸 마다 서로 곱셈해서 다 더하는 것임. 예시로 가상의 13번 필터를 쓴다고 해보자. 그렇다면 연산은 Hadamard Product(element-wise product)가 될 것이다. 아래 연산의 결과에서 모든 요소를 다 더하면 곧 $F(u, v)$와 동일하다고 할 수 있다(계수들 빼면). 코사인 두 개 곱한 것의 결과가 곧 Filter한 개의 x, y에서의 요소 값이기 때문이다. 아무도 깔끔하게 안알려줘서 고민하다보니 이렇게 직관적인 설명이 생각났다.
+
+$$
+Filter_{13} = \begin{bmatrix}
+1 & -1 & 1 & \dots \\
+-3 & 1 & -1 & \dots \\
+5 & -3 & 3 & \dots \\
+\vdots & \vdots & \vdots & \ddots
+\end{bmatrix}
+, \quad
+Image_{8*8} = \begin{bmatrix}
+5 & 4 & 3 & \dots \\
+77 & 22 & 33 & \dots \\
+4 & 1 & 6 & \dots \\
+\vdots & \vdots & \vdots & \ddots
+\end{bmatrix}
+$$
+
+$$
+Filter_{13}\odot Image_{8*8}  = \begin{bmatrix}
+1*5 & -1*4 & 1*3 & \dots \\
+-3*77 & 1*22 & -1*33 & \dots \\
+5*4 & -3*1 & 3*6 & \dots \\
+\vdots & \vdots & \vdots & \ddots
+\end{bmatrix}
+=\begin{bmatrix}
+5 & -4 & 3 & \dots \\
+-231 & 22 & -33 & \dots \\
+20 & -3 & 18 & \dots \\
+\vdots & \vdots & \vdots & \ddots
+\end{bmatrix} = \text{result!!!}
+$$
+
 - $P'(x, y)$: 이미지에서 x, y위치의 픽셀 값에서 128을 빼서 -128~127의 범위로 바꾼 값
+
 - $C(u), C(v)$: 스케일링 인자. u 또는 v가 0일때에는 $\frac{1}{\sqrt{2}}$, 나머지는 1로 설정
 
 위에 존재하는 $F$ 함수를 거치면 원래 있었던 원본 이미지에서 떼어낸 8x8짜리 픽셀 행렬이 basis function들의 결합으로 바뀐다. 아래의 그림 2를 보면
