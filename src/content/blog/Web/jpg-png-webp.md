@@ -184,7 +184,7 @@ $$
 
 <span class="text-yellow">과정:</span> 먼저 4단계 양자화의 결과값이 왼쪽위에 유의미한 값이 몰려있고 오른쪽 아래로 갈수록 0이 많다. 그래서 [지그재그](https://youtu.be/Kv1Hiv3ox8I?si=Rc1k0f07rspBPB9c&t=680)로 Run Length Encoding을 적용해주어서 압축한다. 그 후 [Huffman Encoding](https://www.youtube.com/watch?v=iEm1NRyEe5c&ab_channel=PizzeyTechnology)을 적용해서 다시 한 번 데이터 크기를 줄인다. 부호화를 두 번하는 2단 압축이다. 자세하게는 들어가지 않겠다. 글로 적는 것 보다 영상들을 보면 매우 쉽고 빠르게 이해할 수 있다. 허프만 인코딩을 짧게 말하자면 "자주 등장하는 것(문자)을 작은 단위의 바이트로 치환하는 우선순위 큐를 만드는 것"이라고 할 수 있다.
 
-<span class="text-yellow">결과:</span> 양자화의 결과였던 0이 많아진 계수 행렬을 실제로 압축하였다. 이미지의 실제 크기가 획기적으로 줄어들었다. 이로써 기본 JPG 압축 파이프라인은 끝이다.
+<span class="text-yellow">결과:</span> 양자화의 결과였던 0이 많아진 계수 행렬을 Run Length Encoding으로 압축하였다. 그 후 다시 한 번 Huffman Encoding으로 압축한다. 이미지의 실제 크기가 획기적으로 줄어들었다. 이로써 기본 JPG 압축 파이프라인은 끝이다.
 
 <br/>
 
