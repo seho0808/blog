@@ -7,7 +7,7 @@ subtitle: "json web token에 대해 알아보자"
 
 ## **JWT vs JWE vs JWS**
 
-<p class="text-time">최초 업로드 2024-04-19 / 마지막 수정 2024-04-19</p>
+<p class="text-time">최초 업로드 2024-04-19 / 마지막 수정 2024-04-24</p>
 
 오늘 JWT 관련해서 정보들을 들여다보는 중에 내가 얼마나 무지했는지 깨달았다.
 JWT RFC를 읽다보니 내가 잘못 알고 있던 정보들이 술술 나오기 시작해서 내가 이해한 것들 위주로 적어보려고 한다.
@@ -49,7 +49,7 @@ JWE RFC - JSON Web Encryption (JWE) Overview 발췌:
 
 ### **2. JWT는 그렇다면 도대체 무엇인가**
 
-<span class="text-orange">결론부터 말하자면: 위에서 추측한대로 JWT는 JWE와 JWS를 아우르는 인터페이스 같은 존재이다.</span> JWT가 JWE와 JWS 보다 RFC 번호가 더 후순위지만, JWE와 JWS를 추상화하는 존재이다. jwt.io는 JWT라고 불러도 되지만 JWS가 더 자세한 표현이다. 내 개인적인 추측으로 <span class="text-orange">JWT라는 표현을 굳이 만든 이유는 "보안의 개념을 삭제한 상태에서 JWS와 JWE가 어떻게 정보를 주고 받아야하는지 가볍게 설명"하기 위해서</span>이다. JWE와 JWS의 RFC에서 어떻게 정보를 주고 받아야하는지에 대한 규약까지 우겨넣으면 내용이 너무 복잡해지기도 하고, 둘 다 payload(JWS)/plaintext(JWE)의 내용적인 것에 대한 규약은 공통되는 부분이기에 공통적인 통신 내용에 대한 규약을 몰아서 JWT RFC에서 설명하고 보안적인 부분을 JWS RFC, JWE RFC에서 각자 집중적으로 설명하는 것 같다. => 그 단적인 근거로 Claim이라는 단어의 등장 횟수를 RFC 마다 검색해보면 알 수 있을 것이다.
+<span class="text-orange">결론부터 말하자면: 위에서 추측한대로 JWT는 JWE와 JWS를 아우르는 인터페이스 같은 존재이다. JWT는 토큰이고 JWE와 JWS는 그 평문 토큰을 더 안전하게 만들어주는 추가 구현이다. JWE 혹은 JWS 방식 중 하나를 필수적으로 선택해야지만 JWT라고 부를 수 있다.</span> JWT가 JWE와 JWS 보다 RFC 번호가 더 후순위지만, JWE와 JWS를 추상화하는 존재이다. jwt.io는 JWT라고 불러도 되지만 JWS가 더 자세한 표현이다. JWE와 JWS의 RFC에서 어떻게 정보를 주고 받아야하는지에 대한 규약까지 우겨넣으면 내용이 너무 복잡해지기도 하고, 둘 다 payload(JWS)/plaintext(JWE)의 내용적인 것에 대한 규약은 공통되는 부분이기에 공통적인 통신 내용에 대한 규약을 몰아서 JWT RFC에서 설명하고 보안적인 부분을 JWS RFC, JWE RFC에서 각자 집중적으로 설명하는 것 같다. => 그 단적인 근거로 Claim이라는 단어의 등장 횟수를 RFC 마다 검색해보면 알 수 있을 것이다.
 
 아래는 JWT를 구성하는 요소를 더 깊게 분석해본 내용이다.
 
@@ -61,7 +61,7 @@ JWT RFC 맨 첫 장을 보면
 
 > _<span class="text-purple">"The claims in a JWT are encoded as a JSON object that is used as the **payload** of a JSON Web Signature (JWS) structure or as the **plaintext** of a JSON Web Encryption (JWE) structure ..."</span>_
 
-JWT의 claim이라는 것들이 JWS에서는 payload이고 JWE에서는 plaintext로 쓰여야한다고 되어있다.
+JWT의 claim이라는 것들이 JWS 구현에서는 payload이고 JWE 구현에서는 plaintext로 쓰여야한다고 되어있다.
 
 RFC에는 JWT Claim이 정확히 무엇인지 설명이 없다. 하지만 위에 적혀진 것을 통해 claim은 JWT payload에 들어가는 정보라는 것을 알 수 있고, 그 형태는 JSON이기에 claim이 항상 key, value 페어로 이루어져있다는 사실은 추론할 수 있다.
 
@@ -81,7 +81,7 @@ RFC에는 JWT Claim이 정확히 무엇인지 설명이 없다. 하지만 위에
 
 #### 2-2. JWT Header
 
-앞서 언급했듯이 JWT는 JWS와 JWE의 인터페이스 개념이다. 고로 JWS와 JWE에서 공통으로 사용되는 헤더만 JWT에 언급되어있다. 바로 "typ"과 "cty"이다. 둘 다 옵셔널이다.
+앞서 언급했듯이 JWT는 JWS 구현과 JWE 구현의 인터페이스 개념이다. 고로 JWS 구현과 JWE 구현에서 공통으로 사용되는 헤더만 JWT에 언급되어있다. 바로 "typ"과 "cty"이다. 둘 다 옵셔널이다.
 JWT RFC에서는 다른 정보들과 JWT를 구분하기 위한 필드인 typ를 사용할시 대문자 "JWT"로 쓰라고 권한다고 되어있다. (즉, 헤더가 {"typ": "JWT"} 이런식이다)
 
 JWT의 핵심인 Claim과 Header을 보았다. 이제 JWS와 JWE에 대해 더 알아보자.
@@ -179,7 +179,7 @@ JWE는 내가 한 번도 써본 적이 없어서 사용법을 말하기에는 �
 
 #### 5-1. 쿠키 사용시
 
-- JWS는 평문이기 때문에 signature자체는 내부 정보가 변형되었는지만 확인 가능함.
+- JWS로 구현된 JWT payload는 평문이기 때문에 signature자체는 내부 정보가 변형되었는지만 확인 가능함.
 - 그렇기에 JWS는 무조건 https로 전송되어야함. http로 유출 시 문제 생기기 쉬움.
 - XSS 공격같은 경우 js를 실행해서 document.cookie에서 JWS를 탈취할 수 있다. 그렇기에 HttpOnly 옵션으로 쿠키를 보호해야한다.
 - Secure 옵션으로 https에서만 쿠키가 보내지도록하는 것도 설정해주어야한다.
