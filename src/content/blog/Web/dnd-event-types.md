@@ -5,9 +5,9 @@ title: "드래그 드랍 pointer vs drag"
 subtitle: "드래그 드랍 pointer 이벤트 vs drag 이벤트"
 ---
 
-## **드래그 드랍을 pointer 이벤트 vs drag 이벤트**
+## **드래그 드랍 pointer 이벤트 vs drag 이벤트**
 
-<p class="text-time">최초 업로드 2024-04-12 / 마지막 수정 2023-04-12</p>
+<p class="text-time">최초 업로드 2024-04-12 / 마지막 수정 2023-04-27</p>
 
 드래그 드랍을 mouse, pointer, drag 이벤트로 각각 구현해보고 나서 느낀점을 적으려고한다.
 
