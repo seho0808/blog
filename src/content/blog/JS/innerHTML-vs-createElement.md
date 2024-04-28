@@ -7,7 +7,7 @@ subtitle: "JS 코드의 속도를 비교 테스팅해보자 - innerHTML vs creat
 
 ## **innerHTML vs createElement 속도 벤치마킹 해보기**
 
-<p class="text-time">최초 업로드 2023-02-12 / 마지막 수정 2023-02-25</p>
+<p class="text-time">최초 업로드 2024-02-12 / 마지막 수정 2024-02-25</p>
 
 innerHTML vs createElement 속도 비교가 궁금해서 테스팅해보았다.
 
