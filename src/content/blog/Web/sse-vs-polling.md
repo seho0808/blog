@@ -1,7 +1,7 @@
 ---
 slug: "/blog/sse-vs-polling"
 date: "2024-04-29"
-title: "SSE vs Polling (feat. Keep-Alive)"
+title: "SSE vs Polling"
 subtitle: "브라우저 - 서버 간의 지속적인 통신 방법에 대해 알아보자"
 ---
 
