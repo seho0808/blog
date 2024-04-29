@@ -5,7 +5,7 @@ title: "SSE vs Polling"
 subtitle: "브라우저 - 서버 간의 지속적인 통신 방법에 대해 알아보자"
 ---
 
-## **SSE vs Polling (feat. Keep-Alive)**
+## **SSE vs Polling**
 
 <p class="text-time">최초 업로드 2024-04-29 / 마지막 수정 2024-04-29</p>
 
