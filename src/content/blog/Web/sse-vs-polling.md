@@ -1,15 +1,15 @@
 ---
 slug: "/blog/sse-vs-polling"
-date: "2024-04-20"
+date: "2024-04-29"
 title: "SSE vs Polling (feat. Keep-Alive)"
 subtitle: "브라우저 - 서버 간의 지속적인 통신 방법에 대해 알아보자"
 ---
 
-## **SSE vs Polling (feat. Keep-Alive) - 미완성 포스트**
+## **SSE vs Polling (feat. Keep-Alive)**
 
 <p class="text-time">최초 업로드 2024-04-29 / 마지막 수정 2024-04-29</p>
 
-내가 육군본부에서 구현했던 AI 모니터링 체계가 일반 폴링(regular polling) 방식이었는데, 부하를 확인했을 때 적어서 굳이 추가적으로 최적화를 해주지 않았던 기억이 있다.
+육군본부에서 내가 구현했던 AI 모니터링 체계가 일반 폴링(regular polling) 방식이었는데, 부하를 확인했을 때 적어서 굳이 추가적으로 최적화를 해주지 않았던 기억이 있다.
 
 그때 서버가 겪고 있던 부하를 요약해보자면:
 
@@ -20,8 +20,8 @@ subtitle: "브라우저 - 서버 간의 지속적인 통신 방법에 대해 알
 아쉬운 점을 요약해보자면:
 
 - 부하 1의 경우: 초 단위로 일방적으로 받기 때문에 SSE를 쓰는게 더 좋지 않았나 싶다. (비록 서버-클라이언트가 아닌 서버-서버의 SSE이지만.)
-- 부하 2의 경우: 이것은 산발적으로 오는 요청들이기에 일반 http 요청이 좋은 것 같다.
-- 부하 3의 경우: 일단 AI 모니터링 체계를 사용하는 유저 수가 10명 미만으로 예정되어있었기에 (유지보수하는 부서만 보고 있으면됨) 요청량이 많지는 않다. 그리고 대시보드 실시간 데이터의 주기가 5초로 주기가 꽤 길어서 SSE 보다 일반 HTTP요청을 써도 괜찮아보이고, 같은 데이터라도 무조건 다시 받아와야하기에 일반 폴링도 문제가 없어 보인다.
+- 부하 2의 경우: 이것은 산발적으로 오는 요청들이기에 일반적인 HTTP 요청이 좋은 것 같다.
+- 부하 3의 경우: 일단 AI 모니터링 체계를 사용하는 유저 수가 10명 미만으로 예정되어있었기에 (유지보수하는 부서만 보고 있으면됨) 요청량이 많지는 않다. 그리고 대시보드 실시간 데이터의 주기가 5초로 주기가 꽤 길어서 SSE 보다 일반 폴링을 써도 괜찮아보이고, 같은 데이터라도 무조건 다시 받아와야하기에 일반 폴링도 문제가 없어 보인다.
 
 부하 1이 가장 아쉬운 부분인 것 같다.
 
@@ -30,16 +30,19 @@ subtitle: "브라우저 - 서버 간의 지속적인 통신 방법에 대해 알
 
 <br/>
 
+## **HTTP 버전 별 지속적인 통신**
+
 ### **HTTP/1.1에서의 지속적인 통신**
 
 HTTP/1.1의 [2022년 Keep-Alive 1.0과의 차이](https://datatracker.ietf.org/doc/html/rfc9112#name-keep-alive-connections)과 [2022년 Persistence 스펙](https://datatracker.ietf.org/doc/html/rfc9112#section-9.3)과 [1997년 Persistence 스펙](https://www.rfc-editor.org/rfc/rfc2068#section-8.1)을 참고해서 적어보았다:
 
 - HTTP/1.0에서는 Keep-Alive를 명시적으로 적어주어야하고 실험적 구현이었기에 서버에 따라서 제대로 구현이 안되어있을 수도 있다.
-- 하지만 <span class="text-skyblue">HTTP/1.1에서는 기본적으로 Keep-Alive설정이 생략되어도 적용된다.</span>
+- 하지만 <span class="text-orange">HTTP/1.1에서는 기본적으로 Keep-Alive설정이 생략되어도 적용된다.</span>
 - 다만, [timeout과 max 파라미터](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Keep-Alive)의 디폴트 값은 스펙에는 적혀있지 않다.
 - 그렇기에 HTTP/1.1에서 `Connection: Keep-Alive`와 함께 `Keep-Alive: timeout=5, max=1000`를 원하는 값으로 헤더에 주는 것은 유의미하다. (서버 마다 구현한 디폴트 값이 다를 수 있기에)
+- 스택오버플로우 카더라 기준으로 [서버에서는 Keep-Alive 시간을 무시하고 자기 마음대로 정할 수 있다](https://stackoverflow.com/questions/19155201/http-keep-alive-timeout)고한다.
 
-추가적인 디테일
+추가적인 디테일:
 
 - Connection 옵션이 "close"로 설정된 경우: 현재 응답 이후 연결이 지속되지 않는다.
 - 지속적인 연결을 지원하지 않는 클라이언트는 모든 요청 메시지에 "close" 옵션을 포함해야 한다.
@@ -53,7 +56,7 @@ HTTP/1.1의 [2022년 Keep-Alive 1.0과의 차이](https://datatracker.ietf.org/d
 
 ### **HTTP/2에서의 지속적인 통신**
 
-<span class="text-skyblue">HTTP/2는 기본적으로 지속적이다.</span>
+<span class="text-orange">HTTP/2는 기본적으로 지속적이다.</span>
 
 HTTP/1.1에서 Status Line, Headear, Body를 묶어서 Message라고 부르며 이것이 하나의 요청 단위이다.
 HTTP/2에서는 Frame과 Message와 Stream이 하나의 요청 단위이다:
@@ -62,18 +65,24 @@ HTTP/2에서는 Frame과 Message와 Stream이 하나의 요청 단위이다:
 - Message: 여러 개의 Frame. 하나의 메세지 단위임. (HTTP/1.1로 치면 Status Line + Header + Body)
 - Stream: 하나의 응답을 위한 하나의 요청. 여러 개의 요청이 동시에 오고 갈 수 있음. (HTTP/1.1로 치면 한 번의 응답을 위한 요청.)
 
-------------스트림 이미지 1 - 이미지 출처 넣기-----------
+<div class="image-container">
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/sse/http2-stream.svg" alt="http2 stream"/>
+  <sub class>그림 1. 출처: https://web.dev/articles/performance-http2</sub>
+</div>
 
-------------스트림 이미지 2 - 이미지 출처 넣기----------- - 마치 CPU의 컨텍스트 스위칭 PCB 순서처럼 쪼개져서 옴.
+<div class="image-container">
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/sse/http2-stream2.png" alt="http2 stream"/>
+  <sub class>그림 2. PCB처럼 나뉘어있다. 출처: https://web.dev/articles/performance-http2</sub>
+</div>
 
 이렇게 설계(멀티플렉싱)했기에 HTTP/1.1에서처럼 여러 개의 TCP요청으로 리소스 여러 개를 병렬로 가져오는 것이 아니라 하나의 연결 안에서 모든 리소스를 요청할 수 있고,
-이러면 당연히 지속적인 통신일 수 밖에 없다. 그럼 HTTP/2는 도대체 언제 끊기냐!면 [스펙 9.1 Connection Management](https://datatracker.ietf.org/doc/html/rfc9113#name-connection-management)에 따르면 클라이언트는 그 페이지에서 나가거나 완전히 이탈할 때까지 연결을 유지해야하고, 서버는 최에에에대한 연결을 유지하다가 idle로 판단되면 GOAWAY 프레임을 클라이언트에 보내야한다고 한다. 그리고 재미있는 점은 크롬 탭이랑 윈도우끼리도 동일한 도메인에 대해서는 HTTP/2통신을 공유한다는 [카더라](https://stackoverflow.com/a/75502115/14971839)가 있다.
+이러면 당연히 지속적인 통신일 수 밖에 없다. 그럼 HTTP/2는 도대체 언제 끊기냐!면 [스펙 9.1 Connection Management](https://datatracker.ietf.org/doc/html/rfc9113#name-connection-management)에 따르면 클라이언트는 그 페이지에서 나가거나 완전히 이탈할 때까지 연결을 유지해야하고, 서버는 최에에에대한 연결을 유지하다가 idle로 판단되면 GOAWAY 프레임을 클라이언트에 보내야한다고 한다. 그리고 재미있는 점은 [크롬 탭이랑 윈도우끼리도 동일한 도메인에 대해서는 HTTP/2통신을 공유한다는 카더라](https://stackoverflow.com/a/75502115/14971839)가 있다.
 
 <br/>
 
 ### **HTTP/3에서의 지속적인 통신**
 
-HTTP/3은 구글의 QUIC(Quick UDP Internet Connections)기반이고 QUIC은 UDP기반이다. <span class="text-skyblue">흥미롭게도 TCP에서 가지는 핸드셰이크, 연결성, 패킷 순서 보장등을 UDP위에서 구현한 것이 QUIC이다. 그렇기에 멀티플렉싱을 제공하는 지속적인 통신이 기본 옵션이라고 생각해야할 것이다.</span>
+HTTP/3은 구글의 QUIC(Quick UDP Internet Connections)기반이고 QUIC은 UDP기반이다. <span class="text-orange">흥미롭게도 TCP에서 가지는 핸드셰이크, 연결성, 패킷 순서 보장등을 UDP위에서 구현한 것이 QUIC이다. 그렇기에 멀티플렉싱을 제공하는 지속적인 통신이 기본 옵션이라고 생각해야할 것이다.</span>
 
 - 멀티플렉싱을 HTTP의 애플리케이션 레이어가 아닌 트랜스포트 레이어에서 구현하기 때문에, HTTP/2보다 안정적으로 멀티플렉싱이 가능하다. HTTP/2는 멀티플렉싱 도중에 하나의 스트림에서 문제가 생기면 다른 스트림들이 다 일시정지가 된다고 한다. 이런 문제를 HTTP/3에서는 근본적으로 트랜스포트 레이어에서 해결한다.
 - HTTPS를 HTTP/2이하에서 구현하면 TCP 핸드셰이크 이후 TLS 핸드셰이크를 하는데, QUIC은 한 번의 핸드셰이크에 TLS를 포함해버려서 더 빠르다고 한다.
@@ -82,6 +91,8 @@ HTTP/3은 구글의 QUIC(Quick UDP Internet Connections)기반이고 QUIC은 UDP
 이외에도 수많은 디테일들이 있지만 생략했다. 나중에 더 잘 알게되면 여기에 추가하도록하자. RFC는 9000번이다.
 
 <br/>
+
+## **폴링과 SSE**
 
 ### **일반 폴링 (Regular Polling)**
 
@@ -105,23 +116,46 @@ HTTP/3은 구글의 QUIC(Quick UDP Internet Connections)기반이고 QUIC은 UDP
 
 ### **SSE (Server Side Events)**
 
-SSE는 서버에서 클라이언트로 계속해서 데이터를 푸시하는 단방향 HTTP 연결이다. => 내일 자세히 조사
+SSE는 서버에서 클라이언트로 계속해서 데이터를 푸시하는 단방향 HTTP 연결이다. 클라이언트는 연결이 끊기면 계속 재연결을 시도한다. HTTP 204 No Content가 날아오면 재연결을 멈춘다.
 
 - HTTP/1.0: 지원되지 않는다.
-- HTTP/1.1: `Content-Type: text/event-stream`을 보내면 SSE가 활성화된다. => 내일 자세히 조사
-- HTTP/2와 3: 연결 하나에서
+- HTTP/1.1: `Connection:keep-alive`, `Content-Type: text/event-stream`, `cache: no-store`을 보내면 SSE가 활성화된다. 하나의 TCP 연결 전체를 SSE용도로 계속 차지한다.
+- HTTP/2와 3: `Content-Type: text/event-stream`만 필요하다. 하나의 스트림을 계속 유지하면서 요청을 안보내도 응답이 계속 오는 형식이다. 하나의 TCP 연결의 일부를 차지한다.
+
+<br/>
+
+## **성능 비교**
+
+### **HTTP/1.1, HTTP/2, HTTP/3 속도?**
+
+[HTTP/2와 3의 비교 논문](https://ieeexplore.ieee.org/document/9500258)과 [영상](https://www.youtube.com/watch?v=-0yu_zOFilg&ab_channel=AntonPutra)과 [비교 실험](https://www.yanxurui.cc/posts/http/2023-11-22-http-comparison/)을 찾아보니 전반적으로 HTTP/2는 1.1에 비해서 멀티플렉싱으로 많이 빨라졌지만, 3의 경우에는 인터넷 환경이 좋을 경우 오히려 상대적으로 느려진다고 한다. Throughput은 올라가지만 속도는 내려가며, 통신 환경이 원활하지 않은 모바일 기기 등에 좋은 것이 HTTP/3이라고 한다.
 
 <br/>
 
 ### **TCP 연결 하나당 유지 비용?**
 
+[TCP 한 개를 유지하면 하나의 TCB블록을 유지하는 것과 동일하다.](https://beta.computer-networking.info/syllabus/default/protocols/tcp.html#:~:text=For%20each%20established%20TCP%20connection,on%20this%20connection%20RFC%20793.) 이는 링크를 타고 들어가면 원본 RFC 793에도 나오는 내용이다. TCB 블록 안에는 연결에 대한 다양한 상태가 보존되고 버퍼 메모리 위치 관련된 정보가 저장되는듯하다. 이 TCB 블록이 여러 개 생성되었다가 사라지는 것이 곧 HTTP/1.1에서의 메모리 오버헤드 일듯하다. 시간적 + 처리 오버헤드는 요청 마다 핸드셰이크가 계속 발생한다는 점이겠지. HTTP/2는 단 하나의 TCP 연결을 클라이언트와 서버에서 유지하고 핸드셰이크도 발생시키지 않으며 메모리 오버헤드도 더 적기에 매우 월등해보인다. 또한 HTTP/2에서는 파이프라이닝이 기본이라 훨씬 빠르다.
+
+<br/>
+
+### **결론**
+
+1초 마다 데이터를 받을 경우 HTTP/3을 제외한 성능을 비교하면:
+
+<span class="text-red">HTTP/2 SSE > HTTP/2 폴링 >>>> HTTP/1.1 SSE >> HTTP/1.1 폴링</span>
+
+- HTTP/2에서는 파이프라이닝이 무조건 지원되어서 HTTP/1.1보다 훨씬 빠르다. HTTP/1.1에 존재하는 TCP 연결 오버헤드도 HTTP/2에는 없다.
+- SSE는 "요청" -> "응답"에서 "요청"이 필요없이 "응답"만 받기에 폴링보다 더 빠르다.
+
 <br/>
 
 ### **Polling 외에 Keep-Alive의 사용처**
 
+위에서 설명 되었듯이 당연하게도 1.1에만 해당되는 내용이다. 2와 3은 자동으로 연결이 지속된다.
+
 - 동영상이나 오디오 스트리밍에서 Keep-Alive를 사용한다고 함.
 - 웹 소캣 연결 초기화 시 HTTP를 사용하는데 이때 Keep-Alive가 사용된다고 함.
-- ...
+- 폴링이 아니더라도 지속적으로 이벤트 스트림이 필요한 일시적인 경우.
 
 <br/>
 
@@ -135,8 +169,7 @@ SSE는 서버에서 클라이언트로 계속해서 데이터를 푸시하는 �
 
 - [롱 폴링](https://ko.javascript.info/long-polling)
 - [SSE 스펙](https://html.spec.whatwg.org/multipage/server-sent-events.html)
-- HTTP 완벽 가이드 4.5장 지속 커넥션 (다람쥐 책)
-- [RFC 1122 - 4.2.3.6 Keep-Alives - 이건 HTTP Keep-Alive가 아니라 TCP Keep-Alive이다.](https://datatracker.ietf.org/doc/html/rfc1122)
+- [HTTP 완벽 가이드 4.5장 지속 커넥션 (다람쥐 책)](https://product.kyobobook.co.kr/detail/S000001033001)
 - [RFC 9112 - HTTP/1.1 개정판 스펙](https://datatracker.ietf.org/doc/html/rfc9112)
 - [RFC 9113 - HTTP/2.0 개정판 스펙](https://datatracker.ietf.org/doc/html/rfc9113)
 - [쉬운 QUIC 설명 영상](https://www.youtube.com/watch?v=y8xHJJWwJt4&ab_channel=PieterExplainsTech)
