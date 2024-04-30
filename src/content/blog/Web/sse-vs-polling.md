@@ -76,7 +76,7 @@ HTTP/2에서는 Frame과 Message와 Stream이 하나의 요청 단위이다:
 </div>
 
 이렇게 설계(멀티플렉싱)했기에 HTTP/1.1에서처럼 여러 개의 TCP요청으로 리소스 여러 개를 병렬로 가져오는 것이 아니라 하나의 연결 안에서 모든 리소스를 요청할 수 있고,
-이러면 당연히 지속적인 통신일 수 밖에 없다. 그럼 HTTP/2는 도대체 언제 끊기냐!면 [스펙 9.1 Connection Management](https://datatracker.ietf.org/doc/html/rfc9113#name-connection-management)에 따르면 클라이언트는 그 페이지에서 완전히 이탈할 때까지 연결을 유지해야하고, 서버는 최에에에대한 연결을 유지하다가 idle로 판단되면 GOAWAY 프레임을 클라이언트에 보내야한다고 한다. 그리고 재미있는 점은 [크롬 탭이랑 윈도우끼리도 동일한 도메인에 대해서는 HTTP/2통신을 공유한다는 카더라](https://stackoverflow.com/a/75502115/14971839)가 있다.
+이러면 당연히 지속적인 통신일 수 밖에 없다. 그럼 HTTP/2는 도대체 언제 끊기냐!면 [스펙 9.1 Connection Management](https://datatracker.ietf.org/doc/html/rfc9113#name-connection-management)에 따르면 클라이언트는 그 페이지에서 완전히 이탈할 때까지 연결을 유지해야하고, 서버는 최에에에대한 연결을 유지하다가 idle로 판단되면 GOAWAY 프레임을 클라이언트에 보내야한다고 한다. 그리고 재미있는 점은 [크롬 탭이랑 윈도우끼리도 동일한 도메인에 대해서는 HTTP/2통신을 공유한다는 카더라](https://stackoverflow.com/a/75502115/14971839)가 있다. 그리고 HTTP/2는 스트림들을 끼워 맞춰주어야하기 때문에 벤치마킹 시 HTTP/1.1보다는 CPU를 더 쓰는 경향이 있다고 한다.
 
 <br/>
 
@@ -84,9 +84,11 @@ HTTP/2에서는 Frame과 Message와 Stream이 하나의 요청 단위이다:
 
 HTTP/3은 구글의 QUIC(Quick UDP Internet Connections)기반이고 QUIC은 UDP기반이다. <span class="text-orange">흥미롭게도 TCP에서 가지는 핸드셰이크, 연결성, 패킷 순서 보장등을 UDP위에서 구현한 것이 QUIC이다. 그렇기에 멀티플렉싱을 제공하는 지속적인 통신이 기본 옵션이라고 생각해야할 것이다.</span>
 
-- 멀티플렉싱을 HTTP의 애플리케이션 레이어가 아닌 트랜스포트 레이어에서 구현하기 때문에, HTTP/2보다 안정적으로 멀티플렉싱이 가능하다. HTTP/2는 멀티플렉싱 도중에 하나의 스트림에서 문제가 생기면 다른 스트림들이 다 일시정지가 된다고 한다. 이런 문제를 HTTP/3에서는 근본적으로 트랜스포트 레이어에서 해결하기에 다른 스트림들을 멈추는 불상사는 생기지 않는다고 한다.
-- HTTPS를 HTTP/2이하에서 구현하면 TCP 핸드셰이크 이후 TLS 핸드셰이크를 하는데, QUIC은 한 번의 핸드셰이크에 TLS를 포함해버려서 더 빠르다고 한다.
-- QUIC이 일부 환경이나 컴퓨터에서 HTTP/2 보다 느리다는데, 이건 카더라라서 나도 잘 모르겠다. 나중에 확인해보자.
+- 멀티플렉싱을 HTTP의 애플리케이션 레이어가 아닌 트랜스포트 레이어에서 구현하기 때문에, HTTP/2보다 안정적으로 멀티플렉싱이 가능하다. HTTP/2는 멀티플렉싱 도중에 하나의 스트림에서 문제가 생기면 다른 [스트림들이 TCP에서 다 일시정지(Head of Line Blocking in TCP)](https://stackoverflow.com/questions/45583861/how-does-http2-solve-head-of-line-blocking-hol-issue)가 된다고 한다. 이런 문제를 HTTP/3에서는 근본적으로 트랜스포트 레이어에서 해결하기에 다른 스트림들을 멈추는 불상사는 생기지 않는다고 한다.
+- HTTPS를 HTTP/2이하에서 구현하면 TCP 핸드셰이크 이후 TLS 핸드셰이크를 하는데, QUIC은 한 번의 핸드셰이크에 TLS를 포함해버려서 이러한 관점에서는 더 빠르다고 한다.
+- TCP에서의 패킷 순서 맞추기는 커널에 구현되어있다. [반대로 QUIC은 UDP위에 다시 만든 프로토콜이기에 순서 맞추기는 유저 메모리 공간의 QUIC 라이브러리로 구현되어있고, 이는 유저 앱 프로세스에서 실행되며 커널 단에서 최적화된 것이 아니기에 CPU를 http/2에 비해 더 소모한다고 한다.](https://www.youtube.com/watch?v=DWC0ELc6oIE&ab_channel=HusseinNasser)
+- TCP에서는 패킷 순서 등이 모두 노출되어있다. TLS레이어를 써봤자 TLS는 TCP Payload만 암호화하기에 TCP 헤더는 평문이다. QUIC은 이를 헤더까지 모두 암호화한다. 그래서 복호화가 더 느리다. 대신 보안은 조금 더 좋을 수 있다.
+- 프로토콜이라는 것이 약속을 한 번해서 쓰기 시작하면 과감하게 업데이트하기 어렵기 때문에 TCP 발전이 어려웠던 것을 QUIC이 일정부분 해소하려고 하지만 커널 레벨에서 최적화가 이루어지고 있는 것이 아니기에 CPU 소모는 심해진 상태.
 
 이외에도 수많은 디테일들이 있지만 생략했다. 나중에 더 잘 알게되면 여기에 추가하도록하자. RFC는 9000번이다.
 
@@ -128,7 +130,7 @@ SSE는 서버에서 클라이언트로 계속해서 데이터를 푸시하는 �
 
 ### **HTTP/1.1, HTTP/2, HTTP/3 속도?**
 
-[HTTP/2와 3의 비교 논문](https://ieeexplore.ieee.org/document/9500258)과 [영상](https://www.youtube.com/watch?v=-0yu_zOFilg&ab_channel=AntonPutra)과 [비교 실험](https://www.yanxurui.cc/posts/http/2023-11-22-http-comparison/)을 찾아보니 전반적으로 HTTP/2는 1.1에 비해서 멀티플렉싱으로 많이 빨라졌지만, 3의 경우에는 인터넷 환경이 좋을 경우 오히려 상대적으로 느려진다고 한다. Throughput은 올라가지만 속도는 내려가며, 통신 환경이 원활하지 않은 모바일 기기 등에 좋은 것이 HTTP/3이라고 한다.
+[HTTP/2와 3의 비교 논문](https://ieeexplore.ieee.org/document/9500258)과 [영상](https://www.youtube.com/watch?v=-0yu_zOFilg&ab_channel=AntonPutra)과 [비교 실험](https://www.yanxurui.cc/posts/http/2023-11-22-http-comparison/)을 찾아보니 전반적으로 HTTP/2는 1.1에 비해서 멀티플렉싱으로 많이 빨라졌지만, 3의 경우에는 인터넷 환경이 좋을 경우 오히려 상대적으로 느려진다고 한다. Throughput은 올라가지만 속도는 내려가며, 통신 환경이 원활하지 않은 모바일 기기 등에 좋은 것이 HTTP/3이라고 한다. 위에서 언급했었던 HTTP/3의 한계도 한몫하는 것 같고, 아직 HTTP/3가 공식적으로 도입된지 2년이 채 되지 않았기 때문에 발전을 지켜보아야할듯하다.
 
 <br/>
 
@@ -168,7 +170,7 @@ SSE는 서버에서 클라이언트로 계속해서 데이터를 푸시하는 �
 
 ### **마치며**
 
-생각보다 깊이가 있는 주제였다. 원래는 HTTP 1.1만 하려고했는데 2.0과 3.0의 점유율을 찾아보니 50%를 넘어가는 시대가 되어서, 웹의 세계는 빠름을 느꼈다. HTTP/1.1 Keep-Alive 스펙까지는 탐구할만했지만, HTTP/3.0이 UDP기반으로 돌아간다는 것을 보고 조금 지치기 시작했다. HTTP/2.0과 HTTP/3.0도 다시 읽어봐야겠다. 근데 다람쥐책 분명히 1년전에 한 번 정독했는데 진짜 뇌에서 거의 다 증발해버린 것 같다. 실무 경험 기반으로한 공부가 잘 안까먹는 것 같긴하다. 흥미로운 점은, 다람쥐 책을 읽으면서 동시에 RFC를 읽어보니, 다람쥐 책의 상당 부분이 곧 HTTP RFC 내용들을 그대로 풀어서 적은 것이었다는 점이다.
+생각보다 깊이가 있는 주제였다. 원래는 HTTP 1.1만 하려고했는데 2.0과 3.0의 점유율을 찾아보니 50%를 넘어가는 시대가 되어서, 웹의 세계는 빠름을 느꼈다. HTTP/1.1 Keep-Alive 스펙까지는 탐구할만했지만, HTTP/3.0이 UDP기반으로 돌아간다는 것을 보고 조금 지치기 시작했다. HTTP/2.0과 HTTP/3.0도 다시 읽어봐야겠다. 근데 다람쥐책 분명히 1년전에 한 번 정독했는데 진짜 뇌에서 거의 다 증발해버린 것 같다. 실무 경험 기반으로한 공부가 잘 안 까먹는 것 같긴하다. 흥미로운 점은, 다람쥐 책을 읽으면서 동시에 RFC를 읽어보니, 다람쥐 책의 상당 부분이 곧 HTTP RFC 내용들을 그대로 풀어서 적은 것이었다는 점이다.
 
 <br/>
 
@@ -181,3 +183,4 @@ SSE는 서버에서 클라이언트로 계속해서 데이터를 푸시하는 �
 - [RFC 9112 - HTTP/1.1 개정판 스펙](https://datatracker.ietf.org/doc/html/rfc9112)
 - [RFC 9113 - HTTP/2.0 개정판 스펙](https://datatracker.ietf.org/doc/html/rfc9113)
 - [쉬운 QUIC 설명 영상](https://www.youtube.com/watch?v=y8xHJJWwJt4&ab_channel=PieterExplainsTech)
+- [http/2, http/3 비교 영상](https://www.youtube.com/watch?v=DWC0ELc6oIE&ab_channel=HusseinNasser)
