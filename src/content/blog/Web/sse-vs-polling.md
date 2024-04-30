@@ -121,8 +121,8 @@ HTTP/3은 구글의 QUIC(Quick UDP Internet Connections)기반이고 QUIC은 UDP
 SSE는 서버에서 클라이언트로 계속해서 데이터를 푸시하는 단방향 HTTP 연결이다. 클라이언트는 연결이 끊기면 계속 재연결을 시도한다. HTTP 204 No Content가 날아오면 재연결을 멈춘다.
 
 - HTTP/1.0: 지원되지 않는다.
-- HTTP/1.1: `Connection:keep-alive`, `Content-Type: text/event-stream`을 보내면 SSE가 활성화된다. (`keep-alive`는 디폴트 지원이기에 생략가능.) 하나의 TCP 연결 전체를 SSE용도로 계속 차지한다. 브라우저에서 도메인 당 [6개의 SSE가 최대 연결이다.](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events)
-- HTTP/2와 3: `Content-Type: text/event-stream`만 필요하다. 하나의 스트림을 계속 유지하면서 요청을 안보내도 응답이 계속 오는 형식이다. 하나의 TCP 연결의 일부를 차지한다.
+- HTTP/1.1: `Connection:keep-alive`, `Content-Type: text/event-stream`을 보내면 SSE가 활성화된다. (`keep-alive`는 디폴트 지원이기에 생략가능.) 서버에서는 이 헤더를 보고 SSE를 시작할지 정하게 되고, 계속 스트림의 데이터를 보낸다. 브라우저는 연결을 유지하는 노력을 계속해야하고 끊어졌을 때 재연결하는 로직도 만들어놓아야한다. ([EventSource API](https://developer.mozilla.org/en-US/docs/Web/API/EventSource)가 현대 브라우저에서의 구현체이다.) 하나의 TCP 연결 전체를 SSE용도로 계속 차지한다. 브라우저에서 도메인 당 [6개의 SSE가 최대 연결이다.](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events)
+- HTTP/2와 3: `Content-Type: text/event-stream`만 필요하다. 하나의 스트림을 계속 유지하면서 요청을 안보내도 응답이 계속 오는 형식이다. 하나의 TCP 연결의 일부를 차지한다. HTTP/1.1처럼 브라우저에서 스트림을 유지하는 로직을 EventSource API 내부에 구현해둔다.
 
 프록시와 브라우저에서의 캐싱을 최대한 컨트롤하기 위해 `Cache-Control: no-store`을 사용하는 것이 권장되지만, 어차피 이 헤더는 무조건적으로 어떻게 작동될지 프록시 서버들을 조종할 수 없다. 이렇게 해달라고 요청만 할 뿐, 프록시 서버 자체는 마음대로 행동할수도 있다.
 
@@ -180,6 +180,7 @@ SSE는 서버에서 클라이언트로 계속해서 데이터를 푸시하는 �
 
 - [롱 폴링](https://ko.javascript.info/long-polling)
 - [SSE 스펙](https://html.spec.whatwg.org/multipage/server-sent-events.html)
+- [EventSource API](https://developer.mozilla.org/en-US/docs/Web/API/EventSource)
 - [SSE 사용법](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events)
 - [HTTP 완벽 가이드 4.5장 지속 커넥션 (다람쥐 책)](https://product.kyobobook.co.kr/detail/S000001033001)
 - [RFC 9112 - HTTP/1.1 개정판 스펙](https://datatracker.ietf.org/doc/html/rfc9112)
