@@ -86,7 +86,7 @@ HTTP/3은 구글의 QUIC(Quick UDP Internet Connections)기반이고 QUIC은 UDP
 
 - 멀티플렉싱을 HTTP의 애플리케이션 레이어가 아닌 트랜스포트 레이어에서 구현하기 때문에, HTTP/2보다 안정적으로 멀티플렉싱이 가능하다. HTTP/2는 멀티플렉싱 도중에 하나의 스트림에서 문제가 생기면 다른 [스트림들이 TCP에서 다 일시정지(Head of Line Blocking in TCP)](https://stackoverflow.com/questions/45583861/how-does-http2-solve-head-of-line-blocking-hol-issue)가 된다고 한다. 이런 문제를 HTTP/3에서는 근본적으로 트랜스포트 레이어에서 해결하기에 다른 스트림들을 멈추는 불상사는 생기지 않는다고 한다.
 - HTTPS를 HTTP/2이하에서 구현하면 TCP 핸드셰이크 이후 TLS 핸드셰이크를 하는데, QUIC은 한 번의 핸드셰이크에 TLS를 포함해버려서 이러한 관점에서는 더 빠르다고 한다.
-- TCP에서의 패킷 순서 맞추기는 커널에 구현되어있다. [반대로 QUIC은 UDP위에 다시 만든 프로토콜이기에 순서 맞추기는 유저 메모리 공간의 QUIC 라이브러리로 구현되어있고, 이는 유저 앱 프로세스에서 실행되며 커널 단에서 최적화된 것이 아니기에 CPU를 http/2에 비해 더 소모한다고 한다.](https://www.youtube.com/watch?v=DWC0ELc6oIE&ab_channel=HusseinNasser)
+- TCP에서의 패킷 순서 맞추기는 커널에 구현되어있다. [반대로 QUIC은 UDP위에 다시 만든 프로토콜이기에 순서 맞추기는 유저 메모리 공간의 QUIC 라이브러리로 구현되어있고, 이는 유저 앱 프로세스에서 실행되며 커널 단에서 최적화된 것이 아니기에 CPU를 http/2에 비해 더 소모한다고 한다.](https://youtu.be/DWC0ELc6oIE?si=4cFhFsjYbV6fJbUP&t=391)
 - TCP에서는 패킷 순서 등이 모두 노출되어있다. TLS레이어를 써봤자 TLS는 TCP Payload만 암호화하기에 TCP 헤더는 평문이다. QUIC은 이를 헤더까지 모두 암호화한다. 그래서 복호화가 더 느리다. 대신 보안은 조금 더 좋을 수 있다.
 - 프로토콜이라는 것이 약속을 한 번해서 쓰기 시작하면 과감하게 업데이트하기 어렵기 때문에 TCP 발전이 어려웠던 것을 QUIC이 일정부분 해소하려고 하지만 커널 레벨에서 최적화가 이루어지고 있는 것이 아니기에 CPU 소모는 심해진 상태.
 
