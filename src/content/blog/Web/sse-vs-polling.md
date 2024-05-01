@@ -28,6 +28,8 @@ subtitle: "브라우저 - 서버 간의 지속적인 통신 방법에 대해 알
 내가 위 개선점을 고민하면서 SSE와 폴링 모두 Keep-Alive 옵션을 사용하는 것을 보았기에 정확하게 어떤 차이가 있는지 잘 이해하고 싶었다.
 공부를 하다보니 http/1.1, http/2, http/3에서의 Keep-Alive 관련 옵션이 너무 상이하게 적용되어서 이 개념들을 먼저 정리하고 넘어가야했다. (Keep-Alive는 http/2와 3에서는 지원을 안하며, 사파리에서는 오류를 일으킬 수도 있다. 자세히 알아보자.)
 
+해당 글의 일부는 스택오버플로우 글들에 의존하며, 링크를 모두 첨부해두었다. 스택오버플로우 글들의 팩트 체크를 시도해보았지만, 공식적인 출처가 불명확했다. 일부 게시글 관련 비공식적으로 컨트리뷰터들이 적은 메일이나 정보 등은 찾을 수 있었다.
+
 <br/>
 
 ## **HTTP 버전 별 지속적인 통신**
@@ -124,7 +126,7 @@ SSE는 서버에서 클라이언트로 계속해서 데이터를 푸시하는 �
 - HTTP/1.1: `Connection:keep-alive`, `Content-Type: text/event-stream`을 보내면 SSE가 활성화된다. (`keep-alive`는 디폴트 지원이기에 생략가능.) 서버에서는 이 헤더를 보고 SSE를 시작할지 정하게 되고, 계속 스트림의 데이터를 보낸다. 브라우저는 연결을 유지하는 노력을 계속해야하고 끊어졌을 때 재연결하는 로직도 만들어놓아야한다. ([EventSource API](https://developer.mozilla.org/en-US/docs/Web/API/EventSource)가 현대 브라우저에서의 구현체이다.) 하나의 TCP 연결 전체를 SSE용도로 계속 차지한다. 브라우저에서 도메인 당 [6개의 SSE가 최대 연결이다.](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events)
 - HTTP/2와 3: `Content-Type: text/event-stream`만 필요하다. 하나의 스트림을 계속 유지하면서 요청을 안보내도 응답이 계속 오는 형식이다. 하나의 TCP 연결의 일부를 차지한다. HTTP/1.1처럼 브라우저에서 스트림 정보를 받아오는 로직을 EventSource API 내부에 구현해둔다. (HTTP/2의 경우 END_STREAM or RST_STREAM 플래그가 포함된 프레임이 클라이언트 혹은 서버에서 발송되거나 전체 통신을 종료하는 GOAWAY 프레임이 날라오지 않는 한 스트림은 유지된다.)
 
-프록시와 브라우저에서의 캐싱을 최대한 컨트롤하기 위해 `Cache-Control: no-store`을 사용하는 것이 권장되지만, 어차피 이 헤더는 무조건적으로 어떻게 작동될지 프록시 서버들을 조종할 수 없다. 이렇게 해달라고 요청만 할 뿐, 프록시 서버 자체는 마음대로 행동할수도 있다.
+프록시와 브라우저에서의 캐싱을 최대한 컨트롤하기 위해 `Cache-Control: no-store`을 사용하는 것이 권장되지만, 어차피 이 헤더는 무조건적으로 어떻게 작동될지 프록시 서버들을 조종할 수 없다. 이렇게 해달라고 요청만 할 뿐, 프록시 서버 자체는 마음대로 행동할수도 있다. [SSE 스펙](https://html.spec.whatwg.org/multipage/server-sent-events.html) 상에는 EventSource 클래스의 constructor내에서 `no-store`설정을 하라고 되어있다.
 
 <br/>
 
