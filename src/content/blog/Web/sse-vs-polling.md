@@ -111,8 +111,8 @@ HTTP/3은 구글의 QUIC(Quick UDP Internet Connections)기반이고 QUIC은 UDP
 [롱 폴링](https://ko.javascript.info/long-polling)은 "데이터가 바뀌거나 처리된 후 응답을 받고 싶은 경우" 유용하다.
 
 - HTTP/1.0: 맨 처음에 클라이언트가 서버에 요청을 보내고나서 데이터가 돌아오는 시간이 1초가 될지, 3초가 될지, 10초가 될지 미정이다. 서버에서 응답이 올 때까지 클라이언트에서 통신을 열어두다가, 응답이 오는 즉시 TCP통신을 끝낸다. (혹은 Keep-Alive로 유지한다.) 끝낸 후에 다시 다음 요청을 보낸다. (직후가 될 수도 있고 몇 초 기다려도 되는듯하다.)
-- HTTP/1.1: 1.0과 동일하지만, 원래 Keep-Alive가 디폴트로 적용된다. timeout과 max의 정확한 수치 조정이 필요하다면 적용한다.
-- HTTP/2와 3: 서버에서 언젠가 응답이 돌아올 때까지 하나의 스트림을 유지하는 방식으로 구현할 수 있다.
+- HTTP/1.1: 1.0과 동일하지만, 원래 Keep-Alive가 디폴트로 적용된다. timeout과 max의 정확한 수치 조정이 필요하다면 적용한다. 서버에서는 timeout과 max를 무시할 수도 있다.
+- HTTP/2와 3: 서버에서 언젠가 응답이 돌아올 때까지 하나의 스트림을 유지하는 방식으로 구현할 수 있다. 사실상 연결이 끊기지 않는 한 늦게 오는 응답이 곧 자동으로 롱 폴링처럼 동작한다. 따로 설정해줄 것이 없다.
 
 <br/>
 
@@ -122,7 +122,7 @@ SSE는 서버에서 클라이언트로 계속해서 데이터를 푸시하는 �
 
 - HTTP/1.0: 지원되지 않는다.
 - HTTP/1.1: `Connection:keep-alive`, `Content-Type: text/event-stream`을 보내면 SSE가 활성화된다. (`keep-alive`는 디폴트 지원이기에 생략가능.) 서버에서는 이 헤더를 보고 SSE를 시작할지 정하게 되고, 계속 스트림의 데이터를 보낸다. 브라우저는 연결을 유지하는 노력을 계속해야하고 끊어졌을 때 재연결하는 로직도 만들어놓아야한다. ([EventSource API](https://developer.mozilla.org/en-US/docs/Web/API/EventSource)가 현대 브라우저에서의 구현체이다.) 하나의 TCP 연결 전체를 SSE용도로 계속 차지한다. 브라우저에서 도메인 당 [6개의 SSE가 최대 연결이다.](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events)
-- HTTP/2와 3: `Content-Type: text/event-stream`만 필요하다. 하나의 스트림을 계속 유지하면서 요청을 안보내도 응답이 계속 오는 형식이다. 하나의 TCP 연결의 일부를 차지한다. HTTP/1.1처럼 브라우저에서 스트림을 유지하는 로직을 EventSource API 내부에 구현해둔다.
+- HTTP/2와 3: `Content-Type: text/event-stream`만 필요하다. 하나의 스트림을 계속 유지하면서 요청을 안보내도 응답이 계속 오는 형식이다. 하나의 TCP 연결의 일부를 차지한다. HTTP/1.1처럼 브라우저에서 스트림 정보를 받아오는 로직을 EventSource API 내부에 구현해둔다. (HTTP/2의 경우 END_STREAM or RST_STREAM 플래그가 포함된 프레임이 클라이언트 혹은 서버에서 발송되거나 전체 통신을 종료하는 GOAWAY 프레임이 날라오지 않는 한 스트림은 유지된다.)
 
 프록시와 브라우저에서의 캐싱을 최대한 컨트롤하기 위해 `Cache-Control: no-store`을 사용하는 것이 권장되지만, 어차피 이 헤더는 무조건적으로 어떻게 작동될지 프록시 서버들을 조종할 수 없다. 이렇게 해달라고 요청만 할 뿐, 프록시 서버 자체는 마음대로 행동할수도 있다.
 
