@@ -7,7 +7,7 @@ subtitle: "브라우저 - 서버 간의 지속적인 통신 방법에 대해 알
 
 ## **SSE vs Polling**
 
-<p class="text-time">최초 업로드 2024-04-29 / 마지막 수정 2024-04-30</p>
+<p class="text-time">최초 업로드 2024-04-29 / 마지막 수정 2024-05-01</p>
 
 육군본부에서 구현했었던 AI 모니터링 체계가 일반 폴링(regular polling) 방식이었는데, 부하를 확인했을 때 적어서 굳이 추가적으로 최적화를 해주지 않았던 기억이 있다.
 
@@ -40,7 +40,7 @@ HTTP/1.1의 [2022년 Keep-Alive 1.0과의 차이](https://datatracker.ietf.org/d
 - 하지만 <span class="text-orange">HTTP/1.1에서는 기본적으로 Keep-Alive설정이 생략되어도 적용된다.</span>
 - 다만, [timeout과 max 파라미터](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Keep-Alive)의 디폴트 값은 스펙에는 적혀있지 않다.
 - 그렇기에 HTTP/1.1에서 `Connection: Keep-Alive`와 함께 `Keep-Alive: timeout=5, max=1000`를 원하는 값으로 헤더에 주는 것은 유의미하다. (서버 마다 구현한 디폴트 값이 다를 수 있기에)
-- 스택오버플로우 카더라 기준으로 [서버에서는 Keep-Alive 시간을 무시하고 자기 마음대로 정할 수 있다](https://stackoverflow.com/questions/19155201/http-keep-alive-timeout)고한다.
+- 스택오버플로우 기준으로 [서버에서는 Keep-Alive 시간을 무시하고 자기 마음대로 정할 수 있다](https://stackoverflow.com/questions/19155201/http-keep-alive-timeout)고한다.
 
 추가적인 디테일:
 
@@ -76,7 +76,7 @@ HTTP/2에서는 Frame과 Message와 Stream이 하나의 요청 단위이다:
 </div>
 
 이렇게 설계(멀티플렉싱)했기에 HTTP/1.1에서처럼 여러 개의 TCP요청으로 리소스 여러 개를 병렬로 가져오는 것이 아니라 하나의 연결 안에서 모든 리소스를 요청할 수 있고,
-이러면 당연히 지속적인 통신일 수 밖에 없다. 그럼 HTTP/2는 도대체 언제 끊기냐!면 [스펙 9.1 Connection Management](https://datatracker.ietf.org/doc/html/rfc9113#name-connection-management)에 따르면 클라이언트는 그 페이지에서 완전히 이탈할 때까지 연결을 유지해야하고, 서버는 최에에에대한 연결을 유지하다가 idle로 판단되면 GOAWAY 프레임을 클라이언트에 보내야한다고 한다. 그리고 재미있는 점은 [크롬 탭이랑 윈도우끼리도 동일한 도메인에 대해서는 HTTP/2통신을 공유한다는 카더라](https://stackoverflow.com/a/75502115/14971839)가 있다. 그리고 HTTP/2는 스트림들을 끼워 맞춰주어야하기 때문에 벤치마킹 시 HTTP/1.1보다는 CPU를 더 쓰는 경향이 있다고 한다.
+이러면 당연히 지속적인 통신일 수 밖에 없다. 그럼 HTTP/2는 도대체 언제 끊기냐!면 [스펙 9.1 Connection Management](https://datatracker.ietf.org/doc/html/rfc9113#name-connection-management)에 따르면 클라이언트는 그 페이지에서 완전히 이탈할 때까지 연결을 유지해야하고, 서버는 최에에에대한 연결을 유지하다가 idle로 판단되면 GOAWAY 프레임을 클라이언트에 보내야한다고 한다. 그리고 재미있는 점은 [크롬 탭이랑 윈도우끼리도 동일한 도메인에 대해서는 HTTP/2통신을 공유한다는 게시글](https://stackoverflow.com/a/75502115/14971839)이 있다. 그리고 HTTP/2는 스트림들을 끼워 맞춰주어야하기 때문에 벤치마킹 시 HTTP/1.1보다는 CPU를 더 쓰는 경향이 있다고 한다.
 
 <br/>
 
