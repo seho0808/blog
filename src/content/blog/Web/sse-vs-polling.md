@@ -120,7 +120,7 @@ HTTP/3은 구글의 QUIC(Quick UDP Internet Connections)기반이고 QUIC은 UDP
 
 ### **SSE (Server Side Events)**
 
-SSE는 서버에서 클라이언트로 계속해서 데이터를 푸시하는 단방향 HTTP 연결이다. 클라이언트는 연결이 끊기면 계속 재연결을 시도한다. HTTP 204 No Content가 날아오면 재연결을 멈춘다.
+SSE는 서버에서 클라이언트로 계속해서 데이터를 푸시하는 단방향 HTTP 연결이다. 클라이언트는 연결이 끊기면 계속 재연결을 시도한다. ([스펙](https://html.spec.whatwg.org/multipage/server-sent-events.html)에서는 몇 초 단위 정도로 설정하라고 나옴.) HTTP 204 No Content가 날아오면 재연결을 멈춘다.
 
 - HTTP/1.0: 지원되지 않는다.
 - HTTP/1.1: `Connection:keep-alive`, `Content-Type: text/event-stream`을 보내면 SSE가 활성화된다. (`keep-alive`는 디폴트 지원이기에 생략가능.) 서버에서는 이 헤더를 보고 SSE를 시작할지 정하게 되고, 계속 스트림의 데이터를 보낸다. 브라우저는 연결을 유지하는 노력을 계속해야하고 끊어졌을 때 재연결하는 로직도 만들어놓아야한다. ([EventSource API](https://developer.mozilla.org/en-US/docs/Web/API/EventSource)가 현대 브라우저에서의 구현체이다.) 하나의 TCP 연결 전체를 SSE용도로 계속 차지한다. 브라우저에서 도메인 당 [6개의 SSE가 최대 연결이다.](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events)
