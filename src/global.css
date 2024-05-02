@@ -37,3 +37,7 @@ body {
 	background: #555;
 }
 
+
+:not(pre) > code[class*="language-"], pre[class*="language-"] {
+	background-color: #111 !important;
+}
