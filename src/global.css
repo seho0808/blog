@@ -40,7 +40,7 @@ body {
 /* Settings to overwrite Prism css from `import "prismjs/themes/prism-okaidia.css";` */
 /* inline code styling + code block styling */
 :not(pre) > code[class*="language-"], pre[class*="language-"] {
-	background-color: #111 !important;
+	background-color: #141414 !important;
 	font-size: 16px !important;
 }
 
