@@ -70,17 +70,6 @@
   color: #b4b4b4;
 }
 
-/* inline code styling */
-.markdown-content code {
-  font-family: Consolas;
-  background-color: #111;
-  color: white;
-  padding: 2px 4px;
-  margin: 0px 2px;
-  font-size: 16px;
-  border-radius: 4px;
-}
-
 /* video styling */
 .video-container {
   width: 100%;

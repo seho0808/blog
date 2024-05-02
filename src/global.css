@@ -37,7 +37,21 @@ body {
 	background: #555;
 }
 
-
+/* Settings to overwrite Prism css from `import "prismjs/themes/prism-okaidia.css";` */
+/* inline code styling + code block styling */
 :not(pre) > code[class*="language-"], pre[class*="language-"] {
 	background-color: #111 !important;
+	font-size: 16px !important;
+}
+
+/* inline code styling */
+:not(pre) > code[class*="language-"] {
+	margin: 0px 2px !important; 
+	padding: 2px 4px !important;
+	border-radius: 4px !important;
+}
+
+/* code font setting */
+code[class*="language-"], pre[class*="language-"] {
+	font-family: Consolas, "malgun gothic", monospace !important;
 }
