@@ -1,13 +1,13 @@
 ---
-slug: "/blog/state-management"
-date: "2024-01-07"
+slug: "/blog/web-beacons"
+date: "2024-05-07"
 title: "웹 비콘"
 subtitle: "웹 비콘"
 ---
 
 ## **웹 비콘**
 
-<p class="text-time">최초 업로드 2024-05-06 / 마지막 수정 2024-05-06</p>
+<p class="text-time">최초 업로드 2024-05-07 / 마지막 수정 2024-05-07</p>
 
 ### **기존의 웹 비콘과 현대의 beacon api**
 
