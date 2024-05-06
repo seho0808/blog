@@ -1,5 +1,5 @@
 ---
-slug: "/blog/monad"
+slug: "/blog/mvc-mvvm-flux"
 date: "2024-05-04"
 title: "MVC, MVVM, Flux"
 subtitle: "MVC, MVVM, Flux"
@@ -109,6 +109,8 @@ Presenter가 컨트롤러와 유사한 구조. 모델과 뷰를 Presenter에서 
 - Flux는 원래 리액트와 분리된 개념이었다. Flux와 React는 같이 쓰이기 위해 개발되었다. 지금도 Redux라는 Flux의 후계자가 분리된 개념으로 존재한다. 고로 Flux와 React를 동일 선상에 놓기는 어렵지만 둘 다 단방향 바인딩을 추구한다는 점이 중요하다. 리액트의 useReducer같은 경우에는 Flux 아키텍쳐를 미니어처 버전으로 도입했다고 봐도 좋을 것 같다. useState의 작동 방식은 Flux의 단방향 데이터 흐름의 영감을 얻은 단방향 Model 흐름의 구현의 일종이라고 본다.
 
 고로 리액트는 Original MVC에 가까우면서 FE MVC와는 멀고 Flux에 영감을 받았으며 MVVM과는 매우 멀다고 할 수 있다.
+
+오리지널 MVC관점으로 해석할 때 메인 초기 컨트리뷰터 중 하나인 Pete Hunt는 [발표에서 React가 V혹은 VC](https://youtu.be/x7cQ3mrcKaY?si=Lk5-3s2yrp1JtLIS&t=86)라고 언급한다. 내 생각엔 Model도 들어가 있다고 말할 수 있을 것 같은데 왜 M은 언급하지 않은지 모르겠다.
 
 <br/>
 
