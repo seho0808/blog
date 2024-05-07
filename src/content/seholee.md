@@ -20,7 +20,7 @@ subtitle: "Home | Web Dev / Software Engineer Seho Lee"
 <h2 class="subtitle"> &lt;/&gt; 직무 경험 </h2>
 
 **국방부** &nbsp;<span class="text-grey">대한민국 국방부</span> <br/>
-SW 개발병 &nbsp;2022-01&#126;2023-07 <br/>
+SW 개발병 &nbsp;2022-01&#126;2023-07 <span class="text-grey">1년 6개월</span><br/>
 <span class="text-grey">전자정부프레임워크, Spring 3.0&#126;3.8, Cubrid, Tensorflow</span> <br/>
 
 - AI 모니터링 체계 대시보드 개발 <br/>
@@ -58,7 +58,7 @@ SW 개발병 &nbsp;2022-01&#126;2023-07 <br/>
 <br/>
 
 **스마일드래곤** &nbsp;<span class="text-grey">다수의 마케팅 플랫폼으로 연 매출 80억 이상을 달성한 회사</span> <br/>
-풀스택 개발자 &nbsp;2021-01&#126;2021-09 <br/>
+풀스택 개발자 &nbsp;2021-01&#126;2021-09 <span class="text-grey">8개월</span><br/>
 <span class="text-grey">Next.js 10, MariaDB, Typescript</span> <br/>
 
 - 체험뷰 <a href="https://chvu.co.kr"><img class="link-icon" src="/icons/link-variant.svg" alt="link"/></a> 4인 개발 총괄
@@ -84,7 +84,7 @@ SW 개발병 &nbsp;2022-01&#126;2023-07 <br/>
 <br/>
 
 **윌비시티필드** &nbsp;<span class="text-grey">시드 투자 20억의 테크 스타트업</span> <br/>
-프론트엔드 개발자 &nbsp;2020-06&#126;2020-12<br/>
+프론트엔드 개발자 &nbsp;2020-06&#126;2020-12 <span class="text-grey">6개월</span><br/>
 <span class="text-grey">React, Firebase</span> <br/>
 
 - 오랜 친구의 권유로 세 번째 멤버로 합류
@@ -104,7 +104,7 @@ SW 개발병 &nbsp;2022-01&#126;2023-07 <br/>
 <h2 class="subtitle"> &lt;/&gt; 유관 경험 </h2>
 
 **카카오** &nbsp;<span class="text-grey">카카오 커머스기술팀</span> <br/>
-FE 인턴 &nbsp;2024-01&#126;2024-02 <br/>
+FE 인턴 &nbsp;2024-01&#126;2024-02 <span class="text-grey">2개월</span><br/>
 <span class="text-grey">Vanilla JS, Typescript</span> <br/>
 
 - 페이지 빌더 개발 <br/>
@@ -119,7 +119,7 @@ FE 인턴 &nbsp;2024-01&#126;2024-02 <br/>
 
 <h2 class="subtitle"> &lt;/&gt; 사이드 프로젝트 </h2>
 
-**VHUB 글로벌 버튜버 플랫폼** <a href="https://vhub.club"><img class="link-icon" src="/icons/link-variant.svg" alt="link"/></a> &nbsp;2023-07&#126;2023-09 <br/>
+**VHUB 글로벌 버튜버 플랫폼** <a href="https://vhub.club"><img class="link-icon" src="/icons/link-variant.svg" alt="link"/></a> &nbsp;2023-07&#126;2023-09 <span class="text-grey">3개월</span><br/>
 <span class="text-grey">Next.js 13, Supabase, Node.js</span> <br/>
 
 - 기획, 디자인, 개발 모두 1인으로 <span class="text-blue">9주</span> 동안 진행한 플랫폼
@@ -137,7 +137,7 @@ FE 인턴 &nbsp;2024-01&#126;2024-02 <br/>
 
 <br/>
 
-**군용 채팅앱 미어캣** <a href="https://github.com/osamhack2022-v2/APP_Meerkat_IQDan"><img class="link-icon" src="/icons/link-variant.svg" alt="link"/></a> &nbsp;2022-11 <br/>
+**군용 채팅앱 미어캣** <a href="https://github.com/osamhack2022-v2/APP_Meerkat_IQDan"><img class="link-icon" src="/icons/link-variant.svg" alt="link"/></a> &nbsp;2022-11 <span class="text-grey">1개월</span> <br/>
 <span class="text-grey">React Native, MariaDB, Prisma</span> <br/>
 
 - 2022 군장병 공개 SW 해커톤 <span class="text-orange">3등</span> (정보통신산업진흥원장상)
