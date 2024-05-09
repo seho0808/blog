@@ -173,7 +173,7 @@ export default function Home() {
   <sub class>그림 3. Router Caching...!</a></sub>
 </div>
 
-> <span class="text-grey">참고사항 1: Dynamic 페이지로 빌드 될 경우 30초, Static 페이지로 빌드 될 경우 5분 마다 데이터가 변경될 수 있는 것인데, dev모드와 빌드 후 모두 현재 버그가 있어서 정확한 테스팅이 어렵다. (2023-11-21 기준) 다른 탭에 오래 머물다가 invalidate 시간이 지난 이후 돌아가면 높은 확률로 Router Cache가 아예 작동하지 않는 모습을 보이고 있다. 의도된 것인지 확인된 바는 없다. 임시방편으로 페이지 새로고침을 해주면 다시 Router Cache가 정상작동한다. </span>
+> <span class="text-grey">참고사항 1: Dynamic 페이지로 빌드 될 경우 30초, Static 페이지로 빌드 될 경우 5분 마다 데이터가 변경될 수 있는 것인데, dev모드와 빌드 후 모두 현재 버그가 있어서 정확한 테스팅이 어렵다. (이후 [Next.js 리포에 내가 올린 이슈](https://github.com/vercel/next.js/issues/58723)로 해결되었다.) 다른 탭에 오래 머물다가 invalidate 시간이 지난 이후 돌아가면 높은 확률로 Router Cache가 아예 작동하지 않는 모습을 보이고 있다. 의도된 것인지 확인된 바는 없다. 임시방편으로 페이지 새로고침을 해주면 다시 Router Cache가 정상작동한다. </span>
 
 > <span class="text-grey">참고사항 2: 빌드를 하고 싶을 시 위 코드로는 circular dependency(빌드하면서 서버 컴포넌트에서 프로젝트 내부 api를 스스로 호출하고 있음)가 존재해서 빌드가 안된다. 그래서 timestamp를 리턴해주는 node 서버를 따로 열어서 빌드해주어야 한다. 아래와 같이 node서버를 열면 http://localhost:8001/ 엔드포인트로 시간정보를 받을 수 있다. 서버 컴포넌트의 엔드포인트를 8001로 수정하고 빌드해보자. 여기서 또 클라이언트는 CORS 때문에 8001쓰면 안되고 기존 엔드포인트(http://localhost:3000/api/getDate) 써야된다!!!</span>
 
