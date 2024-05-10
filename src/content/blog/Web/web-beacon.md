@@ -11,7 +11,7 @@ subtitle: "웹 비콘"
 
 ### **기존의 웹 비콘과 현대의 beacon api**
 
-Access-Control-Allow-Origin이 제대로 설정되어있다면 AJAX로 보낼 수 있다. AJAX의 문제점은 페이지 이동 시 unload를 기다리지 않는다는 점이다.
+Access-Control-Allow-Origin이 제대로 설정되어있다면 AJAX로 타 웹사이트에 Analytics정보를 보낼 수 있다. AJAX의 문제점은 페이지 이동 시 unload를 기다리지 않는다는 점이다.
 이를 막기 위해 과거에는 다음과 같은 방식들이 사용되었다.
 
 - 페이지 이동을 AJAX 응답까지 기다리기
