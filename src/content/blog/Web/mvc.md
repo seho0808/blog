@@ -25,7 +25,7 @@ subtitle: "MVC, MVVM, Flux"
 - Original MVC의 렌즈로 보면 세상 모든 UI 코드는 M, V, C, +alpha로 혹은 M, V, C로 잘 나누어서 볼 수 있다.
 - <span class="text-orange">FE MVC의 단점은 MVC를 정말 잘 구성하지 않으면 (1)양방향성에 빠지거나 (2)이벤트 핸들링과 비즈니스 로직이 M, V, C 각자 역할로 깔끔하게 분리가 안되어서 앱의 로직이 복잡해질 여지(가능성)가 크다는 것이다.</span> MVC는 기본적으로 단방향성을 추구한다.
 - MVVM은 대놓고 양방향성을 추구하는 관점이다.
-- Flux/Redux/React의 등장은 MVC 보다 훨씬 단방향성을 강조한 것이며 페이스북에서는 MVC와 Flux를 양방향 vs 단방향으로 대조하며 설명하지만, 이는 잘못된 것이다. MVC는 기본적으로 단방향이다. 페이스북에서는 일반적으로 통용되지 않는 양방향 FE MVC를 만들었다.
+- Flux/Redux/React의 등장은 MVC 보다 훨씬 단방향성을 강조한 것이며 페이스북에서는 MVC와 Flux를 양방향 vs 단방향으로 대조하며 설명하지만, 이는 잘못된 것이다. MVC는 기본적으로 단방향이다. 페이스북에서는 일반적으로 통용되지 않는 양방향 FE MVC를 만들었다. (Original MVC에는 오히려 페이스북이 말한게 부합할 수도 있다. - "To any given Model there is attached one or more Views"라는 문구가 [The original MVC reports](https://www.duo.uio.no/bitstream/handle/10852/9621/Reenskaug-MVC.pdf?sequence=1&isAllowed=y)에 존재한다.)
 - Flux는 데이터 흐름을 위한 아키텍처이고 React는 모델에 따라 뷰를 쉽게 렌더하는 DX/빠른 개발/편한 디버깅을 위한 아키텍처이다. 둘은 같이 사용되기 위해 만들어졌고 Flux의 후계자가 Redux이다.
 - Flux와 MVC와 MVVM은 딱 장단점을 비교할 수 없다. 특정 프로젝트들을 만들며 생겨난 서로 다른 관점이라고 보는 것이 맞다.
 - React의 컴포넌트는 Original MVC 관점으로 볼 수 있다. 오히려 리액트의 컴포넌트가 Original MVC관점과 유사하다. [원작자 Reenskaug의 설명을 보면](https://www.youtube.com/watch?v=WpkDN78P884&t=1826s&ab_channel=Confreaks) 화면의 하나의 요소 마다 MVC를 따로 갖고 있다고 설명한다.
