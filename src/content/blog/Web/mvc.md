@@ -19,17 +19,17 @@ subtitle: "MVC, MVVM, Flux"
 
 ### **결론**
 
-수십 시간의 조사와 고민에 의거한 나의 결론:
+수십 시간의 조사와 고민에 기반한 나의 결론:
 
-- <span class="text-orange">MVC라고만 하면 굉장히 위험한 단어가 될 수 있다. 너무나도 많은 것을 내포하고 있기 때문이다. MVC의 단점이 무엇인가요?라는 질문은 명쾌한 대답이 없다.</span>
+- <span class="text-orange">MVC라고만 하면 굉장히 위험한 단어가 될 수 있다. 너무나도 많은 것을 내포하고 있기 때문이다. MVC의 단점이 무엇인가요?라는 질문은 명쾌한 대답이 없다. 일부 MVC의 국소적인 개념에서의 단점은 논할 수 있다. (예시로 FE MVC의 단점)</span>
 - Original MVC의 렌즈로 보면 세상 모든 UI 코드는 M, V, C, +alpha로 혹은 M, V, C로 잘 나누어서 볼 수 있다.
 - <span class="text-orange">FE MVC의 단점은 MVC를 정말 잘 구성하지 않으면 (1)양방향성에 빠지거나 (2)이벤트 핸들링과 비즈니스 로직이 M, V, C 각자 역할로 깔끔하게 분리가 안되어서 앱의 로직이 복잡해질 여지(가능성)가 크다는 것이다.</span> MVC는 기본적으로 단방향성을 추구한다.
 - MVVM은 대놓고 양방향성을 추구하는 관점이다.
-- Flux/Redux/React의 등장은 MVC 보다 훨씬 단방향성을 강조한 것이며 페이스북에서는 MVC와 Flux를 양방향 vs 단방향으로 대조하며 설명하지만, 이는 잘못된 것이다. MVC는 기본적으로 단방향이다. 페이스북에서는 일반적으로 통용되지 않는 양방향 MVC를 만들었다.
-- Flux는 데이터 흐름을 위한 아키텍처이고 React는 모델에 따라 뷰를 쉽게 렌더하는 DX를 위한 아키텍처이다. 둘은 같이 사용되기 위해 만들어졌고 Flux의 후계자가 Redux이다.
+- Flux/Redux/React의 등장은 MVC 보다 훨씬 단방향성을 강조한 것이며 페이스북에서는 MVC와 Flux를 양방향 vs 단방향으로 대조하며 설명하지만, 이는 잘못된 것이다. MVC는 기본적으로 단방향이다. 페이스북에서는 일반적으로 통용되지 않는 양방향 FE MVC를 만들었다.
+- Flux는 데이터 흐름을 위한 아키텍처이고 React는 모델에 따라 뷰를 쉽게 렌더하는 DX/빠른 개발/편한 디버깅을 위한 아키텍처이다. 둘은 같이 사용되기 위해 만들어졌고 Flux의 후계자가 Redux이다.
 - Flux와 MVC와 MVVM은 딱 장단점을 비교할 수 없다. 특정 프로젝트들을 만들며 생겨난 서로 다른 관점이라고 보는 것이 맞다.
 - React의 컴포넌트는 Original MVC 관점으로 볼 수 있다. 오히려 리액트의 컴포넌트가 Original MVC관점과 유사하다. [원작자 Reenskaug의 설명을 보면](https://www.youtube.com/watch?v=WpkDN78P884&t=1826s&ab_channel=Confreaks) 화면의 하나의 요소 마다 MVC를 따로 갖고 있다고 설명한다.
-- MVC와 MVVM과 Flux는 다른 개념이지만, 100% 분리된 아키텍처라고는 하기 어렵다고 생각한다. 서로 조금씩 오버랩이 있거나 완전한 관점 차이가 있기에, 깔끔한 비교가 어렵다. 그냥 서로 세상을 바라보는 다른 렌즈라고만 생각하는게 맞을 듯하다.
+- <span class="text-orange">MVC와 MVVM과 Flux는 다른 개념이지만, 100% 분리된 아키텍처라고는 하기 어렵다고 생각한다. 서로 조금씩 오버랩이 있거나 완전한 관점 차이가 있기에, 깔끔한 비교가 어렵다. 그냥 서로 세상을 바라보는 다른 렌즈라고만 생각하는게 맞을 듯하다.</span>
 
 나의 미약한 몇 개월 안되는 바닐라 JS에서의 경험들이 MVC, MVVM, Flux를 모두 설명하기에 충분하다고 하기는 어렵지만, 지금으로서의 최선을 다해서 고민해보았다.
 
@@ -85,9 +85,9 @@ MVVM은 모델과 뷰가 서로 바인딩 되어있어서 모델이 변경되면
 
 <br/>
 
-#### **Flux - 2013년 이후**
+### **Flux - 2013년 이후**
 
-Flux는 사실상 가장 통념적인 FE MVC를 다른 이름들(dispathcer - controller, store - model)로 부르는 아키텍처처럼 보이지만, flux의 최초 발표자인 Jing Chen이 레딧에 dispatcher은 controller과는 다른 구현체이며 여러 프로젝트들에서 동일한 형태로 구현하고 있다고 말하며 FE MVC와 Flux의 [차이점을 설명](https://www.reddit.com/r/programming/comments/25nrb5/comment/chjbo05/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button)했다. Jing Chen의 설명을 읽어보면, Dispatcher은 이벤트에 따라 구독중인 model들을 변경한다고 한다. 결국 view => dispatcher =구독=> store =구독=> view의 더블 구독 사이클이지 않나 싶다.
+Flux는 사실상 가장 통념적인 FE MVC를 다른 이름들(dispathcer - controller, store - model)로 부르는 아키텍처처럼 보이지만, Flux의 발표자인 Jing Chen이 레딧에 dispatcher은 controller과는 다른 구현체이며 여러 프로젝트들에서 동일한 형태로 구현하고 있다고 말하며 FE MVC와 Flux의 [차이점을 설명](https://www.reddit.com/r/programming/comments/25nrb5/comment/chjbo05/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button)했다. Jing Chen의 설명을 읽어보면, Dispatcher은 이벤트에 따라 구독중인 model들을 변경한다고 한다. 결국 view => dispatcher =구독=> store =구독=> view의 더블 구독 사이클이지 않나 싶다.
 
 [Flux 공식문서 - Dispatcher](https://facebookarchive.github.io/flux/docs/dispatcher/)에서 사용 방법을 직접 보자. `flightDispatcher.waitFor([CountryStore.dispatchToken]);`부분을 보면 신기하게도 race condition을 해결하기 위한 `waitFor`이 존재하는 것을 볼 수 있다. 생각보다 뉘앙스가 깊었다. Flux에서의 Dispatcher은 store끼리의 업데이트 순서를 보장할 수 있는 것이 꽤나 중요한듯하며 이는 아마 당시 Flux + React가 사용되는 방식 때문에 race condition을 조절할 필요가 있었는듯하다. 2024년 5월 현재의 Redux와 React에서는 이러한 상태끼리의 waitFor이 존재하지 않는 것 같은데, 구현 내부에 숨어있는 것일지도 모르겠다.
 
@@ -116,7 +116,7 @@ Presenter가 컨트롤러와 유사한 구조. 모델과 뷰를 Presenter에서 
 
 ### **마치며**
 
-MVC를 여러 번 공부해보았지만 매번 이해가 달라지는 것 같아서 공부해보았다. 그런데 아직도 온전히 모든 것을 꿰는 느낌은 아니다. 2000 ~ 2020 바닐라 JS 프로젝트 마다 MVC의 해석이 조금씩 달라져서 마치 춘추전국 시대를 연상케한다. MVVM와 MVP와 Flux는 상대적으로 안정적인 개념으로 보인다. 다만 내가 MVVM을 쓰는 라이브러리를 작은 것들 밖에 분석해보지 않아서 아직 경험이 조금 부족하다. 나중에 다시 MVVM으로 짜여진 JS 코드를 본다면 해당 포스트를 진화시킬 수 있을 것 같다
+MVC를 여러 번 공부해보았지만 매번 이해가 달라지는 것 같아서 공부해보았다. 그런데 아직도 온전히 모든 것을 꿰는 느낌은 아니다. 2000 ~ 2020 바닐라 JS 프로젝트 마다 MVC의 해석이 조금씩 달라져서 마치 춘추전국 시대를 연상케한다. MVVM와 MVP와 Flux는 상대적으로 안정적인 개념으로 보인다. 다만 내가 MVVM을 쓰는 라이브러리를 작은 것들 밖에 분석해보지 않아서 아직 경험이 조금 부족하다. 나중에 다시 MVVM으로 짜여진 JS 코드를 본다면 해당 포스트를 진화시킬 수 있을 것 같다.
 
 <br/>
 
