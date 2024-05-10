@@ -7,7 +7,7 @@ subtitle: "MVC, MVVM, Flux"
 
 ## **MVC, MVVM, Flux**
 
-<p class="text-time">최초 업로드 2024-05-04 / 마지막 수정 2023-05-06</p>
+<p class="text-time">최초 업로드 2024-05-04 / 마지막 수정 2023-05-11</p>
 
 해당 포스트에서 사용하는 용어 - MVC는 여러 갈래로 나누어서 설명해야 이해가 된다:
 
