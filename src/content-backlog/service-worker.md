@@ -7,7 +7,7 @@ subtitle: "Service Worker"
 
 ## **Service Worker**
 
-<p class="text-time">최초 업로드 2024-05-11 / 마지막 수정 2023-05-11</p>
+<p class="text-time">최초 업로드 2024-05-11 / 마지막 수정 2024-05-11</p>
 
 크롬 익스텐션을 초기 설정하다가 Service Worker이라는 개념을 만났다.
 
