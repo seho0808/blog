@@ -26,7 +26,6 @@ SW 개발병 &nbsp;2022-01&#126;2023-07 <span class="text-grey">1년 6개월</sp
 - AI 모니터링 체계 대시보드 개발 <br/>
 
   - <span class="text-red">초 단위</span>로 업데이트되는 대시보드를 <span class="text-yellow">순수 JS</span>와 <span class="text-orange">WebAPI</span>만으로 개발
-  - CPU 데이터를 표기해주는 차트를 Chart.js로 구현
   - Figma를 통한 기초적인 화면 디자인 <a href="https://www.figma.com/proto/7rmPe8ksPJyFLjVAxSOuI9/aimon?type=design&node-id=20-1070&t=qH1siTP1d4N3EDII-1&scaling=min-zoom&page-id=0%3A1&starting-point-node-id=42%3A885&show-proto-sidebar=1&mode=design"><img class="link-icon" src="/icons/link-variant.svg" alt="link"/></a>
 
 - AI 모니터링 체계 백엔드 개발 <br/>
