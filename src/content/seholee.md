@@ -48,7 +48,7 @@ SW 개발병 &nbsp;2022-01&#126;2023-07 <span class="text-grey">1년 6개월</sp
 
   - 유저의 행동 하나 하나를 트래킹하기 위해 이벤트 핸들러로 모든 DOM 엘리먼트의 클릭 이벤트 수집
   - 오래된 체계가 &lt;Frame&gt;태그로 개발되어있어, 재귀로 이벤트 핸들러 부착
-  - <span class="text-yellow">CORS 우회</span>를 위해 Google Analytics의 방식을 모방하여 <span class="text-blue">img태그의 src 파라미터</span>로 데이터 전송
+  - <span class="text-blue">img태그의 src 파라미터</span> 형식의 웹 비콘으로 데이터 수집
 
 - 인트라넷 체계 유지보수
 
