@@ -13,7 +13,7 @@ subtitle: "Service Worker"
 
 ### **브라우저의 Service Worker**
 
-Web Worker의 종류 중 하나인 Service Worker은 자바스크립트 파일이며 웹 페이지와 완전히 별개로 라이프사이클을 가지고 있다. DOM 액세스가 불가능하며, 브라우저와 서버 사이에서 중개자 역할을 하는 객체라고 생각할 수 있다. 페이지가 꺼져도 Worker은 살아있을 수 있고, 페이지가 켜져있어도 Worker은 없을 수도 있다.
+Web Worker과 유사한 형식의 Service Worker은 자바스크립트 파일이며 웹 페이지와 완전히 별개로 라이프사이클을 가지고 있다. DOM 액세스가 불가능하며, 브라우저와 서버 사이에서 중개자 역할을 하는 객체라고 생각할 수 있다. 페이지가 꺼져도 Worker은 살아있을 수 있고, 페이지가 켜져있어도 Worker은 없을 수도 있다.
 
 Service Worker은 어디에 사용되는가:
 
@@ -32,6 +32,11 @@ Service Worker은 어디에 사용되는가:
 - 보안 때문에 HTTPS에서만 작동가능하다. (HTTP는 보안이 뚫리기 쉽고, 뚫리면 Service Worker이 강력한 API이기 때문에 해킹되더라도 사용못하도록 사전 차단)
 
 ### **크롬 익스텐션의 Service Worker**
+
+좀 다른 개념임. proxy의 역할도 하지만 추가적인 역할이 있음.
+
+> "they also respond to extension events such as navigating to a new page, clicking a notification, or closing a tab."
+> 새 페이지로 이동하거나 알림을 클릭하거나 탭을 종료할 때 이벤트에 반응할 수 있음.
 
 ## **참고 자료**
 
