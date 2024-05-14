@@ -7,7 +7,7 @@ subtitle: "browser-image-compression 라이브러리 & 이미지 압축 종류�
 
 ## **browser-image-compression 분석**
 
-<p class="text-time">최초 업로드 2024-03-16 / 마지막 수정 2024-03-16</p>
+<p class="text-time">최초 업로드 2024-03-16 / 마지막 수정 2024-05-14</p>
 
 예전에 [체험뷰](https://chvu.co.kr) 개발할 떄 browser-image-compression을 썼었는데, 지금 체험뷰 사이트를 방문해보면 일부 이미지가 이상적인 압축 사이즈인 50kb~300kb를 많이 벗어난 1mb 언저리인 것들도 보인다. 이렇게 일부 이미지들 때문에 페이지 로드 속도가 저하되고 있다. 내가 예전에 구현할 때 썸네일에 2MB까지 자유(maxSizeMB)를 줬었다. 500kb 같이 낮은 숫자가 아니었던 이유는 특정 이미지들의 경우 500kb 미만으로 압축시 너무 화질이 안좋아보여서 웹사이트를 외관상 해친다고 생각했기 때문이다. 그럼 왜 이런 일이 발생했을까? 3년 전에는 내가 라이브러리 내부를 열어본다는 생각까지 못했던 것 같다. 우선 이미지 압축에 대한 용어부터 정리하고 이후 라이브러리 내부를 탐구하자.
 
@@ -127,15 +127,15 @@ export default async function compress(file, options, previousProgress = 0) {
 3. 용량 큰 png는 원하는 만큼 압축하려고 maxIteration 100회로 해야하고 압축 속도가 많이 느림. (2MB => 200KB까지 수십회 걸리고 15초 정도 걸림.)
 4. png는 같은 용량 대비 jpg 보다 사진이 월등하게 흐리게 보여짐. 매우 심각함. 체험뷰에서 쓰는 대부분의 이미지가 복잡한 사진이라 그럼.
 
-<span class="text-orange">결론 1: 흐린 이미지들의 정체는 png였으며, png가 만악의 근원이었음. 체험뷰는 png를 금지하고 jpg만 허가한 후 압축 maxSizeMB를 2mb가 아닌 300kb로 정했어야함. </span>
+<span class="text-orange">결론 1: 흐린 이미지들의 정체는 png였으며, png가 만악의 근원이었음. 체험뷰는 실사이미지 위주였기에 jpg가 압축률이 압도적으로 좋음. 극소수의 이미지는 png가 압축률이 좋은 그래픽 이미지인데 jpg로 되어있어서 용량이 컸던 경우도 분명 있었으리라 생각된다. </span>
 
 <span class="text-orange">결론 2: 어떤 문제가 생길 때 라이브러리 내부를 모르고 해결하는 것과 내부를 읽어보고 이해하는 것은 천지 이상의 차이임.</span>
 
-<span class="text-orange">결론 3: webp으로의 변환도 좋은 옵션이었을 것임. 사용시 jpg 보다 훨씬 더 많이 용량이 줄어듦. 다시 체험뷰 같은 사이트를 만든다면 png나 jpg를 webp로 변환 후 추가적인 압축이 필요하다면 browser-image-compression으로 추가 압축을 진행할 것이다.</span>
+<span class="text-orange">결론 3: 다시 체험뷰 같은 사이트를 만든다면 jpg, png 중 알맞은 알고리즘으로 변환을 먼저 한 후에, browser-image-compression으로 추가 압축을 진행하는게 최적이지 않을까 생각해본다.</span>
 
 <br/>
 
-아래 보다시피 png가 같은 용량대비 jpg 보다 퀄리티가 낮다. 그래픽 같은 사진은 png도 괜찮은데 실사 사진이 많이 쓰이는 체험뷰는 jpg/webp만으로 제한했어야했다.
+아래 보다시피 png가 같은 용량대비 jpg 보다 퀄리티가 낮다. lossless webp는 jpg보다 업그레이드된 방식이기에 조금 더 압축 효율이 좋다.
 
 <br/>
 
