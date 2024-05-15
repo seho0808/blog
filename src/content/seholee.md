@@ -128,7 +128,7 @@ FE 인턴 &nbsp;2024-01&#126;2024-02 <span class="text-grey">2개월</span><br/>
   - 소스 코드에서 싱글톤 체크를 확인하여 createClientComponentClient를 useEffect로 컴포넌트 별 구현
 
 - 최소한의 리소스로 안정적인 서비스를 유지하기 위해 백엔드와 프론트엔드에서 <span class="text-skyblue">단계적인 캐싱을 설계</span>
-  - 프론트엔드에서 반복 사용되는 데이터는 레이아웃 컴포넌트에 useSWR로 캐싱
+  - 프론트엔드에서 반복 사용되는 데이터는 레이아웃 컴포넌트에 useSWR로 캐싱 (팔로잉 데이터 등)
   - 동일한 유명 버튜버가 자주 검색되는 점을 파악하여 Nex.js 13 fetch 웹 서버 캐싱을 이용하여 <br/>
     <span class="text-green">API 응답 속도 250% 개선</span> (뉴욕 서버, 뉴욕 클라이언트 기준 100ms에서 40ms로 개선) 및 DB 부하 분산
 - 유튜브, 트위치의 실시간 방송 관련 API 연동
