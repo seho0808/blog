@@ -160,11 +160,11 @@
   gap: 6px;
   background-color: ${e=>e.isSelected?"#272822":"#34352F"};
   color: ${e=>e.isSelected?"white":"#ccc"};
-`,pe=i.Z.div`
+`,pe=i.Z.img`
   background-color: #34352f;
   display: flex;
   align-items: center;
-  font-size: 12px;
+  width: 14px;
   color: #aaa;
   padding-right: 14px;
   margin-right: 1px;
@@ -172,7 +172,7 @@
   background-color: ${e=>e.isSelected?"#272822":"#34352F"};
 `,he=(0,i.Z)(s.rU)`
   text-decoration: none;
-`;function de(e){let{frontmatter:t}=e;const{0:n,1:i}=(0,r.useState)([]),u=t.slug;(0,r.useEffect)((()=>{const e=l();if(e.some((e=>e.slug===t.slug)))i(e);else{const n=[].concat((0,o.Z)(e),[t]);a(n),i(n)}}),[]);return r.createElement(ce,null,n.map((e=>r.createElement(r.Fragment,{key:e.slug},r.createElement(he,{to:e.slug},r.createElement(ue,{isSelected:u===e.slug},e.title)),r.createElement(pe,{isSelected:u===e.slug,onClick:t=>((e,t)=>{if(c(t),t===u){const e=n.filter((e=>e.slug!==t));return 0===e.length?void(0,s.c4)("/"):void(0,s.c4)(e[0].slug)}i((e=>e.filter((e=>e.slug!==t))))})(0,e.slug)},"🗙")))))}const fe=i.Z.div`
+`;function de(e){let{frontmatter:t}=e;const{0:n,1:i}=(0,r.useState)([]),u=t.slug;(0,r.useEffect)((()=>{const e=l();if(e.some((e=>e.slug===t.slug)))i(e);else{const n=[].concat((0,o.Z)(e),[t]);a(n),i(n)}}),[]);return r.createElement(ce,null,n.map((e=>r.createElement(r.Fragment,{key:e.slug},r.createElement(he,{to:e.slug},r.createElement(ue,{isSelected:u===e.slug},e.title)),r.createElement(pe,{src:"/icons/close.svg",isSelected:u===e.slug,onClick:t=>((e,t)=>{if(c(t),t===u){const e=n.filter((e=>e.slug!==t));return 0===e.length?void(0,s.c4)("/"):void(0,s.c4)(e[0].slug)}i((e=>e.filter((e=>e.slug!==t))))})(0,e.slug)})))))}const fe=i.Z.div`
   height: 60px;
   padding-top: 40px;
   display: flex;
@@ -291,4 +291,4 @@
     height: calc(100vh - 48px - 24px); // menubar, statusbar
   }
 `},9590:function(e){var t="undefined"!=typeof Element,n="function"==typeof Map,r="function"==typeof Set,i="function"==typeof ArrayBuffer&&!!ArrayBuffer.isView;function o(e,s){if(e===s)return!0;if(e&&s&&"object"==typeof e&&"object"==typeof s){if(e.constructor!==s.constructor)return!1;var a,l,c,u;if(Array.isArray(e)){if((a=e.length)!=s.length)return!1;for(l=a;0!=l--;)if(!o(e[l],s[l]))return!1;return!0}if(n&&e instanceof Map&&s instanceof Map){if(e.size!==s.size)return!1;for(u=e.entries();!(l=u.next()).done;)if(!s.has(l.value[0]))return!1;for(u=e.entries();!(l=u.next()).done;)if(!o(l.value[1],s.get(l.value[0])))return!1;return!0}if(r&&e instanceof Set&&s instanceof Set){if(e.size!==s.size)return!1;for(u=e.entries();!(l=u.next()).done;)if(!s.has(l.value[0]))return!1;return!0}if(i&&ArrayBuffer.isView(e)&&ArrayBuffer.isView(s)){if((a=e.length)!=s.length)return!1;for(l=a;0!=l--;)if(e[l]!==s[l])return!1;return!0}if(e.constructor===RegExp)return e.source===s.source&&e.flags===s.flags;if(e.valueOf!==Object.prototype.valueOf&&"function"==typeof e.valueOf&&"function"==typeof s.valueOf)return e.valueOf()===s.valueOf();if(e.toString!==Object.prototype.toString&&"function"==typeof e.toString&&"function"==typeof s.toString)return e.toString()===s.toString();if((a=(c=Object.keys(e)).length)!==Object.keys(s).length)return!1;for(l=a;0!=l--;)if(!Object.prototype.hasOwnProperty.call(s,c[l]))return!1;if(t&&e instanceof Element)return!1;for(l=a;0!=l--;)if(("_owner"!==c[l]&&"__v"!==c[l]&&"__o"!==c[l]||!e.$$typeof)&&!o(e[c[l]],s[c[l]]))return!1;return!0}return e!=e&&s!=s}e.exports=function(e,t){try{return o(e,t)}catch(n){if((n.message||"").match(/stack|recursion/i))return console.warn("react-fast-compare cannot handle circular refs"),!1;throw n}}},3524:function(e,t,n){"use strict";var r,i=n(7294),o=(r=i)&&"object"==typeof r&&"default"in r?r.default:r;function s(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}var a=!("undefined"==typeof window||!window.document||!window.document.createElement);e.exports=function(e,t,n){if("function"!=typeof e)throw new Error("Expected reducePropsToState to be a function.");if("function"!=typeof t)throw new Error("Expected handleStateChangeOnClient to be a function.");if(void 0!==n&&"function"!=typeof n)throw new Error("Expected mapStateOnServer to either be undefined or a function.");return function(r){if("function"!=typeof r)throw new Error("Expected WrappedComponent to be a React component.");var l,c=[];function u(){l=e(c.map((function(e){return e.props}))),p.canUseDOM?t(l):n&&(l=n(l))}var p=function(e){var t,n;function i(){return e.apply(this,arguments)||this}n=e,(t=i).prototype=Object.create(n.prototype),t.prototype.constructor=t,t.__proto__=n,i.peek=function(){return l},i.rewind=function(){if(i.canUseDOM)throw new Error("You may only call rewind() on the server. Call peek() to read the current state.");var e=l;return l=void 0,c=[],e};var s=i.prototype;return s.UNSAFE_componentWillMount=function(){c.push(this),u()},s.componentDidUpdate=function(){u()},s.componentWillUnmount=function(){var e=c.indexOf(this);c.splice(e,1),u()},s.render=function(){return o.createElement(r,this.props)},i}(i.PureComponent);return s(p,"displayName","SideEffect("+function(e){return e.displayName||e.name||"Component"}(r)+")"),s(p,"canUseDOM",a),p}}}}]);
-//# sourceMappingURL=component---src-pages-markdown-remark-frontmatter-slug-tsx-3c789ca5754f89ab438a.js.map
+//# sourceMappingURL=component---src-pages-markdown-remark-frontmatter-slug-tsx-2211ead133b1d1abd868.js.map
