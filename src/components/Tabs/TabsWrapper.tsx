@@ -29,11 +29,11 @@ const Tab = styled.div<{ isSelected: boolean }>`
   color: ${(props) => (props.isSelected ? "white" : "#ccc")};
 `;
 
-const CloseButton = styled.div<{ isSelected: boolean }>`
+const CloseButton = styled.img<{ isSelected: boolean }>`
   background-color: #34352f;
   display: flex;
   align-items: center;
-  font-size: 12px;
+  width: 14px;
   color: #aaa;
   padding-right: 14px;
   margin-right: 1px;
@@ -97,11 +97,10 @@ export default function TabsWrapper({
             </Tab>
           </StyledLink>
           <CloseButton
+            src="/icons/close.svg"
             isSelected={currentTabSlug === tabInfo.slug}
             onClick={(e) => handleTabClose(e, tabInfo.slug)}
-          >
-            🗙
-          </CloseButton>
+          ></CloseButton>
         </React.Fragment>
       ))}
     </TabWrapper>
