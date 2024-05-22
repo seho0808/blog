@@ -9,7 +9,7 @@ subtitle: "문서 검색 알고리즘을 공부해보자"
 
 <p class="text-time">최초 업로드 2024-05-21 / 마지막 수정 2024-05-22</p>
 
-_해당 포스트에서는 string search(스트링의 등장 위치 검색)가 아닌 full text search(키워드로 문서 검색)의 모든 옵션들을 두루 살펴봅니다._
+_<span class="text-purple">해당 포스트에서는 string search(스트링의 등장 위치 검색)가 아닌 full text search(키워드로 문서 검색)의 모든 옵션들을 두루 살펴봅니다.</span>_
 
 **리서치가 아직 완벽하지 않은 포스트입니다.**
 
