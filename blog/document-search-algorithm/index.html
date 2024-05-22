@@ -13,7 +13,7 @@
 <li>Elastic Search와 여러 Vector DB에 구현되어있는 Vector Search (Embedding 거리 점수)</li>
 </ul>
 <p>벡터 검색을 빼면 모두 결국에는 단어 인덱싱+빈도수로 검색한다. 단어를 어떻게 토큰화하고 관리하는지에 따라 구현이 갈릴 뿐이다. 직접 테스팅하지 않고 짧게만 리서치해본 결과 Elastic Search는 RDB보다 훨씬 인덱싱을 상황에 맞게 <a href="https://stackoverflow.com/questions/20515069/elasticsearch-vs-sql-full-text-search">튜닝</a>할 수 있고 scalability가 높다고한다. 이에따라 Elastic Search이 설정은 복잡하지만 데이터가 많을 때 훨씬 더 빠르다고 한다.</p>
-<p>Embedding으로 검색하는 것은 벡터 기반 검색이다. 전통적인 인덱싱+빈도수 기법과는 차이가 있다. 각 문서마다의 벡터 값과 검색하는 벡터값과의 거리 계산을 해야하기 때문이다. 고로 전통적인 inverted indexing이 아닌 Vector Indexing을 사용한다고 한다. 벡터 인덱싱은 기법이 복잡하고 다양하기에 다음 포스트에서 따로 다루겠다.</p>
+<p>Embedding으로 검색하는 것은 벡터 기반 검색이다. 전통적인 인덱싱+빈도수 기법과는 차이가 있다. 각 문서마다의 벡터 거리 계산을 해야하기 때문이다. 고로 전통적인 inverted indexing이 아닌 Vector Indexing을 사용한다고 한다. 아직 리서치가 완벽하지 않다. 벡터 인덱싱은 기법이 복잡하고 다양하기에 다음 포스트에서 따로 다루겠다. 그 후에 이 포스트 또한 정갈하게 업데이트하겠다.</p>
 <table>
 <thead>
 <tr>
@@ -25,8 +25,8 @@
 <tbody>
 <tr>
 <td>속도</td>
-<td>구현에 따라 다름</td>
-<td>구현에 따라 다름</td>
+<td>상대적으로 빠름</td>
+<td>상대적으로 느림*</td>
 </tr>
 <tr>
 <td>문맥 파악</td>
@@ -43,13 +43,19 @@
 <td>상대적으로 Low</td>
 <td>상대적으로 High</td>
 </tr>
+<tr>
+<td>전반적인 정확도</td>
+<td>상대적으로 덜 정확</td>
+<td>상대적으로 정확</td>
+</tr>
 </tbody>
 </table>
+<p><a href="https://haystack.deepset.ai/benchmarks">*100만개 데이터 포인트가 넘어가면 임베딩이 더 빨라진다.</a></p>
 <br/>
 <h3><strong>RDBMS FTS의 원리?</strong></h3>
 <ul>
 <li>
-<p><a href="https://dev.mysql.com/doc/refman/8.3/en/fulltext-search.html">Mysql에서의 Full-Text Search</a> - <a href="https://inpa.tistory.com/entry/MYSQL-%F0%9F%93%9A-%ED%92%80%ED%85%8D%EC%8A%A4%ED%8A%B8-%EC%9D%B8%EB%8D%B1%EC%8A%A4Full-Text-Index-%EC%82%AC%EC%9A%A9%EB%B2%95">풀어진 해석</a></p>
+<p><a href="https://dev.mysql.com/doc/refman/8.3/en/fulltext-search.html">Mysql에서의 Full-Text Search</a> (<a href="https://inpa.tistory.com/entry/MYSQL-%F0%9F%93%9A-%ED%92%80%ED%85%8D%EC%8A%A4%ED%8A%B8-%EC%9D%B8%EB%8D%B1%EC%8A%A4Full-Text-Index-%EC%82%AC%EC%9A%A9%EB%B2%95">쉬운 한글 설명</a>)</p>
 <ul>
 <li>내부적으로 인덱싱을 위해 ngram을 사용함. (<a href="https://white-joy.tistory.com/4">ngram 예시</a>)</li>
 <li>CJK ngram을 지원함.</li>
@@ -63,21 +69,21 @@
 <li><a href="https://www.postgresql.org/docs/current/datatype-textsearch.html">tsvector</a>로 lexemes를 만든다. lexeme 변환은 소문자화, 어근 추출들이 포함되어있다.</li>
 <li>tsvector의 결과를 gin이나 rum이라는 역색인 함수에 넣어서 저장한다.</li>
 <li>tsquery로 검색을 한다.</li>
-<li>읽으면서 개인적으로 느낀점은 영어와 같이 단어가 잘 나누어지는 언어에는 좋아보이지만 일어와 중어처럼 띄어쓰기가 애매한 동양언어에서는 잘 작동할지가 의문이다.</li>
-<li>잘 작동하지 않기에 형태소 분석기를 사용하는듯하다. <a href="https://taejoone.jeju.onl/posts/2024-01-27-postgres-16-korean/">mecab-ko를 사용하는 예시</a>가 있다.</li>
+<li>읽으면서 개인적으로 느낀점은 영어와 같이 단어가 잘 나누어지는 언어에는 좋아보이지만 일어와 중어처럼 띄어쓰기가 애매한 동양언어에서는 잘 작동할지가 의문이다. 잘 작동하지 않기에 형태소 분석기를 사용하는듯하다. <a href="https://taejoone.jeju.onl/posts/2024-01-27-postgres-16-korean/">mecab-ko를 사용하는 예시</a>가 있다.</li>
 </ul>
 </li>
 </ul>
 <br/>
 <h3><strong>Elastic Search의 원리?</strong></h3>
 <p>Node라는 단위로 여러개의 가상의 객체로 샤드들을 나누어 저장한다. 마치 쿠버네티스를 연상케하는 구조이다. 스케일링에 좋아보이고 인덱스 하나에 대해 검색을 할 때 여러 개의 Node들에서 병렬로
-처리하기에 속도가 더 빠를 수 있다고 한다. 하나의 PC내에 여러 개의 노드가 있다면 멀티스레드를 최대한 사용한다는 느낌이 아닐까 싶다.</p>
+처리하기에 속도가 더 빠를 수 있다고 한다. 하나의 PC내에 여러 개의 노드가 있다면 멀티스레드를 최대한 사용한다는 느낌이 아닐까 싶다. 여기서 내가 드는 생각은, Postgresql 같은 DB도 파티셔닝하면 병렬 처리가 가능한데 그러면 Elastic Search 속도에 비빌 수 있지 않을까?라는 점이다. 상황에 따라 다를 수 있겠지만 정확한 벤치마크를 찾고 싶다. 근데 애초에 NoSQL이 파티셔닝 환경에서 더 퍼포먼트하다는 것으로 알고 있기에 설정하기는 아마 Elastic Search가 더 간단하려나라는 생각이다.</p>
+<p>=> 해당 문단은 뇌피셜 덩어리라서 나중에 더 많이 공부하다보면 많이 바뀔 수 있는 내용이다.</p>
 <br/>
 <h3><strong>RDBMS vs Elastic Search</strong></h3>
 <ul>
 <li>나중에 시스템이 커져서 정말로 Elastic Search를 사용해야한다면 조심해야한다. DB와 Elastic Search를 같이 사용하면 ES에서 DB 정보를 실시간 Sync해줘야하는데 이게 머리아플 것이다.</li>
 <li>실시간 Sync는 조금 어렵기 때문에 로그 정리 후 OLAP과 비슷한 용도로 많이 사용하는 듯하다.</li>
-<li>Elastic Search 다음으로는 Splunk, Solr 이 두 가지가 반, 반의반 정도의 점유율을 보이고, 나머지들은 거의 롱테일 수준이다.</li>
+<li>Search Engine 중 Elastic Search 다음으로는 Splunk, Solr 이 두 가지가 반, 반의반 정도의 점유율을 보이고, 나머지들은 거의 롱테일 수준이다.</li>
 <li>Elastic Search를 메인 DB로 쓰면 단점이 많다고 한다. => rndcircle의 경우에는 transactional db처럼 많은 write이 일어나지 않아서 read 위주로 일어나기에 메인 DB로도 괜찮을 수 있다.</li>
 <li>현재 DB에서 FTS를 이미 쓰고 있다면 문제가 있지 않은 이상 굳이 Elastic Search를 사용하는 것은 오버킬 + 오버엔지니어링 + 오버프라이스 일 수 있다.</li>
 <li>Elastic Search와 RDB의 벤치마크가 참고하기 좋은 것들이 많지는 않았는데 전반적으로 튜닝에 따라서 좌우가 많이되고 Postgres 튜닝으로도 충분한 경우가 많았다.</li>
@@ -213,7 +219,7 @@
 <li>Elastic Search와 여러 Vector DB에 구현되어있는 Vector Search (Embedding 거리 점수)</li>
 </ul>
 <p>벡터 검색을 빼면 모두 결국에는 단어 인덱싱+빈도수로 검색한다. 단어를 어떻게 토큰화하고 관리하는지에 따라 구현이 갈릴 뿐이다. 직접 테스팅하지 않고 짧게만 리서치해본 결과 Elastic Search는 RDB보다 훨씬 인덱싱을 상황에 맞게 <a href="https://stackoverflow.com/questions/20515069/elasticsearch-vs-sql-full-text-search">튜닝</a>할 수 있고 scalability가 높다고한다. 이에따라 Elastic Search이 설정은 복잡하지만 데이터가 많을 때 훨씬 더 빠르다고 한다.</p>
-<p>Embedding으로 검색하는 것은 벡터 기반 검색이다. 전통적인 인덱싱+빈도수 기법과는 차이가 있다. 각 문서마다의 벡터 값과 검색하는 벡터값과의 거리 계산을 해야하기 때문이다. 고로 전통적인 inverted indexing이 아닌 Vector Indexing을 사용한다고 한다. 벡터 인덱싱은 기법이 복잡하고 다양하기에 다음 포스트에서 따로 다루겠다.</p>
+<p>Embedding으로 검색하는 것은 벡터 기반 검색이다. 전통적인 인덱싱+빈도수 기법과는 차이가 있다. 각 문서마다의 벡터 거리 계산을 해야하기 때문이다. 고로 전통적인 inverted indexing이 아닌 Vector Indexing을 사용한다고 한다. 아직 리서치가 완벽하지 않다. 벡터 인덱싱은 기법이 복잡하고 다양하기에 다음 포스트에서 따로 다루겠다. 그 후에 이 포스트 또한 정갈하게 업데이트하겠다.</p>
 <table>
 <thead>
 <tr>
@@ -225,8 +231,8 @@
 <tbody>
 <tr>
 <td>속도</td>
-<td>구현에 따라 다름</td>
-<td>구현에 따라 다름</td>
+<td>상대적으로 빠름</td>
+<td>상대적으로 느림*</td>
 </tr>
 <tr>
 <td>문맥 파악</td>
@@ -243,13 +249,19 @@
 <td>상대적으로 Low</td>
 <td>상대적으로 High</td>
 </tr>
+<tr>
+<td>전반적인 정확도</td>
+<td>상대적으로 덜 정확</td>
+<td>상대적으로 정확</td>
+</tr>
 </tbody>
 </table>
+<p><a href="https://haystack.deepset.ai/benchmarks">*100만개 데이터 포인트가 넘어가면 임베딩이 더 빨라진다.</a></p>
 <br/>
 <h3><strong>RDBMS FTS의 원리?</strong></h3>
 <ul>
 <li>
-<p><a href="https://dev.mysql.com/doc/refman/8.3/en/fulltext-search.html">Mysql에서의 Full-Text Search</a> - <a href="https://inpa.tistory.com/entry/MYSQL-%F0%9F%93%9A-%ED%92%80%ED%85%8D%EC%8A%A4%ED%8A%B8-%EC%9D%B8%EB%8D%B1%EC%8A%A4Full-Text-Index-%EC%82%AC%EC%9A%A9%EB%B2%95">풀어진 해석</a></p>
+<p><a href="https://dev.mysql.com/doc/refman/8.3/en/fulltext-search.html">Mysql에서의 Full-Text Search</a> (<a href="https://inpa.tistory.com/entry/MYSQL-%F0%9F%93%9A-%ED%92%80%ED%85%8D%EC%8A%A4%ED%8A%B8-%EC%9D%B8%EB%8D%B1%EC%8A%A4Full-Text-Index-%EC%82%AC%EC%9A%A9%EB%B2%95">쉬운 한글 설명</a>)</p>
 <ul>
 <li>내부적으로 인덱싱을 위해 ngram을 사용함. (<a href="https://white-joy.tistory.com/4">ngram 예시</a>)</li>
 <li>CJK ngram을 지원함.</li>
@@ -263,21 +275,21 @@
 <li><a href="https://www.postgresql.org/docs/current/datatype-textsearch.html">tsvector</a>로 lexemes를 만든다. lexeme 변환은 소문자화, 어근 추출들이 포함되어있다.</li>
 <li>tsvector의 결과를 gin이나 rum이라는 역색인 함수에 넣어서 저장한다.</li>
 <li>tsquery로 검색을 한다.</li>
-<li>읽으면서 개인적으로 느낀점은 영어와 같이 단어가 잘 나누어지는 언어에는 좋아보이지만 일어와 중어처럼 띄어쓰기가 애매한 동양언어에서는 잘 작동할지가 의문이다.</li>
-<li>잘 작동하지 않기에 형태소 분석기를 사용하는듯하다. <a href="https://taejoone.jeju.onl/posts/2024-01-27-postgres-16-korean/">mecab-ko를 사용하는 예시</a>가 있다.</li>
+<li>읽으면서 개인적으로 느낀점은 영어와 같이 단어가 잘 나누어지는 언어에는 좋아보이지만 일어와 중어처럼 띄어쓰기가 애매한 동양언어에서는 잘 작동할지가 의문이다. 잘 작동하지 않기에 형태소 분석기를 사용하는듯하다. <a href="https://taejoone.jeju.onl/posts/2024-01-27-postgres-16-korean/">mecab-ko를 사용하는 예시</a>가 있다.</li>
 </ul>
 </li>
 </ul>
 <br/>
 <h3><strong>Elastic Search의 원리?</strong></h3>
 <p>Node라는 단위로 여러개의 가상의 객체로 샤드들을 나누어 저장한다. 마치 쿠버네티스를 연상케하는 구조이다. 스케일링에 좋아보이고 인덱스 하나에 대해 검색을 할 때 여러 개의 Node들에서 병렬로
-처리하기에 속도가 더 빠를 수 있다고 한다. 하나의 PC내에 여러 개의 노드가 있다면 멀티스레드를 최대한 사용한다는 느낌이 아닐까 싶다.</p>
+처리하기에 속도가 더 빠를 수 있다고 한다. 하나의 PC내에 여러 개의 노드가 있다면 멀티스레드를 최대한 사용한다는 느낌이 아닐까 싶다. 여기서 내가 드는 생각은, Postgresql 같은 DB도 파티셔닝하면 병렬 처리가 가능한데 그러면 Elastic Search 속도에 비빌 수 있지 않을까?라는 점이다. 상황에 따라 다를 수 있겠지만 정확한 벤치마크를 찾고 싶다. 근데 애초에 NoSQL이 파티셔닝 환경에서 더 퍼포먼트하다는 것으로 알고 있기에 설정하기는 아마 Elastic Search가 더 간단하려나라는 생각이다.</p>
+<p>=> 해당 문단은 뇌피셜 덩어리라서 나중에 더 많이 공부하다보면 많이 바뀔 수 있는 내용이다.</p>
 <br/>
 <h3><strong>RDBMS vs Elastic Search</strong></h3>
 <ul>
 <li>나중에 시스템이 커져서 정말로 Elastic Search를 사용해야한다면 조심해야한다. DB와 Elastic Search를 같이 사용하면 ES에서 DB 정보를 실시간 Sync해줘야하는데 이게 머리아플 것이다.</li>
 <li>실시간 Sync는 조금 어렵기 때문에 로그 정리 후 OLAP과 비슷한 용도로 많이 사용하는 듯하다.</li>
-<li>Elastic Search 다음으로는 Splunk, Solr 이 두 가지가 반, 반의반 정도의 점유율을 보이고, 나머지들은 거의 롱테일 수준이다.</li>
+<li>Search Engine 중 Elastic Search 다음으로는 Splunk, Solr 이 두 가지가 반, 반의반 정도의 점유율을 보이고, 나머지들은 거의 롱테일 수준이다.</li>
 <li>Elastic Search를 메인 DB로 쓰면 단점이 많다고 한다. => rndcircle의 경우에는 transactional db처럼 많은 write이 일어나지 않아서 read 위주로 일어나기에 메인 DB로도 괜찮을 수 있다.</li>
 <li>현재 DB에서 FTS를 이미 쓰고 있다면 문제가 있지 않은 이상 굳이 Elastic Search를 사용하는 것은 오버킬 + 오버엔지니어링 + 오버프라이스 일 수 있다.</li>
 <li>Elastic Search와 RDB의 벤치마크가 참고하기 좋은 것들이 많지는 않았는데 전반적으로 튜닝에 따라서 좌우가 많이되고 Postgres 튜닝으로도 충분한 경우가 많았다.</li>
@@ -398,7 +410,7 @@
 <li><a href="https://db-engines.com/en/ranking">DB 랭킹</a></li>
 <li><a href="https://haystack.deepset.ai/benchmarks">Vector DB vs BM25 벤치마크</a></li>
 <li><a href="https://www.pinecone.io/learn/series/faiss/vector-indexes/">Pinecone - Faiss: The Missing Guide</a></li>
-</ul></div></div><style data-emotion="css 6apk4h">.css-6apk4h{height:60px;padding-top:40px;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;color:#b4b4b4;font-size:14px;}</style><div class="css-6apk4h"><span class="text-red">Copyright </span><span class="text-purple">© </span><span class="text-skyblue">2023</span><style data-emotion="css fute3">.css-fute3{-webkit-text-decoration:none;text-decoration:none;color:#a6e22e;}</style><a href="/" class="css-fute3"> Seho Lee </a><span class="text-orange">All Rights Reserved</span><span class="text-yellow">.</span></div></main></div></div><style data-emotion="css 1u8f60p">.css-1u8f60p{width:100vw;height:24px;background-color:#414339;position:fixed;bottom:0;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;font-size:12px;}</style><div class="css-1u8f60p"><style data-emotion="css 1byydgk">.css-1byydgk{background-color:#1e1f1c;color:#ccc;font-size:12px;font-weight:800;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding:0px 6px;}@media (max-width: 768px){.css-1byydgk{font-size:10px;}}</style><div class="css-1byydgk">&lt;/&gt;</div><style data-emotion="css 1k181js">.css-1k181js{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-text-decoration:none;text-decoration:none;width:100%;}</style><a href="https://github.com/seho0808/blog" class="css-1k181js"><style data-emotion="css kr4wdv">.css-kr4wdv{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding-left:10px;padding-right:20px;color:#ccc;gap:10px;}@media (max-width: 768px){.css-kr4wdv{font-size:10px;}}</style><div class="css-kr4wdv"><div>Latest Commit</div><div>54483c86-df49-5ac2-9b5a-a07faa382ab0</div></div><style data-emotion="css 1lo262">.css-1lo262{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding-left:10px;padding-right:20px;color:#ccc;gap:10px;margin-left:auto;}@media (max-width: 768px){.css-1lo262{font-size:10px;}}@media (max-width: 768px){.css-1lo262{display:none;}}</style><div class="css-1lo262"><div>seho0808</div><div>2024-05-22T11:00:36Z</div></div></a></div></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/blog/document-search-algorithm/";/*]]>*/</script><!-- slice-start id="_gatsby-scripts-1" -->
+</ul></div></div><style data-emotion="css 6apk4h">.css-6apk4h{height:60px;padding-top:40px;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;color:#b4b4b4;font-size:14px;}</style><div class="css-6apk4h"><span class="text-red">Copyright </span><span class="text-purple">© </span><span class="text-skyblue">2023</span><style data-emotion="css fute3">.css-fute3{-webkit-text-decoration:none;text-decoration:none;color:#a6e22e;}</style><a href="/" class="css-fute3"> Seho Lee </a><span class="text-orange">All Rights Reserved</span><span class="text-yellow">.</span></div></main></div></div><style data-emotion="css 1u8f60p">.css-1u8f60p{width:100vw;height:24px;background-color:#414339;position:fixed;bottom:0;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;font-size:12px;}</style><div class="css-1u8f60p"><style data-emotion="css 1byydgk">.css-1byydgk{background-color:#1e1f1c;color:#ccc;font-size:12px;font-weight:800;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding:0px 6px;}@media (max-width: 768px){.css-1byydgk{font-size:10px;}}</style><div class="css-1byydgk">&lt;/&gt;</div><style data-emotion="css 1k181js">.css-1k181js{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-text-decoration:none;text-decoration:none;width:100%;}</style><a href="https://github.com/seho0808/blog" class="css-1k181js"><style data-emotion="css kr4wdv">.css-kr4wdv{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding-left:10px;padding-right:20px;color:#ccc;gap:10px;}@media (max-width: 768px){.css-kr4wdv{font-size:10px;}}</style><div class="css-kr4wdv"><div>Latest Commit</div><div>916b9bde-e3bd-5b94-a0b5-b8e67d331575</div></div><style data-emotion="css 1lo262">.css-1lo262{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding-left:10px;padding-right:20px;color:#ccc;gap:10px;margin-left:auto;}@media (max-width: 768px){.css-1lo262{font-size:10px;}}@media (max-width: 768px){.css-1lo262{display:none;}}</style><div class="css-1lo262"><div>seho0808</div><div>2024-05-22T13:20:37Z</div></div></a></div></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/blog/document-search-algorithm/";/*]]>*/</script><!-- slice-start id="_gatsby-scripts-1" -->
           <script
             id="gatsby-chunk-mapping"
           >
