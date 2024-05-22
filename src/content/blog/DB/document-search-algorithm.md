@@ -27,20 +27,23 @@ rndcircle에 합류하면서 가장 처음 받은 미션은 "연구실 데이터
 
 벡터 검색을 빼면 모두 결국에는 단어 인덱싱+빈도수로 검색한다. 단어를 어떻게 토큰화하고 관리하는지에 따라 구현이 갈릴 뿐이다. 직접 테스팅하지 않고 짧게만 리서치해본 결과 Elastic Search는 RDB보다 훨씬 인덱싱을 상황에 맞게 [튜닝](https://stackoverflow.com/questions/20515069/elasticsearch-vs-sql-full-text-search)할 수 있고 scalability가 높다고한다. 이에따라 Elastic Search이 설정은 복잡하지만 데이터가 많을 때 훨씬 더 빠르다고 한다.
 
-Embedding으로 검색하는 것은 벡터 기반 검색이다. 전통적인 인덱싱+빈도수 기법과는 차이가 있다. 각 문서마다의 벡터 값과 검색하는 벡터값과의 거리 계산을 해야하기 때문이다. 고로 전통적인 inverted indexing이 아닌 Vector Indexing을 사용한다고 한다. 벡터 인덱싱은 기법이 복잡하고 다양하기에 다음 포스트에서 따로 다루겠다.
+Embedding으로 검색하는 것은 벡터 기반 검색이다. 전통적인 인덱싱+빈도수 기법과는 차이가 있다. 각 문서마다의 벡터 거리 계산을 해야하기 때문이다. 고로 전통적인 inverted indexing이 아닌 Vector Indexing을 사용한다고 한다. 아직 리서치가 완벽하지 않다. 벡터 인덱싱은 기법이 복잡하고 다양하기에 다음 포스트에서 따로 다루겠다. 그 후에 이 포스트 또한 정갈하게 업데이트하겠다.
 
-|                  | 빈도수           | 임베딩           |
-| ---------------- | ---------------- | ---------------- |
-| 속도             | 구현에 따라 다름 | 구현에 따라 다름 |
-| 문맥 파악        | X                | O                |
-| 정확한 매칭 검색 | O                | X                |
-| 리소스           | 상대적으로 Low   | 상대적으로 High  |
+|                  | 빈도수             | 임베딩            |
+| ---------------- | ------------------ | ----------------- |
+| 속도             | 상대적으로 빠름    | 상대적으로 느림\* |
+| 문맥 파악        | X                  | O                 |
+| 정확한 매칭 검색 | O                  | X                 |
+| 리소스           | 상대적으로 Low     | 상대적으로 High   |
+| 전반적인 정확도  | 상대적으로 덜 정확 | 상대적으로 정확   |
+
+[\*100만개 데이터 포인트가 넘어가면 임베딩이 더 빨라진다.](https://haystack.deepset.ai/benchmarks)
 
 <br/>
 
 ### **RDBMS FTS의 원리?**
 
-- [Mysql에서의 Full-Text Search](https://dev.mysql.com/doc/refman/8.3/en/fulltext-search.html) - [풀어진 해석](https://inpa.tistory.com/entry/MYSQL-%F0%9F%93%9A-%ED%92%80%ED%85%8D%EC%8A%A4%ED%8A%B8-%EC%9D%B8%EB%8D%B1%EC%8A%A4Full-Text-Index-%EC%82%AC%EC%9A%A9%EB%B2%95)
+- [Mysql에서의 Full-Text Search](https://dev.mysql.com/doc/refman/8.3/en/fulltext-search.html) ([쉬운 한글 설명](https://inpa.tistory.com/entry/MYSQL-%F0%9F%93%9A-%ED%92%80%ED%85%8D%EC%8A%A4%ED%8A%B8-%EC%9D%B8%EB%8D%B1%EC%8A%A4Full-Text-Index-%EC%82%AC%EC%9A%A9%EB%B2%95))
 
   - 내부적으로 인덱싱을 위해 ngram을 사용함. ([ngram 예시](https://white-joy.tistory.com/4))
   - CJK ngram을 지원함.
@@ -51,15 +54,16 @@ Embedding으로 검색하는 것은 벡터 기반 검색이다. 전통적인 인
   - [tsvector](https://www.postgresql.org/docs/current/datatype-textsearch.html)로 lexemes를 만든다. lexeme 변환은 소문자화, 어근 추출들이 포함되어있다.
   - tsvector의 결과를 gin이나 rum이라는 역색인 함수에 넣어서 저장한다.
   - tsquery로 검색을 한다.
-  - 읽으면서 개인적으로 느낀점은 영어와 같이 단어가 잘 나누어지는 언어에는 좋아보이지만 일어와 중어처럼 띄어쓰기가 애매한 동양언어에서는 잘 작동할지가 의문이다.
-  - 잘 작동하지 않기에 형태소 분석기를 사용하는듯하다. [mecab-ko를 사용하는 예시](https://taejoone.jeju.onl/posts/2024-01-27-postgres-16-korean/)가 있다.
+  - 읽으면서 개인적으로 느낀점은 영어와 같이 단어가 잘 나누어지는 언어에는 좋아보이지만 일어와 중어처럼 띄어쓰기가 애매한 동양언어에서는 잘 작동할지가 의문이다. 잘 작동하지 않기에 형태소 분석기를 사용하는듯하다. [mecab-ko를 사용하는 예시](https://taejoone.jeju.onl/posts/2024-01-27-postgres-16-korean/)가 있다.
 
 <br/>
 
 ### **Elastic Search의 원리?**
 
 Node라는 단위로 여러개의 가상의 객체로 샤드들을 나누어 저장한다. 마치 쿠버네티스를 연상케하는 구조이다. 스케일링에 좋아보이고 인덱스 하나에 대해 검색을 할 때 여러 개의 Node들에서 병렬로
-처리하기에 속도가 더 빠를 수 있다고 한다. 하나의 PC내에 여러 개의 노드가 있다면 멀티스레드를 최대한 사용한다는 느낌이 아닐까 싶다.
+처리하기에 속도가 더 빠를 수 있다고 한다. 하나의 PC내에 여러 개의 노드가 있다면 멀티스레드를 최대한 사용한다는 느낌이 아닐까 싶다. 여기서 내가 드는 생각은, Postgresql 같은 DB도 파티셔닝하면 병렬 처리가 가능한데 그러면 Elastic Search 속도에 비빌 수 있지 않을까?라는 점이다. 상황에 따라 다를 수 있겠지만 정확한 벤치마크를 찾고 싶다. 근데 애초에 NoSQL이 파티셔닝 환경에서 더 퍼포먼트하다는 것으로 알고 있기에 설정하기는 아마 Elastic Search가 더 간단하려나라는 생각이다.
+
+=> 해당 문단은 뇌피셜 덩어리라서 나중에 더 많이 공부하다보면 많이 바뀔 수 있는 내용이다.
 
 <br/>
 
@@ -67,7 +71,7 @@ Node라는 단위로 여러개의 가상의 객체로 샤드들을 나누어 저
 
 - 나중에 시스템이 커져서 정말로 Elastic Search를 사용해야한다면 조심해야한다. DB와 Elastic Search를 같이 사용하면 ES에서 DB 정보를 실시간 Sync해줘야하는데 이게 머리아플 것이다.
 - 실시간 Sync는 조금 어렵기 때문에 로그 정리 후 OLAP과 비슷한 용도로 많이 사용하는 듯하다.
-- Elastic Search 다음으로는 Splunk, Solr 이 두 가지가 반, 반의반 정도의 점유율을 보이고, 나머지들은 거의 롱테일 수준이다.
+- Search Engine 중 Elastic Search 다음으로는 Splunk, Solr 이 두 가지가 반, 반의반 정도의 점유율을 보이고, 나머지들은 거의 롱테일 수준이다.
 - Elastic Search를 메인 DB로 쓰면 단점이 많다고 한다. => rndcircle의 경우에는 transactional db처럼 많은 write이 일어나지 않아서 read 위주로 일어나기에 메인 DB로도 괜찮을 수 있다.
 - 현재 DB에서 FTS를 이미 쓰고 있다면 문제가 있지 않은 이상 굳이 Elastic Search를 사용하는 것은 오버킬 + 오버엔지니어링 + 오버프라이스 일 수 있다.
 - Elastic Search와 RDB의 벤치마크가 참고하기 좋은 것들이 많지는 않았는데 전반적으로 튜닝에 따라서 좌우가 많이되고 Postgres 튜닝으로도 충분한 경우가 많았다.
