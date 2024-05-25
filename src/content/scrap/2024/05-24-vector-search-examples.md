@@ -7,7 +7,7 @@ subtitle: "5 Use Cases for Vector Search"
 
 ## **5 Use Cases for Vector Search**
 
-<p class="text-time">최초 업로드 2024-05-24 / 마지막 수정 2024-05-24</p>
+<p class="text-time">최초 업로드 2024-05-24 / 마지막 수정 2024-05-25</p>
 
 [원본 링크](https://rockset.com/blog/5-use-cases-for-vector-search/)
 
@@ -71,7 +71,12 @@ p와 q를 합쳐서 임베딩을 만든 후 해당 임베딩으로 검색한다.
 
 ### **2018 - DoorDash**
 
-- word2vec과 유사한 store2vec이라는 알고리즘을 사용해서 유사한 가게를 찾을 수 있었음.
-- CTR 5% 증가.
+- word2vec을 조금 바꾼 store2vec이라는 알고리즘을 사용해서 유사한 가게를 찾을 수 있었음.
+- store2vec:
+  - 하나의 store(가게)은 단어 하나임.
+  - 하나의 문장은 유저 세션에서 방문한 store(가게)들을 묶은 것임.
+  - sliding window는 5로 했을 때 잘 나왔다고함.
+  - 세션 마다 5개씩 묶인 상점들의 정보를 통해 모델은 가게들 간의 유사도를 벡터로 표현할 수 있음.
+- store2vec 추천 시스템으로 CTR 5% 증가. => 에어비앤비의 성과에 비하면 꽤 미미한듯하다.
 
 <br/>
