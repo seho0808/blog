@@ -7,7 +7,7 @@ subtitle: "문서 검색 알고리즘을 공부해보자"
 
 ## **문서 검색 알고리즘**
 
-<p class="text-time">최초 업로드 2024-05-21 / 마지막 수정 2024-05-22</p>
+<p class="text-time">최초 업로드 2024-05-21 / 마지막 수정 2024-05-25</p>
 
 _<span class="text-purple">해당 포스트에서는 string search(스트링의 등장 위치 검색)가 아닌 full text search(키워드로 문서 검색)의 모든 옵션들을 두루 살펴봅니다.</span>_
 
@@ -205,6 +205,14 @@ rndcircle팀에서는 수많은 전문용어들이 존재하는 연구실들의 
   - 데이터가 쌓일수록 Vector DB의 효용이 커질 것으로 예상되므로 임베딩 벡터를 만들 수 있는 Fine Tuned 모델을 만들고 여러 Vector DB 솔루션들로 속도 / 정확도 테스팅
   - 그런데 고려할 점은 과연 Vector DB가 더 빠를까?이다. 정확도 & 속도 이 두 가지가 제일 중요한데, 정확도는 올라가도 속도가 빠른지는 테스팅을 해봐야알듯하다. - [벤치마크](https://haystack.deepset.ai/benchmarks) 상으로는 속도는 조금 느려지지만 정확도는 매우 빨라진다. 흥미롭게도 자료량이 100만개를 넘어가면 FAISS(HNSW)가 BM25를 추월할 것으로 예상한다. 대용량 자료에서는 Vector DB가 정확도 속도 모두 우세할 수 있다.
 - 유저 UI상 정확한 단어 검색과 Vector 기반 검색을 선택지(selector) 혹은 화면 split으로 나누는 것도 방법일듯함.
+
+<br/>
+
+### **추가 정보**
+
+추후 계속 추가 예정
+
+- knowledge graph를 이용한 information retrieval 성능 개선 ([Knowledge Graphs: An Information Retrieval Perspective](https://staff.fnwi.uva.nl/m.derijke/wp-content/papercite-data/pdf/reinanda-2020-knowledge.pdf))
 
 <br/>
 
