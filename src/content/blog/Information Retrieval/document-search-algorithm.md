@@ -22,7 +22,6 @@ rndcircle에 합류하면서 가장 처음 받은 미션은 "연구실 데이터
 
 - RDBMS - Full-Text Search Inverted Index (빈도수 점수)
 - NoSQL - Lucene / Elastic Search Inverted Index (빈도수 점수)
-- Elastic Search와 여러 Vector DB에 구현되어있는 BM25 (빈도수 점수) - tf-idf variant
 - Elastic Search와 여러 Vector DB에 구현되어있는 Vector Search (Embedding 거리 점수)
 
 벡터 검색을 빼면 모두 결국에는 단어 인덱싱+빈도수로 검색한다. 단어를 어떻게 토큰화하고 관리하는지에 따라 구현이 갈릴 뿐이다. 직접 테스팅하지 않고 짧게만 리서치해본 결과 Elastic Search는 RDB보다 훨씬 인덱싱을 상황에 맞게 [튜닝](https://stackoverflow.com/questions/20515069/elasticsearch-vs-sql-full-text-search)할 수 있고 scalability가 높다고한다. 이에따라 Elastic Search이 설정은 복잡하지만 데이터가 많을 때 훨씬 더 빠르다고 한다.
@@ -43,11 +42,12 @@ Embedding으로 검색하는 것은 벡터 기반 검색이다. 전통적인 인
 
 ### **RDBMS FTS의 원리?**
 
+자세한 내용은 [RDB FTS 포스트](https://seholee.com/blog/rdb-full-text-search-indexing) 참고.
+
 - [Mysql에서의 Full-Text Search](https://dev.mysql.com/doc/refman/8.3/en/fulltext-search.html) ([쉬운 한글 설명](https://inpa.tistory.com/entry/MYSQL-%F0%9F%93%9A-%ED%92%80%ED%85%8D%EC%8A%A4%ED%8A%B8-%EC%9D%B8%EB%8D%B1%EC%8A%A4Full-Text-Index-%EC%82%AC%EC%9A%A9%EB%B2%95))
 
-  - 내부적으로 인덱싱을 위해 ngram을 사용함. ([ngram 예시](https://white-joy.tistory.com/4))
-  - CJK ngram을 지원함.
-  - 세 가지 방식의 Search가 있다고함: 자연어검색, Boolean 검색, 쿼리 확장 검색
+  - default parser 혹은 ngram parser 혹은 MeCab parser 세 개중에 선택 가능.
+  - default parser 혹은 MeCab 사용 시 세 가지 방식의 Search가 있다고함: 자연어검색, Boolean 검색, 쿼리 확장 검색
   - Stopword들을 지정해서 그 단어들을 배제하며 인덱스를 생성시켜서 효율적인 관리가 가능함.
 
 - [Postgresql에서의 Full-Text Search](https://www.postgresql.org/docs/current/textsearch.html)
