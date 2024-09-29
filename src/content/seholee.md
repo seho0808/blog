@@ -5,19 +5,45 @@ title: "seholee.cv"
 subtitle: "Home | Web Dev / Software Engineer Seho Lee"
 ---
 
-## 안녕하세요, <br/> **웹 개발자 이세호** 입니다.
+## 안녕하세요, <br/> **엔지니어 이세호** 입니다.
 
-프론트엔드와 백엔드에 모두 관심이 있으며, 다양한 환경에서 풀스택 개발자로서 일했습니다. <br/>
-총 <span class="text-skyblue">네 번의 프로덕션 경험</span>이 있습니다. 중견기업 납품, 인하우스 B2C 마케팅 플랫폼 제작, <br/>
-군 인트라넷 체계 개발, B2C 플랫폼 1인 개발 등 모놀리식 아키텍처 위주의 프로젝트 경험이 있습니다. <br/>
+웹 프론트엔드와 백엔드에 모두 관심이 있으며, 다양한 환경에서 풀스택 개발자로서 일했습니다. <br/>
+<span class="text-skyblue">다년간의 프로덕션 경험</span>이 있습니다. 중견기업 납품, 인하우스 B2C 마케팅 플랫폼 제작, <br/>
+군 인트라넷 체계 개발, B2C 플랫폼 1인 개발, B2B 플랫폼 개발 등 Seed ~ Series A 단계의 회사들에서 <br/>
+모놀리식 아키텍처 위주의 프로젝트 경험이 있습니다. <br/>
 
-항상 <span class="text-orange">기대 이상의 것</span>을 만들어내는 것을 추구합니다. 업무가 주어질 때 100% 빈틈 없는 디자인이나 <br/>
+주어진 시간 내에서 <span class="text-orange">기대 이상의 것</span>을 만들어내는 것을 추구합니다. 업무가 주어질 때 100% 빈틈 없는 디자인이나 <br/>
 기획은 존재하지 않는다고 생각합니다. <span class="text-green">소통과 공부</span>로 그 빈틈을 기대 이상으로 채우는 것이 <br/>
 개발자로서 보람을 느낄 수 있는 부분이라고 생각합니다. <br/>
 
 <br/>
 
 <h2 class="subtitle"> &lt;/&gt; 직무 경험 </h2>
+
+**디써클** &nbsp;<span class="text-grey">개발팀</span> <br/>
+SW 엔지니어 &nbsp;2024-05&#126; <br/>
+<span class="text-grey">Node.js, Express.js, Next.js 14</span> <br/>
+
+- CRUD 관련 FE 페이지들(코어 비즈니스 로직, 어드민 등)을 JSON 기반으로 추상화하여 관리
+- 효율을 지향하는 핵심 비즈니스 로직 위주의 백엔드 테스팅
+- 급변하는 기획에 DB와 비즈니스 로직의 변경이 용이하도록 설계 (ongoing)
+
+<br/>
+<br/>
+
+**카카오** &nbsp;<span class="text-grey">카카오 커머스기술팀</span> <br/>
+FE 인턴 &nbsp;2024-01&#126;2024-02 <span class="text-grey">2개월</span><br/>
+<span class="text-grey">Vanilla JS, Typescript</span> <br/>
+
+- 페이지 빌더 개발 <br/>
+
+  - 이커머스 페이지를 드래그 드랍으로 구성할 수 있는 <span class="text-pink">노코드 툴 제작 (바닐라 JS)</span>
+  - innerHTML, createElement, Web Component 등의 WebAPI를 비교분석하며 사용. <a href="/blog/inner-html-vs-create-element/"><img class="link-icon" src="/icons/link-variant.svg" alt="link"/></a>
+  - DOM 수동 조작, Diffing, Key 등 <span class="text-green">렌더링 최적화를 위해 여러 구조를 구현</span>해보고 장단점을 비교분석함.
+  - 유지보수의 편의를 위해 커밋과 PR 관리를 잘게 쪼개고 알맞은 단위로 정리하는 방법을 배움.
+
+<br/>
+<br/>
 
 **국방부** &nbsp;<span class="text-grey">대한민국 국방부</span> <br/>
 SW 개발병 &nbsp;2022-01&#126;2023-07 <span class="text-grey">1년 6개월</span><br/>
@@ -96,22 +122,6 @@ SW 개발병 &nbsp;2022-01&#126;2023-07 <span class="text-grey">1년 6개월</sp
 
 - 직장인 테마 MBTI 개발
   - 직장인을 테마로 한 MBTI 테스트를 기획 및 개발하여 <span class="text-yellow">일일 방문자 최고 2천명 기록</span>
-
-<br/>
-<br/>
-
-<h2 class="subtitle"> &lt;/&gt; 유관 경험 </h2>
-
-**카카오** &nbsp;<span class="text-grey">카카오 커머스기술팀</span> <br/>
-FE 인턴 &nbsp;2024-01&#126;2024-02 <span class="text-grey">2개월</span><br/>
-<span class="text-grey">Vanilla JS, Typescript</span> <br/>
-
-- 페이지 빌더 개발 <br/>
-
-  - 이커머스 페이지를 드래그 드랍으로 구성할 수 있는 <span class="text-pink">노코드 툴 제작 (바닐라 JS)</span>
-  - innerHTML, createElement, Web Component 등의 WebAPI를 비교분석하며 사용. <a href="/blog/inner-html-vs-create-element/"><img class="link-icon" src="/icons/link-variant.svg" alt="link"/></a>
-  - DOM 수동 조작, Diffing, Key 등 <span class="text-green">렌더링 최적화를 위해 여러 구조를 구현</span>해보고 장단점을 비교분석함.
-  - 유지보수의 편의를 위해 커밋과 PR 관리를 잘게 쪼개고 알맞은 단위로 정리하는 방법을 배움.
 
 <br/>
 <br/>
