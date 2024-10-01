@@ -8,7 +8,7 @@ subtitle: "Home | Web Dev / Software Engineer Seho Lee"
 ## 안녕하세요, <br/> **엔지니어 이세호** 입니다.
 
 웹 프론트엔드와 백엔드에 모두 관심이 있으며, 다양한 환경에서 풀스택 개발자로서 일했습니다. <br/>
-<span class="text-skyblue">다년간의 프로덕션 경험</span>이 있습니다. 중견기업 납품, 인하우스 B2C 마케팅 플랫폼 제작, <br/>
+<span class="text-skyblue">여러번의 프로덕션 경험</span>이 있습니다. 중견기업 납품, 인하우스 B2C 마케팅 플랫폼 제작, <br/>
 군 인트라넷 체계 개발, B2C 플랫폼 1인 개발, B2B 플랫폼 개발 등 Seed ~ Series A 단계의 회사들에서 <br/>
 모놀리식 아키텍처 위주의 프로젝트 경험이 있습니다. <br/>
 
