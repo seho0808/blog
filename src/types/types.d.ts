@@ -4,10 +4,19 @@ export type TabsInfo = {
   date: string;
   subtitle: string;
 };
+
+export type MarkdownNode = {
+  html: string;
+  frontmatter: TabsInfo;
+  fields?: {
+    isTranslated: boolean;
+  };
+};
+
 export type BlogMarkdownRemark = {
-  markdownRemark: {
-    html: string;
-    frontmatter: TabsInfo;
+  markdownRemark: MarkdownNode;
+  translatedMarkdown?: {
+    nodes: MarkdownNode[];
   };
 };
 

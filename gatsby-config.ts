@@ -1,4 +1,7 @@
+import dotenv from "dotenv";
 import type { GatsbyConfig } from "gatsby";
+
+dotenv.config();
 
 const config: GatsbyConfig = {
   pathPrefix: "",
