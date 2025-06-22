@@ -157,9 +157,9 @@ const RenderTree = ({
   const files = [];
   const dirs = [];
   for (let key in tree) {
-    if (tree[key].title) {
+    if (tree[key] && tree[key].title) {
       files.push(tree[key] as FileNode);
-    } else {
+    } else if (tree[key]) {
       dirs.push({ dirname: key, tree: tree[key] as Tree });
     }
   }
