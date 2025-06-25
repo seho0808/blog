@@ -63,7 +63,7 @@ Sequelize 소스 코드에서는 Docker을 통해 DB를 종류 별로 띄워놓�
 
 그래서 4월에 개발한 SP3라는 크롤러 엔진에는 Sequelize의 폴더 구조를 벤치 마킹하여 Unit, Integration, E2E 이렇게 세 개의 테스트 폴더들을 놓고 개발했었다.
 
-소스 코드를 먼저 LLM으로 짜게 한 뒤에 테스트 케이스를 만드는 식으로 Structural Testing(이건 최근에야 Effective Software Testing을 읽으며 이해한 개념이며 당시에는 뭘하는지도 잘 몰랐음)을 했었다.
+소스 코드를 먼저 LLM으로 짜게 한 뒤에 LLM으로 다시 한 번 테스트 케이스를 만드는 식으로 Structural Testing(이건 최근에야 Effective Software Testing을 읽으며 이해한 개념이며 당시에는 뭘하는지도 잘 몰랐음)을 했었다.
 
 그렇게 했을 때 복잡한 html => md => json으로 변환되는 파이프라인을 매우 안정적으로 만들 수 있었고, 새로운 회귀 테스팅 케이스들이 생겨났을 때 안정적으로 대응할 수 있었다.
 
