@@ -14,6 +14,7 @@ import Footer from "../components/_layouts/Footer";
 import Minimap from "../components/Minimap/Minimap";
 import StatusBar from "../components/_layouts/StatusBar";
 import { SEO } from "../components/SEO/SEO";
+import { LanguageProvider, useLanguage } from "../contexts/LanguageContext";
 
 // markdown custom css
 import "../markdownStyle.css";
@@ -25,17 +26,21 @@ import "katex/dist/katex.min.css";
 import { defineCustomElements as deckDeckGoHighlightElement } from "@deckdeckgo/highlight-code/dist/loader";
 deckDeckGoHighlightElement();
 
-export default function BlogPostTemplate({
-  data, // this prop will be injected by the GraphQL query below.
-}: {
-  data: BlogMarkdownRemark;
-}) {
+function BlogPostContent({ data }: { data: BlogMarkdownRemark }) {
+  const { currentLanguage } = useLanguage();
+
   // this is for minimap scroll tracking
   const contentRef = useRef<HTMLDivElement>(null);
 
-  // markdown data
-  const { markdownRemark } = data; // data.markdownRemark holds your post data
-  const { frontmatter, html } = markdownRemark;
+  // markdown data - select based on language
+  const { markdownRemark, translatedMarkdown } = data;
+  const translatedNode = translatedMarkdown?.nodes?.[0];
+  const selectedMarkdown =
+    currentLanguage === "translated" && translatedNode
+      ? translatedNode
+      : markdownRemark;
+
+  const { frontmatter, html } = selectedMarkdown;
 
   // explorer toggle logic
   const [showExplorer, setShowExplorer] = useState<boolean>(true);
@@ -86,8 +91,20 @@ export default function BlogPostTemplate({
   );
 }
 
+export default function BlogPostTemplate({
+  data,
+}: {
+  data: BlogMarkdownRemark;
+}) {
+  return (
+    <LanguageProvider>
+      <BlogPostContent data={data} />
+    </LanguageProvider>
+  );
+}
+
 export const pageQuery = graphql`
-  query ($id: String!) {
+  query ($id: String!, $slug: String!) {
     markdownRemark(id: { eq: $id }) {
       html
       frontmatter {
@@ -95,6 +112,29 @@ export const pageQuery = graphql`
         slug
         title
         subtitle
+      }
+      fields {
+        isTranslated
+      }
+    }
+    translatedMarkdown: allMarkdownRemark(
+      filter: {
+        fields: { isTranslated: { eq: true } }
+        frontmatter: { slug: { eq: $slug } }
+      }
+      limit: 1
+    ) {
+      nodes {
+        html
+        frontmatter {
+          date(formatString: "MMMM DD, YYYY")
+          slug
+          title
+          subtitle
+        }
+        fields {
+          isTranslated
+        }
       }
     }
   }
