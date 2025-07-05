@@ -67,5 +67,7 @@ yarn-error.log
 # Yarn Integrity file
 .yarn-integrity
 
+# Translation cache
+.translation-cache.json
 
 public/
