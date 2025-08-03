@@ -27,15 +27,19 @@
     "gatsby-plugin-sitemap": "^6.12.3",
     "gatsby-remark-images": "^7.12.3",
     "gatsby-remark-katex": "^7.12.0",
+    "gatsby-remark-mermaid": "^5.0.0",
     "gatsby-remark-prismjs": "^7.13.1",
     "gatsby-source-filesystem": "^5.12.1",
     "gatsby-transformer-remark": "^6.13.1",
     "katex": "^0.13.24",
+    "mermaid": "^11.9.0",
+    "playwright": "^1.54.2",
     "prismjs": "^1.29.0",
     "re-resizable": "^6.9.11",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-helmet": "^6.1.0"
+    "react-helmet": "^6.1.0",
+    "rehype-mermaid": "^3.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.3.3",

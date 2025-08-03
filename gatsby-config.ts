@@ -98,6 +98,22 @@ const config: GatsbyConfig = {
               strict: `ignore`,
             },
           },
+          {
+            resolve: "gatsby-transformer-remark",
+            options: {
+              plugins: [
+                {
+                  resolve: `gatsby-remark-mermaid`,
+                  options:
+                    /** @type {import('gatsby-remark-mermaid').Options} */ {
+                      mermaidConfig: {
+                        theme: "dark",
+                      },
+                    },
+                },
+              ],
+            },
+          },
         ],
       },
     },
