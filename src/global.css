@@ -3,13 +3,13 @@
 body {
   background-color: #272822;
   margin: 0;
-	font-family: "Pretendard";
+  font-family: "Pretendard";
 }
 
 /* re-resizable explorer resizing option. this option blocks height drag*/
 .pointer-events-none {
   pointer-events: none;
-	display: none;
+  display: none;
 }
 
 /* Custom Scrollbar Styling */
@@ -22,36 +22,38 @@ body {
 
 /* Track of the scrollbar */
 ::-webkit-scrollbar-track {
-	background: #272822;
-	border: solid 1px #474844;
-	border-width: 0px 1px;
+  background: #272822;
+  border: solid 1px #474844;
+  border-width: 0px 1px;
 }
 
 /* Handle of the scrollbar */
 ::-webkit-scrollbar-thumb {
-	background: #474844;
+  background: #474844;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-	background: #555;
+  background: #555;
 }
 
 /* Settings to overwrite Prism css from `import "prismjs/themes/prism-okaidia.css";` */
 /* inline code styling + code block styling */
-:not(pre) > code[class*="language-"], pre[class*="language-"] {
-	background-color: #141414 !important;
-	font-size: 16px !important;
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+  background-color: #141414 !important;
+  font-size: 16px !important;
 }
 
 /* inline code styling */
 :not(pre) > code[class*="language-"] {
-	margin: 0px 2px !important; 
-	padding: 2px 4px !important;
-	border-radius: 4px !important;
+  margin: 0px 2px !important;
+  padding: 2px 4px !important;
+  border-radius: 4px !important;
 }
 
 /* code font setting */
-code[class*="language-"], pre[class*="language-"] {
-	font-family: Consolas, "malgun gothic", monospace !important;
+code[class*="language-"],
+pre[class*="language-"] {
+  font-family: Consolas, "malgun gothic", monospace !important;
 }
