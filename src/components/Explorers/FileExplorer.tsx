@@ -136,6 +136,20 @@ const transformDataToTree = (edges: { node: ExplorerFileNode }[]) => {
   return tree;
 };
 
+const countLeafFiles = (tree: Tree): number => {
+  let count = 0;
+  for (const key in tree) {
+    const value = tree[key];
+    if (!value) continue;
+    if ((value as FileNode).title) {
+      count += 1;
+    } else {
+      count += countLeafFiles(value as Tree);
+    }
+  }
+  return count;
+};
+
 /**
  * renders tree data into an actual dom element
  * @param param0
@@ -215,7 +229,7 @@ const RenderTree = ({
                 src={isOpen ? "/icons/folder-open.svg" : "/icons/folder.svg"}
                 depth={depth} // file hierarchy indent
               />
-              {d.dirname} ({Object.keys(d.tree).length})
+              {d.dirname} ({countLeafFiles(d.tree)})
             </FolderLine>
             {/* render children if folder is open */}
             <div style={isOpen ? {} : { display: "none" }}>
