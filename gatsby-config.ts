@@ -27,6 +27,14 @@ const config: GatsbyConfig = {
             },
           },
           {
+            resolve: `gatsby-remark-mermaid`,
+            options: /** @type {import('gatsby-remark-mermaid').Options} */ {
+              mermaidConfig: {
+                theme: "dark",
+              },
+            },
+          },
+          {
             resolve: `gatsby-remark-prismjs`,
             options: {
               // Class prefix for <pre> tags containing syntax highlighting;
@@ -96,22 +104,6 @@ const config: GatsbyConfig = {
             options: {
               // Add any KaTeX options from https://github.com/KaTeX/KaTeX/blob/master/docs/options.md here
               strict: `ignore`,
-            },
-          },
-          {
-            resolve: "gatsby-transformer-remark",
-            options: {
-              plugins: [
-                {
-                  resolve: `gatsby-remark-mermaid`,
-                  options:
-                    /** @type {import('gatsby-remark-mermaid').Options} */ {
-                      mermaidConfig: {
-                        theme: "dark",
-                      },
-                    },
-                },
-              ],
             },
           },
         ],
