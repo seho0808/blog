@@ -16,7 +16,7 @@
     "deploy": "gatsby clean && gatsby build --prefix-paths && gh-pages -d public",
     "typecheck": "tsc --noEmit"
   },
-  "license": "0BSD",
+  "license": "UNLICENSED",
   "dependencies": {
     "@deckdeckgo/highlight-code": "^3.6.0",
     "@emotion/react": "^11.11.1",
