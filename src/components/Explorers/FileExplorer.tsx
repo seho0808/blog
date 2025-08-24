@@ -239,6 +239,7 @@ export default FileExplorer;
 const TreeWrapper = styled.div`
   margin-top: 0px;
   font-size: 12px;
+  overflow-y: auto;
 `;
 
 const Ul = styled.ul`
