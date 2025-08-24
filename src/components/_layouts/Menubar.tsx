@@ -62,6 +62,7 @@ const Nav = styled.nav`
   display: flex;
   gap: 16px;
   flex-direction: column;
+  flex-shrink: 0;
   justify-content: flex-start;
   align-items: center;
   height: calc(100vh - 12px);
