@@ -10,8 +10,8 @@
 
 ![temp](/images/caching-overview.jpg) -->
 <div class="image-container">
-  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/caching-overview.jpg" alt="next_js_caching_flow"/>
-  <sub class>그림 1. Next.js 웹사이트 원본</sub>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/caching-overview.jpg" alt="next_js_caching_flow">
+  <sub class="">그림 1. Next.js 웹사이트 원본</sub>
 </div>
 <br/>
 <p><a href="https://nextjs.org/docs/app/building-your-application/caching">Next.js 13 공식문서</a>에는 네 개의 캐싱 기법이 정리되어있다. Router Cache, Full Route Cache, Request Memoization, Data Cache 이렇게 네 가지가 공식 문서에
@@ -21,8 +21,8 @@ Next.js로 개발하는 사람들은 상당수가 풀스택에 가까운 프론�
 사용해줄 수도 있다. 이에 맞춰서 그림을 조금 수정해보았다.</p>
 <br/>
 <div class="image-container">
-  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/caching-overview-fixed.jpg" alt="next_js_caching_flow"/>
-  <sub class>그림 2. 실제로 고려해야되는 캐싱들</a></sub>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/caching-overview-fixed.jpg" alt="next_js_caching_flow">
+  <sub class="">그림 2. 실제로 고려해야되는 캐싱들</sub>
 </div>
 <br/>
 <p>위 그림은 나중에 더 자세히 다루고, 이번 1편 포스트에서는 Router Cache에 대해서 알아보자.</p>
@@ -84,70 +84,69 @@ RSC 페이로드는 React Server Component가 등장하면서 부분적으로 �
 <br/>
 <p>제대로 된 이해를 위해 예시를 한 가지 살펴보자. 읽기 쉽게 4개의 파일을 하나의 코드 블록에 넣어보았다.</p>
 <br/>
-<pre><code class="language-javascript">
-// app/api/getTime
-// 이 api는 시간을 리턴해줌!
-export const dynamic = "force-dynamic"; // 이거 없으면 빌드 시 static route돼서 같은 시간만 주구장창 나옴
-export async function GET() {
-  return Response.json({ timestamp: new Date().getTime() });
-}
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript">
+<span class="token comment">// app/api/getTime</span>
+<span class="token comment">// 이 api는 시간을 리턴해줌!</span>
+<span class="token keyword">export</span> <span class="token keyword">const</span> dynamic <span class="token operator">=</span> <span class="token string">"force-dynamic"</span><span class="token punctuation">;</span> <span class="token comment">// 이거 없으면 빌드 시 static route돼서 같은 시간만 주구장창 나옴</span>
+<span class="token keyword">export</span> <span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token constant">GET</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> Response<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token literal-property property">timestamp</span><span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-// components/FromServer.tsx
-// 서버에서 api를 호출 후 렌더링!
-export default async function FromServer() {
-  const data = await fetch("http://localhost:3000/api/getTime", {
-    cache: "no-store", // fetch에 대한 설명은 2편에서 보고, 일단은 넘어가자.
-  });
-  const { timestamp } = await data.json();
-  return &#x3C;div>{timestamp}&#x3C;/div>;
-}
+<span class="token comment">// components/FromServer.tsx</span>
+<span class="token comment">// 서버에서 api를 호출 후 렌더링!</span>
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">FromServer</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> data <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">"http://localhost:3000/api/getTime"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">cache</span><span class="token operator">:</span> <span class="token string">"no-store"</span><span class="token punctuation">,</span> <span class="token comment">// fetch에 대한 설명은 2편에서 보고, 일단은 넘어가자.</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> <span class="token punctuation">{</span> timestamp <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">await</span> data<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token operator">&lt;</span>div<span class="token operator">></span><span class="token punctuation">{</span>timestamp<span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-// components/FromClient.tsx
-// 클라이언트에서 api를 호출 후 렌더링!
-"use client";
-export default function FromClient() {
-  const [timestamp, setTimestamp] = useState(0);
+<span class="token comment">// components/FromClient.tsx</span>
+<span class="token comment">// 클라이언트에서 api를 호출 후 렌더링!</span>
+<span class="token string">"use client"</span><span class="token punctuation">;</span>
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">function</span> <span class="token function">FromClient</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> <span class="token punctuation">[</span>timestamp<span class="token punctuation">,</span> setTimestamp<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">useState</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-  useEffect(() => {
-    const getData = async () => {
-      const data = await fetch("http://localhost:3000/api/getTime", {
-        cache: "no-store", // fetch에 대한 설명은 2편에서 보고, 일단은 넘어가자.
-      });
-      const { timestamp } = await data.json();
-      setTimestamp(timestamp);
-    };
-    getData();
-  }, []);
+  <span class="token function">useEffect</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> <span class="token function-variable function">getData</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+      <span class="token keyword">const</span> data <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">"http://localhost:3000/api/getTime"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+        <span class="token literal-property property">cache</span><span class="token operator">:</span> <span class="token string">"no-store"</span><span class="token punctuation">,</span> <span class="token comment">// fetch에 대한 설명은 2편에서 보고, 일단은 넘어가자.</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">const</span> <span class="token punctuation">{</span> timestamp <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">await</span> data<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token function">setTimestamp</span><span class="token punctuation">(</span>timestamp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token function">getData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-  return &#x3C;div>{timestamp}&#x3C;/div>;
-}
+  <span class="token keyword">return</span> <span class="token operator">&lt;</span>div<span class="token operator">></span><span class="token punctuation">{</span>timestamp<span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-// app/page.tsx
-// /hello 페이지랑 현 페이지랑 왔다 갔다하면 Client만 수치가 계속 바뀌고 Server은 캐싱 시간만큼 유지!
-export default function Home() {
-  return (
-    &#x3C;main className="flex min-h-screen flex-col items-center justify-between p-24">
-      &#x3C;div>
-        From Client: &#x3C;FromClient />
-      &#x3C;/div>
-      &#x3C;div>
-        From Server: &#x3C;FromServer />
-      &#x3C;/div>
-      &#x3C;div>this is home page&#x3C;/div>
-      &#x3C;Link href="/hello">go to hello page&#x3C;/Link>
-    &#x3C;/main>
-  );
-}
+<span class="token comment">// app/page.tsx</span>
+<span class="token comment">// /hello 페이지랑 현 페이지랑 왔다 갔다하면 Client만 수치가 계속 바뀌고 Server은 캐싱 시간만큼 유지!</span>
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">function</span> <span class="token function">Home</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    <span class="token operator">&lt;</span>main className<span class="token operator">=</span><span class="token string">"flex min-h-screen flex-col items-center justify-between p-24"</span><span class="token operator">></span>
+      <span class="token operator">&lt;</span>div<span class="token operator">></span>
+        From Client<span class="token operator">:</span> <span class="token operator">&lt;</span>FromClient <span class="token operator">/</span><span class="token operator">></span>
+      <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+      <span class="token operator">&lt;</span>div<span class="token operator">></span>
+        From Server<span class="token operator">:</span> <span class="token operator">&lt;</span>FromServer <span class="token operator">/</span><span class="token operator">></span>
+      <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+      <span class="token operator">&lt;</span>div<span class="token operator">></span><span class="token keyword">this</span> is home page<span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+      <span class="token operator">&lt;</span>Link href<span class="token operator">=</span><span class="token string">"/hello"</span><span class="token operator">></span>go to hello page<span class="token operator">&lt;</span><span class="token operator">/</span>Link<span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>main<span class="token operator">></span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-
-</code></pre>
+</code></pre></div>
 <br/>
-<p>먼저 <code>app/api/getTime</code>은 Route Handler 형식으로, Next.js 웹 서버에서 핸들링하는 API 엔드포인트이다. 시간을 리턴한다.
-이 데이터를 각각 <span class="text-blue">서버 컴포넌트와 클라이언트 컴포넌트에서 똑같이 가져와서 표기해준다.</span> 그리고 이 두 개의 컴포넌트를 <code>app/page.tsx</code>에서 가져오는데, 해당 페이지의 링크로 다른 페이지와 갔다가 왔다가 해보면 클라이언트 컴포넌트<span class="text-red">만</span> 시간이 계속 바뀌는 것을 볼 수 있다.</p>
+<p>먼저 <code class="language-text">app/api/getTime</code>은 Route Handler 형식으로, Next.js 웹 서버에서 핸들링하는 API 엔드포인트이다. 시간을 리턴한다.
+이 데이터를 각각 <span class="text-blue">서버 컴포넌트와 클라이언트 컴포넌트에서 똑같이 가져와서 표기해준다.</span> 그리고 이 두 개의 컴포넌트를 <code class="language-text">app/page.tsx</code>에서 가져오는데, 해당 페이지의 링크로 다른 페이지와 갔다가 왔다가 해보면 클라이언트 컴포넌트<span class="text-red">만</span> 시간이 계속 바뀌는 것을 볼 수 있다.</p>
 <p>바로 Router Cache 때문에 서버 컴포넌트의 RSC 페이로드가 캐싱되는 것이다.</p>
 <div class="image-container">
-  <img class="md-image" style="width:50%;" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/router-cache-sc.jpg" alt="next_js_caching_flow"/>
-  <sub class>그림 3. Router Caching...!</a></sub>
+  <img class="md-image" style="width:50%;" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/router-cache-sc.jpg" alt="next_js_caching_flow">
+  <sub class="">그림 3. Router Caching...!</sub>
 </div>
 <blockquote>
 <p><span class="text-grey">참고사항 1: Dynamic 페이지로 빌드 될 경우 30초, Static 페이지로 빌드 될 경우 5분 마다 데이터가 변경될 수 있는 것인데, dev모드와 빌드 후 모두 현재 버그가 있어서 정확한 테스팅이 어렵다. (이후 <a href="https://github.com/vercel/next.js/issues/58723">Next.js 리포에 내가 올린 이슈</a>로 해결되었다.) 다른 탭에 오래 머물다가 invalidate 시간이 지난 이후 돌아가면 높은 확률로 Router Cache가 아예 작동하지 않는 모습을 보이고 있다. 의도된 것인지 확인된 바는 없다. 임시방편으로 페이지 새로고침을 해주면 다시 Router Cache가 정상작동한다. </span></p>
@@ -158,24 +157,23 @@ export default function Home() {
 <blockquote>
 <p><span class="text-grey">참고사항 3: 클라이언트 컴포넌트의 fetch는 브라우저 원래의 fetch이고, 서버 컴포넌트에서의 fetch는 Next.js가 직접 수정한 캐싱기능이 들어간 fetch이다. 지금은 모두 cache: no-store로 사용하고 2편에서 자세히 알아보자.</span></p>
 </blockquote>
-<pre><code class="language-javascript">// 참고용 node server
-const http = require("http");
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token comment">// 참고용 node server</span>
+<span class="token keyword">const</span> http <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"http"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-const server = http.createServer(async (req, res) => {
-  if (req.method === "GET") {
-    const responseData = { timestamp: new Date().getTime() };
-    res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify(responseData));
-  } else {
-    res.writeHead(404);
-    res.end();
-  }
-});
+<span class="token keyword">const</span> server <span class="token operator">=</span> http<span class="token punctuation">.</span><span class="token function">createServer</span><span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token parameter">req<span class="token punctuation">,</span> res</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>req<span class="token punctuation">.</span>method <span class="token operator">===</span> <span class="token string">"GET"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> responseData <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token literal-property property">timestamp</span><span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    res<span class="token punctuation">.</span><span class="token function">writeHead</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token string-property property">"Content-Type"</span><span class="token operator">:</span> <span class="token string">"application/json"</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    res<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>responseData<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    res<span class="token punctuation">.</span><span class="token function">writeHead</span><span class="token punctuation">(</span><span class="token number">404</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    res<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-server.listen(8001, () => {
-  console.log("Server running on port 8001");
-});
-</code></pre>
+server<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token number">8001</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Server running on port 8001"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre></div>
 <br/>
 <h2><strong>&#x3C;4> useSWR과의 관계</strong></h2>
 <p>useSWR은 클라이언트 컴포넌트에서 API 결과 데이터를 저장하고 특정 조건에 따라서 다시 데이터를 가져오는 형식이다. Router Cache는 서버 컴포넌트에서 가져온 RSC Payload를 캐싱하는 것이기 떄문에
@@ -231,15 +229,14 @@ useSWR과 Router Cache가 엮일 수가 없다. useSWR은 API 요청의 결과�
 브라우저의 fetch는 응답 헤더에 있는 Cache-Control, Age, Expires, Last-Modified, ETag 등을 사용한다고 한다.
 그리고 아래의 설명 또한 브라우저 마다 조금씩 다를 수 있다.</p>
 <br/>
-<pre><code class="language-bash">HTTP/1.1 200 OK
+<div class="gatsby-highlight" data-language="bash"><pre class="language-bash"><code class="language-bash">HTTP/1.1 <span class="token number">200</span> OK
 Content-Type: text/html
-Content-Length: 1024
-Date: Tue, 22 Feb 2022 22:22:22 GMT
-Cache-Control: max-age=604800
-Age: 86400
+Content-Length: <span class="token number">1024</span>
+Date: Tue, <span class="token number">22</span> Feb <span class="token number">2022</span> <span class="token number">22</span>:22:22 GMT
+Cache-Control: max-age<span class="token operator">=</span><span class="token number">604800</span>
+Age: <span class="token number">86400</span>
 …
-
-</code></pre>
+</code></pre></div>
 <br/>
 <p>fetch의 서버 응답 헤더가 위와 같을 경우 604800-86400=518400이 앞으로 브라우저가 캐싱할 시간이라고 한다.</p>
 <p>대부분의 브라우저들은 아래와 같은 로직을 따르는 것으로 보인다:</p>
@@ -274,7 +271,7 @@ Etag를 같이 보내고, 그걸 서버에서 체크한 뒤에 fresh하면 304 N
 </ul>
 <p>사용자가 instruction을 주었을 시에는 어느정도 컨트롤할 수 있지만, 이마저도 서버에서 리턴해주는 헤더 값에 따라 좌지우지되며
 unexpected behavior이 많이 일어날 수 있을 것 같은 느낌이었다. fetch 쿼리를 브라우저에서 사용할 때 서버에서 어떤 헤더가 날아오고 어떻게 반응하는지 한 번씩 테스팅 해보는 것이 좋을 것 같다.
-또한, <span class="text-orange">axios의 경우 fetch처럼 브라우저에서 사용 시 기본값은 <code>Cache-Control: default</code>라고 하니 주의하자.</span></p>
+또한, <span class="text-orange">axios의 경우 fetch처럼 브라우저에서 사용 시 기본값은 <code class="language-text">Cache-Control: default</code>라고 하니 주의하자.</span></p>
 <p>테이블을 업데이트해보자.</p>
 <table>
 <thead>
@@ -349,8 +346,8 @@ unexpected behavior이 많이 일어날 수 있을 것 같은 느낌이었다. f
 
 ![temp](/images/caching-overview.jpg) -->
 <div class="image-container">
-  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/caching-overview.jpg" alt="next_js_caching_flow"/>
-  <sub class>그림 1. Next.js 웹사이트 원본</sub>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/caching-overview.jpg" alt="next_js_caching_flow">
+  <sub class="">그림 1. Next.js 웹사이트 원본</sub>
 </div>
 <br/>
 <p><a href="https://nextjs.org/docs/app/building-your-application/caching">Next.js 13 공식문서</a>에는 네 개의 캐싱 기법이 정리되어있다. Router Cache, Full Route Cache, Request Memoization, Data Cache 이렇게 네 가지가 공식 문서에
@@ -360,8 +357,8 @@ Next.js로 개발하는 사람들은 상당수가 풀스택에 가까운 프론�
 사용해줄 수도 있다. 이에 맞춰서 그림을 조금 수정해보았다.</p>
 <br/>
 <div class="image-container">
-  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/caching-overview-fixed.jpg" alt="next_js_caching_flow"/>
-  <sub class>그림 2. 실제로 고려해야되는 캐싱들</a></sub>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/caching-overview-fixed.jpg" alt="next_js_caching_flow">
+  <sub class="">그림 2. 실제로 고려해야되는 캐싱들</sub>
 </div>
 <br/>
 <p>위 그림은 나중에 더 자세히 다루고, 이번 1편 포스트에서는 Router Cache에 대해서 알아보자.</p>
@@ -423,70 +420,69 @@ RSC 페이로드는 React Server Component가 등장하면서 부분적으로 �
 <br/>
 <p>제대로 된 이해를 위해 예시를 한 가지 살펴보자. 읽기 쉽게 4개의 파일을 하나의 코드 블록에 넣어보았다.</p>
 <br/>
-<pre><code class="language-javascript">
-// app/api/getTime
-// 이 api는 시간을 리턴해줌!
-export const dynamic = "force-dynamic"; // 이거 없으면 빌드 시 static route돼서 같은 시간만 주구장창 나옴
-export async function GET() {
-  return Response.json({ timestamp: new Date().getTime() });
-}
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript">
+<span class="token comment">// app/api/getTime</span>
+<span class="token comment">// 이 api는 시간을 리턴해줌!</span>
+<span class="token keyword">export</span> <span class="token keyword">const</span> dynamic <span class="token operator">=</span> <span class="token string">"force-dynamic"</span><span class="token punctuation">;</span> <span class="token comment">// 이거 없으면 빌드 시 static route돼서 같은 시간만 주구장창 나옴</span>
+<span class="token keyword">export</span> <span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token constant">GET</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> Response<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token literal-property property">timestamp</span><span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-// components/FromServer.tsx
-// 서버에서 api를 호출 후 렌더링!
-export default async function FromServer() {
-  const data = await fetch("http://localhost:3000/api/getTime", {
-    cache: "no-store", // fetch에 대한 설명은 2편에서 보고, 일단은 넘어가자.
-  });
-  const { timestamp } = await data.json();
-  return &#x3C;div>{timestamp}&#x3C;/div>;
-}
+<span class="token comment">// components/FromServer.tsx</span>
+<span class="token comment">// 서버에서 api를 호출 후 렌더링!</span>
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">FromServer</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> data <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">"http://localhost:3000/api/getTime"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">cache</span><span class="token operator">:</span> <span class="token string">"no-store"</span><span class="token punctuation">,</span> <span class="token comment">// fetch에 대한 설명은 2편에서 보고, 일단은 넘어가자.</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> <span class="token punctuation">{</span> timestamp <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">await</span> data<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token operator">&lt;</span>div<span class="token operator">></span><span class="token punctuation">{</span>timestamp<span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-// components/FromClient.tsx
-// 클라이언트에서 api를 호출 후 렌더링!
-"use client";
-export default function FromClient() {
-  const [timestamp, setTimestamp] = useState(0);
+<span class="token comment">// components/FromClient.tsx</span>
+<span class="token comment">// 클라이언트에서 api를 호출 후 렌더링!</span>
+<span class="token string">"use client"</span><span class="token punctuation">;</span>
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">function</span> <span class="token function">FromClient</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> <span class="token punctuation">[</span>timestamp<span class="token punctuation">,</span> setTimestamp<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">useState</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-  useEffect(() => {
-    const getData = async () => {
-      const data = await fetch("http://localhost:3000/api/getTime", {
-        cache: "no-store", // fetch에 대한 설명은 2편에서 보고, 일단은 넘어가자.
-      });
-      const { timestamp } = await data.json();
-      setTimestamp(timestamp);
-    };
-    getData();
-  }, []);
+  <span class="token function">useEffect</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> <span class="token function-variable function">getData</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+      <span class="token keyword">const</span> data <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">"http://localhost:3000/api/getTime"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+        <span class="token literal-property property">cache</span><span class="token operator">:</span> <span class="token string">"no-store"</span><span class="token punctuation">,</span> <span class="token comment">// fetch에 대한 설명은 2편에서 보고, 일단은 넘어가자.</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">const</span> <span class="token punctuation">{</span> timestamp <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">await</span> data<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token function">setTimestamp</span><span class="token punctuation">(</span>timestamp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token function">getData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-  return &#x3C;div>{timestamp}&#x3C;/div>;
-}
+  <span class="token keyword">return</span> <span class="token operator">&lt;</span>div<span class="token operator">></span><span class="token punctuation">{</span>timestamp<span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-// app/page.tsx
-// /hello 페이지랑 현 페이지랑 왔다 갔다하면 Client만 수치가 계속 바뀌고 Server은 캐싱 시간만큼 유지!
-export default function Home() {
-  return (
-    &#x3C;main className="flex min-h-screen flex-col items-center justify-between p-24">
-      &#x3C;div>
-        From Client: &#x3C;FromClient />
-      &#x3C;/div>
-      &#x3C;div>
-        From Server: &#x3C;FromServer />
-      &#x3C;/div>
-      &#x3C;div>this is home page&#x3C;/div>
-      &#x3C;Link href="/hello">go to hello page&#x3C;/Link>
-    &#x3C;/main>
-  );
-}
+<span class="token comment">// app/page.tsx</span>
+<span class="token comment">// /hello 페이지랑 현 페이지랑 왔다 갔다하면 Client만 수치가 계속 바뀌고 Server은 캐싱 시간만큼 유지!</span>
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">function</span> <span class="token function">Home</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    <span class="token operator">&lt;</span>main className<span class="token operator">=</span><span class="token string">"flex min-h-screen flex-col items-center justify-between p-24"</span><span class="token operator">></span>
+      <span class="token operator">&lt;</span>div<span class="token operator">></span>
+        From Client<span class="token operator">:</span> <span class="token operator">&lt;</span>FromClient <span class="token operator">/</span><span class="token operator">></span>
+      <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+      <span class="token operator">&lt;</span>div<span class="token operator">></span>
+        From Server<span class="token operator">:</span> <span class="token operator">&lt;</span>FromServer <span class="token operator">/</span><span class="token operator">></span>
+      <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+      <span class="token operator">&lt;</span>div<span class="token operator">></span><span class="token keyword">this</span> is home page<span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+      <span class="token operator">&lt;</span>Link href<span class="token operator">=</span><span class="token string">"/hello"</span><span class="token operator">></span>go to hello page<span class="token operator">&lt;</span><span class="token operator">/</span>Link<span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>main<span class="token operator">></span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-
-</code></pre>
+</code></pre></div>
 <br/>
-<p>먼저 <code>app/api/getTime</code>은 Route Handler 형식으로, Next.js 웹 서버에서 핸들링하는 API 엔드포인트이다. 시간을 리턴한다.
-이 데이터를 각각 <span class="text-blue">서버 컴포넌트와 클라이언트 컴포넌트에서 똑같이 가져와서 표기해준다.</span> 그리고 이 두 개의 컴포넌트를 <code>app/page.tsx</code>에서 가져오는데, 해당 페이지의 링크로 다른 페이지와 갔다가 왔다가 해보면 클라이언트 컴포넌트<span class="text-red">만</span> 시간이 계속 바뀌는 것을 볼 수 있다.</p>
+<p>먼저 <code class="language-text">app/api/getTime</code>은 Route Handler 형식으로, Next.js 웹 서버에서 핸들링하는 API 엔드포인트이다. 시간을 리턴한다.
+이 데이터를 각각 <span class="text-blue">서버 컴포넌트와 클라이언트 컴포넌트에서 똑같이 가져와서 표기해준다.</span> 그리고 이 두 개의 컴포넌트를 <code class="language-text">app/page.tsx</code>에서 가져오는데, 해당 페이지의 링크로 다른 페이지와 갔다가 왔다가 해보면 클라이언트 컴포넌트<span class="text-red">만</span> 시간이 계속 바뀌는 것을 볼 수 있다.</p>
 <p>바로 Router Cache 때문에 서버 컴포넌트의 RSC 페이로드가 캐싱되는 것이다.</p>
 <div class="image-container">
-  <img class="md-image" style="width:50%;" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/router-cache-sc.jpg" alt="next_js_caching_flow"/>
-  <sub class>그림 3. Router Caching...!</a></sub>
+  <img class="md-image" style="width:50%;" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/router-cache-sc.jpg" alt="next_js_caching_flow">
+  <sub class="">그림 3. Router Caching...!</sub>
 </div>
 <blockquote>
 <p><span class="text-grey">참고사항 1: Dynamic 페이지로 빌드 될 경우 30초, Static 페이지로 빌드 될 경우 5분 마다 데이터가 변경될 수 있는 것인데, dev모드와 빌드 후 모두 현재 버그가 있어서 정확한 테스팅이 어렵다. (이후 <a href="https://github.com/vercel/next.js/issues/58723">Next.js 리포에 내가 올린 이슈</a>로 해결되었다.) 다른 탭에 오래 머물다가 invalidate 시간이 지난 이후 돌아가면 높은 확률로 Router Cache가 아예 작동하지 않는 모습을 보이고 있다. 의도된 것인지 확인된 바는 없다. 임시방편으로 페이지 새로고침을 해주면 다시 Router Cache가 정상작동한다. </span></p>
@@ -497,24 +493,23 @@ export default function Home() {
 <blockquote>
 <p><span class="text-grey">참고사항 3: 클라이언트 컴포넌트의 fetch는 브라우저 원래의 fetch이고, 서버 컴포넌트에서의 fetch는 Next.js가 직접 수정한 캐싱기능이 들어간 fetch이다. 지금은 모두 cache: no-store로 사용하고 2편에서 자세히 알아보자.</span></p>
 </blockquote>
-<pre><code class="language-javascript">// 참고용 node server
-const http = require("http");
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token comment">// 참고용 node server</span>
+<span class="token keyword">const</span> http <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"http"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-const server = http.createServer(async (req, res) => {
-  if (req.method === "GET") {
-    const responseData = { timestamp: new Date().getTime() };
-    res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify(responseData));
-  } else {
-    res.writeHead(404);
-    res.end();
-  }
-});
+<span class="token keyword">const</span> server <span class="token operator">=</span> http<span class="token punctuation">.</span><span class="token function">createServer</span><span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token parameter">req<span class="token punctuation">,</span> res</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>req<span class="token punctuation">.</span>method <span class="token operator">===</span> <span class="token string">"GET"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> responseData <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token literal-property property">timestamp</span><span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    res<span class="token punctuation">.</span><span class="token function">writeHead</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token string-property property">"Content-Type"</span><span class="token operator">:</span> <span class="token string">"application/json"</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    res<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>responseData<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    res<span class="token punctuation">.</span><span class="token function">writeHead</span><span class="token punctuation">(</span><span class="token number">404</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    res<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-server.listen(8001, () => {
-  console.log("Server running on port 8001");
-});
-</code></pre>
+server<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token number">8001</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Server running on port 8001"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre></div>
 <br/>
 <h2><strong>&#x3C;4> useSWR과의 관계</strong></h2>
 <p>useSWR은 클라이언트 컴포넌트에서 API 결과 데이터를 저장하고 특정 조건에 따라서 다시 데이터를 가져오는 형식이다. Router Cache는 서버 컴포넌트에서 가져온 RSC Payload를 캐싱하는 것이기 떄문에
@@ -570,15 +565,14 @@ useSWR과 Router Cache가 엮일 수가 없다. useSWR은 API 요청의 결과�
 브라우저의 fetch는 응답 헤더에 있는 Cache-Control, Age, Expires, Last-Modified, ETag 등을 사용한다고 한다.
 그리고 아래의 설명 또한 브라우저 마다 조금씩 다를 수 있다.</p>
 <br/>
-<pre><code class="language-bash">HTTP/1.1 200 OK
+<div class="gatsby-highlight" data-language="bash"><pre class="language-bash"><code class="language-bash">HTTP/1.1 <span class="token number">200</span> OK
 Content-Type: text/html
-Content-Length: 1024
-Date: Tue, 22 Feb 2022 22:22:22 GMT
-Cache-Control: max-age=604800
-Age: 86400
+Content-Length: <span class="token number">1024</span>
+Date: Tue, <span class="token number">22</span> Feb <span class="token number">2022</span> <span class="token number">22</span>:22:22 GMT
+Cache-Control: max-age<span class="token operator">=</span><span class="token number">604800</span>
+Age: <span class="token number">86400</span>
 …
-
-</code></pre>
+</code></pre></div>
 <br/>
 <p>fetch의 서버 응답 헤더가 위와 같을 경우 604800-86400=518400이 앞으로 브라우저가 캐싱할 시간이라고 한다.</p>
 <p>대부분의 브라우저들은 아래와 같은 로직을 따르는 것으로 보인다:</p>
@@ -613,7 +607,7 @@ Etag를 같이 보내고, 그걸 서버에서 체크한 뒤에 fresh하면 304 N
 </ul>
 <p>사용자가 instruction을 주었을 시에는 어느정도 컨트롤할 수 있지만, 이마저도 서버에서 리턴해주는 헤더 값에 따라 좌지우지되며
 unexpected behavior이 많이 일어날 수 있을 것 같은 느낌이었다. fetch 쿼리를 브라우저에서 사용할 때 서버에서 어떤 헤더가 날아오고 어떻게 반응하는지 한 번씩 테스팅 해보는 것이 좋을 것 같다.
-또한, <span class="text-orange">axios의 경우 fetch처럼 브라우저에서 사용 시 기본값은 <code>Cache-Control: default</code>라고 하니 주의하자.</span></p>
+또한, <span class="text-orange">axios의 경우 fetch처럼 브라우저에서 사용 시 기본값은 <code class="language-text">Cache-Control: default</code>라고 하니 주의하자.</span></p>
 <p>테이블을 업데이트해보자.</p>
 <table>
 <thead>

@@ -3,21 +3,20 @@
 <p>VariableEnvironment의 존재 이유는 무엇일까?</p>
 <p>ECMAScript의 Execution Context 부분을 2회독하였지만 관련 내용은 찾기가 힘들었다. 그래서 임우찬님의 <a href="https://m.blog.naver.com/dlaxodud2388/222655214381">블로그</a>에서 Variable Environment의 존재 의의를 찾았는데, 이분이 말씀하신 작동 원리의 출처는 블로그 내에서는 불명확했다. 스택오버플로우를 찾던 중 <a href="https://stackoverflow.com/questions/69417158/how-will-the-lexical-environment-and-the-variable-environment-will-look-like-at">비슷한 글</a>을 발견하여 두 개의 글을 합쳐서 정리해본다.</p>
 <br/>
-<pre><code class="language-javascript">function a() {
-  let var2 = 10000;
-  let var1 = 10000;
-  if (true) {
-    var var1 = 100;
-    let var2 = 10;
-    if (true) {
-      let var2 = 11;
-    }
-  }
-  if (true) {
-    let var2 = 12;
-  }
-}
-</code></pre>
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">a</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> var2 <span class="token operator">=</span> <span class="token number">10000</span><span class="token punctuation">;</span>
+  <span class="token keyword">let</span> var1 <span class="token operator">=</span> <span class="token number">10000</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> var1 <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
+    <span class="token keyword">let</span> var2 <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">let</span> var2 <span class="token operator">=</span> <span class="token number">11</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> var2 <span class="token operator">=</span> <span class="token number">12</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre></div>
 <br/>
 <p>위의 코드를 보면 블록 스코프는 여러개이고 함수 스코프는 단 한개만 있다. 우리가 이미 알다시피 콜 스택에 쌓이는 Execution Context는 함수 마다 한 개씩 존재하고
 Execution Context안에는 Lexical Environment 한 개와 Variable Environment 한 개가 존재한다. 여기서 문제는 블록 스코프가 여러 개 생겼을 때 블록 스코프마다
@@ -48,21 +47,20 @@ Environment는 외부 블록 스코프를 호출한다고 한다. let과 const�
 <p>VariableEnvironment의 존재 이유는 무엇일까?</p>
 <p>ECMAScript의 Execution Context 부분을 2회독하였지만 관련 내용은 찾기가 힘들었다. 그래서 임우찬님의 <a href="https://m.blog.naver.com/dlaxodud2388/222655214381">블로그</a>에서 Variable Environment의 존재 의의를 찾았는데, 이분이 말씀하신 작동 원리의 출처는 블로그 내에서는 불명확했다. 스택오버플로우를 찾던 중 <a href="https://stackoverflow.com/questions/69417158/how-will-the-lexical-environment-and-the-variable-environment-will-look-like-at">비슷한 글</a>을 발견하여 두 개의 글을 합쳐서 정리해본다.</p>
 <br/>
-<pre><code class="language-javascript">function a() {
-  let var2 = 10000;
-  let var1 = 10000;
-  if (true) {
-    var var1 = 100;
-    let var2 = 10;
-    if (true) {
-      let var2 = 11;
-    }
-  }
-  if (true) {
-    let var2 = 12;
-  }
-}
-</code></pre>
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">a</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> var2 <span class="token operator">=</span> <span class="token number">10000</span><span class="token punctuation">;</span>
+  <span class="token keyword">let</span> var1 <span class="token operator">=</span> <span class="token number">10000</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> var1 <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
+    <span class="token keyword">let</span> var2 <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">let</span> var2 <span class="token operator">=</span> <span class="token number">11</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> var2 <span class="token operator">=</span> <span class="token number">12</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre></div>
 <br/>
 <p>위의 코드를 보면 블록 스코프는 여러개이고 함수 스코프는 단 한개만 있다. 우리가 이미 알다시피 콜 스택에 쌓이는 Execution Context는 함수 마다 한 개씩 존재하고
 Execution Context안에는 Lexical Environment 한 개와 Variable Environment 한 개가 존재한다. 여기서 문제는 블록 스코프가 여러 개 생겼을 때 블록 스코프마다

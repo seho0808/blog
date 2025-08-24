@@ -4,60 +4,57 @@
 <p>이펙티브 타입스크립트 공부하며 인상적이었던 내용을 정리하려고 한다.</p>
 <br/>
 <h3><strong>아이템 7 - 타입 유니온/인터섹션</strong></h3>
-<pre><code class="language-ts">interface A {
-  x: number;
-  y: number;
-}
+<div class="gatsby-highlight" data-language="ts"><pre class="language-ts"><code class="language-ts"><span class="token keyword">interface</span> <span class="token class-name"><span class="token constant">A</span></span> <span class="token punctuation">{</span>
+  x<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
+  y<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-interface B {
-  y: number;
-  z: number;
-}
+<span class="token keyword">interface</span> <span class="token class-name"><span class="token constant">B</span></span> <span class="token punctuation">{</span>
+  y<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
+  z<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-type temp1 = keyof (A | B); // 'y'
-type temp2 = keyof A &#x26; keyof B; // 'y'
-type temp3 = keyof (A &#x26; B); // 'x' | 'y' | 'z'
-type temp4 = keyof A | keyof B; // 'x' | 'y' | 'z'
+<span class="token keyword">type</span> <span class="token class-name">temp1</span> <span class="token operator">=</span> <span class="token keyword">keyof</span> <span class="token punctuation">(</span><span class="token constant">A</span> <span class="token operator">|</span> <span class="token constant">B</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 'y'</span>
+<span class="token keyword">type</span> <span class="token class-name">temp2</span> <span class="token operator">=</span> <span class="token keyword">keyof</span> <span class="token constant">A</span> <span class="token operator">&amp;</span> <span class="token keyword">keyof</span> <span class="token constant">B</span><span class="token punctuation">;</span> <span class="token comment">// 'y'</span>
+<span class="token keyword">type</span> <span class="token class-name">temp3</span> <span class="token operator">=</span> <span class="token keyword">keyof</span> <span class="token punctuation">(</span><span class="token constant">A</span> <span class="token operator">&amp;</span> <span class="token constant">B</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 'x' | 'y' | 'z'</span>
+<span class="token keyword">type</span> <span class="token class-name">temp4</span> <span class="token operator">=</span> <span class="token keyword">keyof</span> <span class="token constant">A</span> <span class="token operator">|</span> <span class="token keyword">keyof</span> <span class="token constant">B</span><span class="token punctuation">;</span> <span class="token comment">// 'x' | 'y' | 'z'</span>
 
-const v1: A &#x26; B = {
-  x: 1,
-  y: 1,
-  z: 1,
-};
+<span class="token keyword">const</span> v1<span class="token operator">:</span> <span class="token constant">A</span> <span class="token operator">&amp;</span> <span class="token constant">B</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+  x<span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  y<span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  z<span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
 
-const v2: A &#x26; B = {
-  x: 1,
-  y: 1,
-  z: 1,
-  s: 10, // 이건 오브젝트 리터럴이라 개방 폐쇄 불가능. 해당 라인은 오류임!!
-};
-</code></pre>
+<span class="token keyword">const</span> v2<span class="token operator">:</span> <span class="token constant">A</span> <span class="token operator">&amp;</span> <span class="token constant">B</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+  x<span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  y<span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  z<span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  s<span class="token operator">:</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token comment">// 이건 오브젝트 리터럴이라 개방 폐쇄 불가능. 해당 라인은 오류임!!</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre></div>
 <br/>
-<p><code>A | B</code>와 <code>A &#x26; B</code>가 타입스크립트에서는 반대로 쓰인다. 이 점을 명심하자. <code>"a" | "b"</code> 와 <code>A | B</code>가 다르게 작동한다.
+<p><code class="language-text">A | B</code>와 <code class="language-text">A &amp; B</code>가 타입스크립트에서는 반대로 쓰인다. 이 점을 명심하자. <code class="language-text">"a" | "b"</code> 와 <code class="language-text">A | B</code>가 다르게 작동한다.
 책에서는 가독성을 높이기 위해 extends를 쓰라고 한다. 그리고 extends를 쓸 때, 집합을 보듯이 봐야 잘 읽힌다고 나와있다.</p>
 <br/>
 <h3><strong>아이템 8 - 값 typeof vs 타입 typeof</strong></h3>
-<pre><code class="language-ts">class Car {
-  width: 10;
-  height: 10;
-}
+<div class="gatsby-highlight" data-language="ts"><pre class="language-ts"><code class="language-ts"><span class="token keyword">class</span> <span class="token class-name">Car</span> <span class="token punctuation">{</span>
+  width<span class="token operator">:</span> <span class="token number">10</span><span class="token punctuation">;</span>
+  height<span class="token operator">:</span> <span class="token number">10</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-const carInstance: Car = new Car(); // 방식 1: 맞음.
-const carInstance2: InstanceType&#x3C;typeof Car> = new Car(); // 방식 2: 맞음.
-const carInstance3: typeof Car = new Car(); // 오류. typeof Car은 생성자 타입이다.
-</code></pre>
+<span class="token keyword">const</span> carInstance<span class="token operator">:</span> Car <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 방식 1: 맞음.</span>
+<span class="token keyword">const</span> carInstance2<span class="token operator">:</span> InstanceType<span class="token operator">&lt;</span><span class="token keyword">typeof</span> Car<span class="token operator">></span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 방식 2: 맞음.</span>
+<span class="token keyword">const</span> carInstance3<span class="token operator">:</span> <span class="token keyword">typeof</span> Car <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 오류. typeof Car은 생성자 타입이다.</span></code></pre></div>
 <br/>
-<p><code>Car</code>은 인스턴스 타입을 가리킨다. <code>new Car()</code>로 생성된 인스턴스의 타입이다. <code>typeof Car</code>은 <code>Car</code> 클래스의 생성자 타입이다.
-<code>InstanceType&#x3C;생성자 타입></code>을 통해 다시 인스턴스 타입으로 돌려놓을 수 있다.</p>
+<p><code class="language-text">Car</code>은 인스턴스 타입을 가리킨다. <code class="language-text">new Car()</code>로 생성된 인스턴스의 타입이다. <code class="language-text">typeof Car</code>은 <code class="language-text">Car</code> 클래스의 생성자 타입이다.
+<code class="language-text">InstanceType&lt;생성자 타입></code>을 통해 다시 인스턴스 타입으로 돌려놓을 수 있다.</p>
 <br/>
 <h3><strong>아이템 9 - 단언 보다 선언 쓰기</strong></h3>
 <p>단언이 꼭 필요한 경우에서 내가 며칠 전에 썼던 정확한 유스케이스가 나와서 반가웠다.</p>
-<pre><code class="language-ts">document.querySelector("#myButton").addEventListener("click", (e) => {
-  e.currentTarget; // EventTarget type은 너무 broad한 타입이다.
-  const button = e.currentTarget as HTMLButtonElement; // 이제 HTMLButtonElement에서 구현되어있는 필드를 사용할 수 있다.
-  // ...
-});
-</code></pre>
+<div class="gatsby-highlight" data-language="ts"><pre class="language-ts"><code class="language-ts">document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">"#myButton"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">"click"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  e<span class="token punctuation">.</span>currentTarget<span class="token punctuation">;</span> <span class="token comment">// EventTarget type은 너무 broad한 타입이다.</span>
+  <span class="token keyword">const</span> button <span class="token operator">=</span> e<span class="token punctuation">.</span>currentTarget <span class="token keyword">as</span> HTMLButtonElement<span class="token punctuation">;</span> <span class="token comment">// 이제 HTMLButtonElement에서 구현되어있는 필드를 사용할 수 있다.</span>
+  <span class="token comment">// ...</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre></div>
 <br/>
 <p>타입스크립트에서는 컴파일 타임에 DOM에 접근할 수 없고, 뭐가 정확히 튀어나오는지 모르기 때문에 우리가 타입 단언을 해주어야 문제 없이 사용할 수 있다.</p>
 <p>그리고 타입 단언은 서브타입에서만 쓸 수 있다고 한다! 사실 그 외에 써본 적이 없어서 해당 오류를 마주한 적이 없었다.</p></article><style data-emotion="css 9hy0l">.css-9hy0l{position:fixed;top:36px;right:40px;max-height:calc(100vh - 24px - 36px);overflow:auto;scrollbar-width:none;-ms-overflow-style:none;}.css-9hy0l::-webkit-scrollbar{display:none;}@-moz-document url-prefix(){.css-9hy0l{display:none;}}@media (max-width: 1400px){.css-9hy0l{display:none;}}</style><div data-nosnippet="true" class="css-9hy0l"><style data-emotion="css jb9iej">.css-jb9iej{background-color:rgba(0, 0, 0, 0.2);width:100%;position:absolute;right:0;top:0;z-index:11;}</style><div class="css-jb9iej"></div><style data-emotion="css 1k1x2bk">.css-1k1x2bk{position:absolute;width:100%;height:100%;background-color:rgba(255, 255, 255, 0);z-index:10;}</style><div class="css-1k1x2bk"></div><style data-emotion="css 1se8enf">.css-1se8enf{zoom:0.15;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;padding:0px 30px;}</style><div class="markdown-content css-1se8enf"><h2><strong>이펙티브 타입스크립트</strong></h2>
@@ -66,60 +63,57 @@ const carInstance3: typeof Car = new Car(); // 오류. typeof Car은 생성자 �
 <p>이펙티브 타입스크립트 공부하며 인상적이었던 내용을 정리하려고 한다.</p>
 <br/>
 <h3><strong>아이템 7 - 타입 유니온/인터섹션</strong></h3>
-<pre><code class="language-ts">interface A {
-  x: number;
-  y: number;
-}
+<div class="gatsby-highlight" data-language="ts"><pre class="language-ts"><code class="language-ts"><span class="token keyword">interface</span> <span class="token class-name"><span class="token constant">A</span></span> <span class="token punctuation">{</span>
+  x<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
+  y<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-interface B {
-  y: number;
-  z: number;
-}
+<span class="token keyword">interface</span> <span class="token class-name"><span class="token constant">B</span></span> <span class="token punctuation">{</span>
+  y<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
+  z<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-type temp1 = keyof (A | B); // 'y'
-type temp2 = keyof A &#x26; keyof B; // 'y'
-type temp3 = keyof (A &#x26; B); // 'x' | 'y' | 'z'
-type temp4 = keyof A | keyof B; // 'x' | 'y' | 'z'
+<span class="token keyword">type</span> <span class="token class-name">temp1</span> <span class="token operator">=</span> <span class="token keyword">keyof</span> <span class="token punctuation">(</span><span class="token constant">A</span> <span class="token operator">|</span> <span class="token constant">B</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 'y'</span>
+<span class="token keyword">type</span> <span class="token class-name">temp2</span> <span class="token operator">=</span> <span class="token keyword">keyof</span> <span class="token constant">A</span> <span class="token operator">&amp;</span> <span class="token keyword">keyof</span> <span class="token constant">B</span><span class="token punctuation">;</span> <span class="token comment">// 'y'</span>
+<span class="token keyword">type</span> <span class="token class-name">temp3</span> <span class="token operator">=</span> <span class="token keyword">keyof</span> <span class="token punctuation">(</span><span class="token constant">A</span> <span class="token operator">&amp;</span> <span class="token constant">B</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 'x' | 'y' | 'z'</span>
+<span class="token keyword">type</span> <span class="token class-name">temp4</span> <span class="token operator">=</span> <span class="token keyword">keyof</span> <span class="token constant">A</span> <span class="token operator">|</span> <span class="token keyword">keyof</span> <span class="token constant">B</span><span class="token punctuation">;</span> <span class="token comment">// 'x' | 'y' | 'z'</span>
 
-const v1: A &#x26; B = {
-  x: 1,
-  y: 1,
-  z: 1,
-};
+<span class="token keyword">const</span> v1<span class="token operator">:</span> <span class="token constant">A</span> <span class="token operator">&amp;</span> <span class="token constant">B</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+  x<span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  y<span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  z<span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
 
-const v2: A &#x26; B = {
-  x: 1,
-  y: 1,
-  z: 1,
-  s: 10, // 이건 오브젝트 리터럴이라 개방 폐쇄 불가능. 해당 라인은 오류임!!
-};
-</code></pre>
+<span class="token keyword">const</span> v2<span class="token operator">:</span> <span class="token constant">A</span> <span class="token operator">&amp;</span> <span class="token constant">B</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+  x<span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  y<span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  z<span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  s<span class="token operator">:</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token comment">// 이건 오브젝트 리터럴이라 개방 폐쇄 불가능. 해당 라인은 오류임!!</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre></div>
 <br/>
-<p><code>A | B</code>와 <code>A &#x26; B</code>가 타입스크립트에서는 반대로 쓰인다. 이 점을 명심하자. <code>"a" | "b"</code> 와 <code>A | B</code>가 다르게 작동한다.
+<p><code class="language-text">A | B</code>와 <code class="language-text">A &amp; B</code>가 타입스크립트에서는 반대로 쓰인다. 이 점을 명심하자. <code class="language-text">"a" | "b"</code> 와 <code class="language-text">A | B</code>가 다르게 작동한다.
 책에서는 가독성을 높이기 위해 extends를 쓰라고 한다. 그리고 extends를 쓸 때, 집합을 보듯이 봐야 잘 읽힌다고 나와있다.</p>
 <br/>
 <h3><strong>아이템 8 - 값 typeof vs 타입 typeof</strong></h3>
-<pre><code class="language-ts">class Car {
-  width: 10;
-  height: 10;
-}
+<div class="gatsby-highlight" data-language="ts"><pre class="language-ts"><code class="language-ts"><span class="token keyword">class</span> <span class="token class-name">Car</span> <span class="token punctuation">{</span>
+  width<span class="token operator">:</span> <span class="token number">10</span><span class="token punctuation">;</span>
+  height<span class="token operator">:</span> <span class="token number">10</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-const carInstance: Car = new Car(); // 방식 1: 맞음.
-const carInstance2: InstanceType&#x3C;typeof Car> = new Car(); // 방식 2: 맞음.
-const carInstance3: typeof Car = new Car(); // 오류. typeof Car은 생성자 타입이다.
-</code></pre>
+<span class="token keyword">const</span> carInstance<span class="token operator">:</span> Car <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 방식 1: 맞음.</span>
+<span class="token keyword">const</span> carInstance2<span class="token operator">:</span> InstanceType<span class="token operator">&lt;</span><span class="token keyword">typeof</span> Car<span class="token operator">></span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 방식 2: 맞음.</span>
+<span class="token keyword">const</span> carInstance3<span class="token operator">:</span> <span class="token keyword">typeof</span> Car <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 오류. typeof Car은 생성자 타입이다.</span></code></pre></div>
 <br/>
-<p><code>Car</code>은 인스턴스 타입을 가리킨다. <code>new Car()</code>로 생성된 인스턴스의 타입이다. <code>typeof Car</code>은 <code>Car</code> 클래스의 생성자 타입이다.
-<code>InstanceType&#x3C;생성자 타입></code>을 통해 다시 인스턴스 타입으로 돌려놓을 수 있다.</p>
+<p><code class="language-text">Car</code>은 인스턴스 타입을 가리킨다. <code class="language-text">new Car()</code>로 생성된 인스턴스의 타입이다. <code class="language-text">typeof Car</code>은 <code class="language-text">Car</code> 클래스의 생성자 타입이다.
+<code class="language-text">InstanceType&lt;생성자 타입></code>을 통해 다시 인스턴스 타입으로 돌려놓을 수 있다.</p>
 <br/>
 <h3><strong>아이템 9 - 단언 보다 선언 쓰기</strong></h3>
 <p>단언이 꼭 필요한 경우에서 내가 며칠 전에 썼던 정확한 유스케이스가 나와서 반가웠다.</p>
-<pre><code class="language-ts">document.querySelector("#myButton").addEventListener("click", (e) => {
-  e.currentTarget; // EventTarget type은 너무 broad한 타입이다.
-  const button = e.currentTarget as HTMLButtonElement; // 이제 HTMLButtonElement에서 구현되어있는 필드를 사용할 수 있다.
-  // ...
-});
-</code></pre>
+<div class="gatsby-highlight" data-language="ts"><pre class="language-ts"><code class="language-ts">document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">"#myButton"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">"click"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  e<span class="token punctuation">.</span>currentTarget<span class="token punctuation">;</span> <span class="token comment">// EventTarget type은 너무 broad한 타입이다.</span>
+  <span class="token keyword">const</span> button <span class="token operator">=</span> e<span class="token punctuation">.</span>currentTarget <span class="token keyword">as</span> HTMLButtonElement<span class="token punctuation">;</span> <span class="token comment">// 이제 HTMLButtonElement에서 구현되어있는 필드를 사용할 수 있다.</span>
+  <span class="token comment">// ...</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre></div>
 <br/>
 <p>타입스크립트에서는 컴파일 타임에 DOM에 접근할 수 없고, 뭐가 정확히 튀어나오는지 모르기 때문에 우리가 타입 단언을 해주어야 문제 없이 사용할 수 있다.</p>
 <p>그리고 타입 단언은 서브타입에서만 쓸 수 있다고 한다! 사실 그 외에 써본 적이 없어서 해당 오류를 마주한 적이 없었다.</p></div></div><style data-emotion="css 6apk4h">.css-6apk4h{height:60px;padding-top:40px;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;color:#b4b4b4;font-size:14px;}</style><div class="css-6apk4h"><span class="text-red">Copyright </span><span class="text-purple">© </span><span class="text-skyblue">2023</span><style data-emotion="css fute3">.css-fute3{-webkit-text-decoration:none;text-decoration:none;color:#a6e22e;}</style><a href="/" class="css-fute3"> Seho Lee </a><span class="text-orange">All Rights Reserved</span><span class="text-yellow">.</span></div></main></div></div><style data-emotion="css 1u8f60p">.css-1u8f60p{width:100vw;height:24px;background-color:#414339;position:fixed;bottom:0;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;font-size:12px;}</style><div class="css-1u8f60p"><style data-emotion="css 1byydgk">.css-1byydgk{background-color:#1e1f1c;color:#ccc;font-size:12px;font-weight:800;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding:0px 6px;}@media (max-width: 768px){.css-1byydgk{font-size:10px;}}</style><div class="css-1byydgk">&lt;/&gt;</div><style data-emotion="css 1k181js">.css-1k181js{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-text-decoration:none;text-decoration:none;width:100%;}</style><a href="https://github.com/seho0808/blog" class="css-1k181js"><style data-emotion="css kr4wdv">.css-kr4wdv{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding-left:10px;padding-right:20px;color:#ccc;gap:10px;}@media (max-width: 768px){.css-kr4wdv{font-size:10px;}}</style><div class="css-kr4wdv"><div>Latest Commit</div><div>98771c25-4a52-5bde-8f14-da6328217ad1</div></div><style data-emotion="css 1lo262">.css-1lo262{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding-left:10px;padding-right:20px;color:#ccc;gap:10px;margin-left:auto;}@media (max-width: 768px){.css-1lo262{font-size:10px;}}@media (max-width: 768px){.css-1lo262{display:none;}}</style><div class="css-1lo262"><div>Seho Lee</div><div>2025-08-10T05:06:28Z</div></div></a></div></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/blog/effective-typescript-review/";/*]]>*/</script><!-- slice-start id="_gatsby-scripts-1" -->

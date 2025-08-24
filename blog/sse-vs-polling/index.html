@@ -25,7 +25,7 @@
 <li>HTTP/1.0에서는 Keep-Alive를 명시적으로 적어주어야하고 실험적 구현이었기에 서버에 따라서 제대로 구현이 안되어있을 수도 있다.</li>
 <li>하지만 <span class="text-orange">HTTP/1.1에서는 기본적으로 Keep-Alive설정이 생략되어도 적용된다.</span></li>
 <li>다만, <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Keep-Alive">timeout과 max 파라미터</a>의 디폴트 값은 스펙에는 적혀있지 않다.</li>
-<li>그렇기에 HTTP/1.1에서 <code>Connection: Keep-Alive</code>와 함께 <code>Keep-Alive: timeout=5, max=1000</code>를 원하는 값으로 헤더에 주는 것은 유의미하다. (서버 마다 구현한 디폴트 값이 다를 수 있기에)</li>
+<li>그렇기에 HTTP/1.1에서 <code class="language-text">Connection: Keep-Alive</code>와 함께 <code class="language-text">Keep-Alive: timeout=5, max=1000</code>를 원하는 값으로 헤더에 주는 것은 유의미하다. (서버 마다 구현한 디폴트 값이 다를 수 있기에)</li>
 <li>스택오버플로우 기준으로 <a href="https://stackoverflow.com/questions/19155201/http-keep-alive-timeout">서버에서는 Keep-Alive 시간을 무시하고 자기 마음대로 정할 수 있다</a>고한다.</li>
 </ul>
 <p>추가적인 디테일:</p>
@@ -49,12 +49,12 @@ HTTP/2에서는 Frame과 Message와 Stream이 하나의 요청 단위이다:</p>
 <li>Stream: 하나의 응답을 위한 하나의 요청. 여러 개의 요청이 동시에 오고 갈 수 있음. (HTTP/1.1로 치면 한 번의 응답을 위한 요청.)</li>
 </ul>
 <div class="image-container">
-  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/sse/http2-stream.svg" alt="http2 stream"/>
-  <sub class>그림 1. 출처: https://web.dev/articles/performance-http2</sub>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/sse/http2-stream.svg" alt="http2 stream">
+  <sub class="">그림 1. 출처: https://web.dev/articles/performance-http2</sub>
 </div>
 <div class="image-container">
-  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/sse/http2-stream2.png" alt="http2 stream"/>
-  <sub class>그림 2. CPU 스케쥴링처럼 블락 단위로 나뉘어있다. 출처: https://web.dev/articles/performance-http2</sub>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/sse/http2-stream2.png" alt="http2 stream">
+  <sub class="">그림 2. CPU 스케쥴링처럼 블락 단위로 나뉘어있다. 출처: https://web.dev/articles/performance-http2</sub>
 </div>
 <p>이렇게 설계(멀티플렉싱)했기에 HTTP/1.1에서처럼 여러 개의 TCP요청으로 리소스 여러 개를 병렬로 가져오는 것이 아니라 하나의 연결 안에서 모든 리소스를 요청할 수 있고,
 이러면 당연히 지속적인 통신일 수 밖에 없다. 그럼 HTTP/2는 도대체 언제 끊기냐!면 <a href="https://datatracker.ietf.org/doc/html/rfc9113#name-connection-management">스펙 9.1 Connection Management</a>에 따르면 클라이언트는 그 페이지에서 완전히 이탈할 때까지 연결을 유지해야하고, 서버는 최에에에대한 연결을 유지하다가 idle로 판단되면 GOAWAY 프레임을 클라이언트에 보내야한다고 한다. 그리고 재미있는 점은 <a href="https://stackoverflow.com/a/75502115/14971839">크롬 탭이랑 윈도우끼리도 동일한 도메인에 대해서는 HTTP/2통신을 공유한다는 게시글</a>이 있다. 그리고 HTTP/2는 스트림들을 끼워 맞춰주어야하기 때문에 벤치마킹 시 HTTP/1.1보다는 CPU를 더 쓰는 경향이 있다고 한다.</p>
@@ -91,10 +91,10 @@ HTTP/2에서는 Frame과 Message와 Stream이 하나의 요청 단위이다:</p>
 <p>SSE는 서버에서 클라이언트로 계속해서 데이터를 푸시하는 단방향 HTTP 연결이다. 클라이언트는 연결이 끊기면 계속 재연결을 시도한다. (<a href="https://html.spec.whatwg.org/multipage/server-sent-events.html">스펙</a>에서는 몇 초 단위 정도로 설정하라고 나옴.) HTTP 204 No Content가 날아오면 재연결을 멈춘다.</p>
 <ul>
 <li>HTTP/1.0: 지원되지 않는다.</li>
-<li>HTTP/1.1: <code>Connection:keep-alive</code>, <code>Content-Type: text/event-stream</code>을 보내면 SSE가 활성화된다. (<code>keep-alive</code>는 디폴트 지원이기에 생략가능.) 서버에서는 이 헤더를 보고 SSE를 시작할지 정하게 되고, 계속 스트림의 데이터를 보낸다. 브라우저는 연결을 유지하는 노력을 계속해야하고 끊어졌을 때 재연결하는 로직도 만들어놓아야한다. (<a href="https://developer.mozilla.org/en-US/docs/Web/API/EventSource">EventSource API</a>가 현대 브라우저에서의 구현체이다.) 하나의 TCP 연결 전체를 SSE용도로 계속 차지한다. 브라우저에서 도메인 당 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events">6개의 SSE가 최대 연결이다.</a></li>
-<li>HTTP/2와 3: <code>Content-Type: text/event-stream</code>만 필요하다. 하나의 스트림을 계속 유지하면서 요청을 안보내도 응답이 계속 오는 형식이다. 하나의 TCP 연결의 일부를 차지한다. HTTP/1.1처럼 브라우저에서 스트림 정보를 받아오는 로직을 EventSource API 내부에 구현해둔다. (HTTP/2의 경우 END_STREAM or RST_STREAM 플래그가 포함된 프레임이 클라이언트 혹은 서버에서 발송되거나 전체 통신을 종료하는 GOAWAY 프레임이 날라오지 않는 한 스트림은 유지된다.)</li>
+<li>HTTP/1.1: <code class="language-text">Connection:keep-alive</code>, <code class="language-text">Content-Type: text/event-stream</code>을 보내면 SSE가 활성화된다. (<code class="language-text">keep-alive</code>는 디폴트 지원이기에 생략가능.) 서버에서는 이 헤더를 보고 SSE를 시작할지 정하게 되고, 계속 스트림의 데이터를 보낸다. 브라우저는 연결을 유지하는 노력을 계속해야하고 끊어졌을 때 재연결하는 로직도 만들어놓아야한다. (<a href="https://developer.mozilla.org/en-US/docs/Web/API/EventSource">EventSource API</a>가 현대 브라우저에서의 구현체이다.) 하나의 TCP 연결 전체를 SSE용도로 계속 차지한다. 브라우저에서 도메인 당 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events">6개의 SSE가 최대 연결이다.</a></li>
+<li>HTTP/2와 3: <code class="language-text">Content-Type: text/event-stream</code>만 필요하다. 하나의 스트림을 계속 유지하면서 요청을 안보내도 응답이 계속 오는 형식이다. 하나의 TCP 연결의 일부를 차지한다. HTTP/1.1처럼 브라우저에서 스트림 정보를 받아오는 로직을 EventSource API 내부에 구현해둔다. (HTTP/2의 경우 END_STREAM or RST_STREAM 플래그가 포함된 프레임이 클라이언트 혹은 서버에서 발송되거나 전체 통신을 종료하는 GOAWAY 프레임이 날라오지 않는 한 스트림은 유지된다.)</li>
 </ul>
-<p>프록시와 브라우저에서의 캐싱을 최대한 컨트롤하기 위해 <code>Cache-Control: no-store</code>을 사용하는 것이 권장되지만, 이 헤더는 무조건적으로 어떻게 작동될지 프록시 서버들을 조종할 수 없다. (브라우저는 당연히 조종가능.) 이렇게 해달라고 요청만 할 뿐, 프록시 서버 자체는 마음대로 행동할수도 있다. <a href="https://html.spec.whatwg.org/multipage/server-sent-events.html">SSE 스펙</a> 상에는 EventSource 클래스의 constructor내에서 <code>no-store</code>설정을 하라고 되어있다.</p>
+<p>프록시와 브라우저에서의 캐싱을 최대한 컨트롤하기 위해 <code class="language-text">Cache-Control: no-store</code>을 사용하는 것이 권장되지만, 이 헤더는 무조건적으로 어떻게 작동될지 프록시 서버들을 조종할 수 없다. (브라우저는 당연히 조종가능.) 이렇게 해달라고 요청만 할 뿐, 프록시 서버 자체는 마음대로 행동할수도 있다. <a href="https://html.spec.whatwg.org/multipage/server-sent-events.html">SSE 스펙</a> 상에는 EventSource 클래스의 constructor내에서 <code class="language-text">no-store</code>설정을 하라고 되어있다.</p>
 <br/>
 <h2><strong>성능 비교</strong></h2>
 <h3><strong>HTTP/1.1, HTTP/2, HTTP/3 속도?</strong></h3>
@@ -167,7 +167,7 @@ HTTP/2에서는 Frame과 Message와 Stream이 하나의 요청 단위이다:</p>
 <li>HTTP/1.0에서는 Keep-Alive를 명시적으로 적어주어야하고 실험적 구현이었기에 서버에 따라서 제대로 구현이 안되어있을 수도 있다.</li>
 <li>하지만 <span class="text-orange">HTTP/1.1에서는 기본적으로 Keep-Alive설정이 생략되어도 적용된다.</span></li>
 <li>다만, <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Keep-Alive">timeout과 max 파라미터</a>의 디폴트 값은 스펙에는 적혀있지 않다.</li>
-<li>그렇기에 HTTP/1.1에서 <code>Connection: Keep-Alive</code>와 함께 <code>Keep-Alive: timeout=5, max=1000</code>를 원하는 값으로 헤더에 주는 것은 유의미하다. (서버 마다 구현한 디폴트 값이 다를 수 있기에)</li>
+<li>그렇기에 HTTP/1.1에서 <code class="language-text">Connection: Keep-Alive</code>와 함께 <code class="language-text">Keep-Alive: timeout=5, max=1000</code>를 원하는 값으로 헤더에 주는 것은 유의미하다. (서버 마다 구현한 디폴트 값이 다를 수 있기에)</li>
 <li>스택오버플로우 기준으로 <a href="https://stackoverflow.com/questions/19155201/http-keep-alive-timeout">서버에서는 Keep-Alive 시간을 무시하고 자기 마음대로 정할 수 있다</a>고한다.</li>
 </ul>
 <p>추가적인 디테일:</p>
@@ -191,12 +191,12 @@ HTTP/2에서는 Frame과 Message와 Stream이 하나의 요청 단위이다:</p>
 <li>Stream: 하나의 응답을 위한 하나의 요청. 여러 개의 요청이 동시에 오고 갈 수 있음. (HTTP/1.1로 치면 한 번의 응답을 위한 요청.)</li>
 </ul>
 <div class="image-container">
-  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/sse/http2-stream.svg" alt="http2 stream"/>
-  <sub class>그림 1. 출처: https://web.dev/articles/performance-http2</sub>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/sse/http2-stream.svg" alt="http2 stream">
+  <sub class="">그림 1. 출처: https://web.dev/articles/performance-http2</sub>
 </div>
 <div class="image-container">
-  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/sse/http2-stream2.png" alt="http2 stream"/>
-  <sub class>그림 2. CPU 스케쥴링처럼 블락 단위로 나뉘어있다. 출처: https://web.dev/articles/performance-http2</sub>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/sse/http2-stream2.png" alt="http2 stream">
+  <sub class="">그림 2. CPU 스케쥴링처럼 블락 단위로 나뉘어있다. 출처: https://web.dev/articles/performance-http2</sub>
 </div>
 <p>이렇게 설계(멀티플렉싱)했기에 HTTP/1.1에서처럼 여러 개의 TCP요청으로 리소스 여러 개를 병렬로 가져오는 것이 아니라 하나의 연결 안에서 모든 리소스를 요청할 수 있고,
 이러면 당연히 지속적인 통신일 수 밖에 없다. 그럼 HTTP/2는 도대체 언제 끊기냐!면 <a href="https://datatracker.ietf.org/doc/html/rfc9113#name-connection-management">스펙 9.1 Connection Management</a>에 따르면 클라이언트는 그 페이지에서 완전히 이탈할 때까지 연결을 유지해야하고, 서버는 최에에에대한 연결을 유지하다가 idle로 판단되면 GOAWAY 프레임을 클라이언트에 보내야한다고 한다. 그리고 재미있는 점은 <a href="https://stackoverflow.com/a/75502115/14971839">크롬 탭이랑 윈도우끼리도 동일한 도메인에 대해서는 HTTP/2통신을 공유한다는 게시글</a>이 있다. 그리고 HTTP/2는 스트림들을 끼워 맞춰주어야하기 때문에 벤치마킹 시 HTTP/1.1보다는 CPU를 더 쓰는 경향이 있다고 한다.</p>
@@ -233,10 +233,10 @@ HTTP/2에서는 Frame과 Message와 Stream이 하나의 요청 단위이다:</p>
 <p>SSE는 서버에서 클라이언트로 계속해서 데이터를 푸시하는 단방향 HTTP 연결이다. 클라이언트는 연결이 끊기면 계속 재연결을 시도한다. (<a href="https://html.spec.whatwg.org/multipage/server-sent-events.html">스펙</a>에서는 몇 초 단위 정도로 설정하라고 나옴.) HTTP 204 No Content가 날아오면 재연결을 멈춘다.</p>
 <ul>
 <li>HTTP/1.0: 지원되지 않는다.</li>
-<li>HTTP/1.1: <code>Connection:keep-alive</code>, <code>Content-Type: text/event-stream</code>을 보내면 SSE가 활성화된다. (<code>keep-alive</code>는 디폴트 지원이기에 생략가능.) 서버에서는 이 헤더를 보고 SSE를 시작할지 정하게 되고, 계속 스트림의 데이터를 보낸다. 브라우저는 연결을 유지하는 노력을 계속해야하고 끊어졌을 때 재연결하는 로직도 만들어놓아야한다. (<a href="https://developer.mozilla.org/en-US/docs/Web/API/EventSource">EventSource API</a>가 현대 브라우저에서의 구현체이다.) 하나의 TCP 연결 전체를 SSE용도로 계속 차지한다. 브라우저에서 도메인 당 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events">6개의 SSE가 최대 연결이다.</a></li>
-<li>HTTP/2와 3: <code>Content-Type: text/event-stream</code>만 필요하다. 하나의 스트림을 계속 유지하면서 요청을 안보내도 응답이 계속 오는 형식이다. 하나의 TCP 연결의 일부를 차지한다. HTTP/1.1처럼 브라우저에서 스트림 정보를 받아오는 로직을 EventSource API 내부에 구현해둔다. (HTTP/2의 경우 END_STREAM or RST_STREAM 플래그가 포함된 프레임이 클라이언트 혹은 서버에서 발송되거나 전체 통신을 종료하는 GOAWAY 프레임이 날라오지 않는 한 스트림은 유지된다.)</li>
+<li>HTTP/1.1: <code class="language-text">Connection:keep-alive</code>, <code class="language-text">Content-Type: text/event-stream</code>을 보내면 SSE가 활성화된다. (<code class="language-text">keep-alive</code>는 디폴트 지원이기에 생략가능.) 서버에서는 이 헤더를 보고 SSE를 시작할지 정하게 되고, 계속 스트림의 데이터를 보낸다. 브라우저는 연결을 유지하는 노력을 계속해야하고 끊어졌을 때 재연결하는 로직도 만들어놓아야한다. (<a href="https://developer.mozilla.org/en-US/docs/Web/API/EventSource">EventSource API</a>가 현대 브라우저에서의 구현체이다.) 하나의 TCP 연결 전체를 SSE용도로 계속 차지한다. 브라우저에서 도메인 당 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events">6개의 SSE가 최대 연결이다.</a></li>
+<li>HTTP/2와 3: <code class="language-text">Content-Type: text/event-stream</code>만 필요하다. 하나의 스트림을 계속 유지하면서 요청을 안보내도 응답이 계속 오는 형식이다. 하나의 TCP 연결의 일부를 차지한다. HTTP/1.1처럼 브라우저에서 스트림 정보를 받아오는 로직을 EventSource API 내부에 구현해둔다. (HTTP/2의 경우 END_STREAM or RST_STREAM 플래그가 포함된 프레임이 클라이언트 혹은 서버에서 발송되거나 전체 통신을 종료하는 GOAWAY 프레임이 날라오지 않는 한 스트림은 유지된다.)</li>
 </ul>
-<p>프록시와 브라우저에서의 캐싱을 최대한 컨트롤하기 위해 <code>Cache-Control: no-store</code>을 사용하는 것이 권장되지만, 이 헤더는 무조건적으로 어떻게 작동될지 프록시 서버들을 조종할 수 없다. (브라우저는 당연히 조종가능.) 이렇게 해달라고 요청만 할 뿐, 프록시 서버 자체는 마음대로 행동할수도 있다. <a href="https://html.spec.whatwg.org/multipage/server-sent-events.html">SSE 스펙</a> 상에는 EventSource 클래스의 constructor내에서 <code>no-store</code>설정을 하라고 되어있다.</p>
+<p>프록시와 브라우저에서의 캐싱을 최대한 컨트롤하기 위해 <code class="language-text">Cache-Control: no-store</code>을 사용하는 것이 권장되지만, 이 헤더는 무조건적으로 어떻게 작동될지 프록시 서버들을 조종할 수 없다. (브라우저는 당연히 조종가능.) 이렇게 해달라고 요청만 할 뿐, 프록시 서버 자체는 마음대로 행동할수도 있다. <a href="https://html.spec.whatwg.org/multipage/server-sent-events.html">SSE 스펙</a> 상에는 EventSource 클래스의 constructor내에서 <code class="language-text">no-store</code>설정을 하라고 되어있다.</p>
 <br/>
 <h2><strong>성능 비교</strong></h2>
 <h3><strong>HTTP/1.1, HTTP/2, HTTP/3 속도?</strong></h3>

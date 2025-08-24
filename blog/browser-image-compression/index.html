@@ -18,73 +18,72 @@ PNG가 더 압축률이 높다고 한다.</p>
 <p>라이브러리 공식 설명에 따르면 브라우저에서 "resolution"을 줄이거나 "storage size"를 줄여서 jpeg, png, webp, bmp를 더 작게 압축한다.</p>
 <p>소스를 열어보니 두 가지 옵션으로 압축한다.</p>
 <ol>
-<li><code>maxWidthOrHeight</code>: 새로운 canvas를 생성하고 더 작은 width, height로 브라우저에게 그리도록 한 후 결과물 canvas를 다시 이미지로 변환한다.</li>
-<li><code>maxSizeMB</code>: 흥미롭게도 <code>maxSizeMB</code>보다 작아질 때까지 루프로 이미지를 조금씩 퀄리티를 낮추는 형식으로 구현되어있다. width, height은 5%씩 줄일 수 있고, quality라는 인자를 통해서 또 매 루프 마다 얼마나 이미지 퀄리티가 줄어드는지 알 수 있다. 해당 라이브러리에서 jpg와 webp의 경우에는 <code>canvas.toDataURL(type, encoderOptions)</code>함수에서 <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL">두 번째 인자가 quality관련</a>이라 이것을 사용한다. png의 경우에는 <a href="https://github.com/photopea/UPNG.js/blob/f6e5f93da01094b1ffb3cef364abce4d9e758cbf/README.md">UPNG</a>의 <code>cnum</code>파라미터를 사용해서 압축한다. cnum은 png에서 허용되는 색 범위를 조절해서 압축한다.</li>
+<li><code class="language-text">maxWidthOrHeight</code>: 새로운 canvas를 생성하고 더 작은 width, height로 브라우저에게 그리도록 한 후 결과물 canvas를 다시 이미지로 변환한다.</li>
+<li><code class="language-text">maxSizeMB</code>: 흥미롭게도 <code class="language-text">maxSizeMB</code>보다 작아질 때까지 루프로 이미지를 조금씩 퀄리티를 낮추는 형식으로 구현되어있다. width, height은 5%씩 줄일 수 있고, quality라는 인자를 통해서 또 매 루프 마다 얼마나 이미지 퀄리티가 줄어드는지 알 수 있다. 해당 라이브러리에서 jpg와 webp의 경우에는 <code class="language-text">canvas.toDataURL(type, encoderOptions)</code>함수에서 <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL">두 번째 인자가 quality관련</a>이라 이것을 사용한다. png의 경우에는 <a href="https://github.com/photopea/UPNG.js/blob/f6e5f93da01094b1ffb3cef364abce4d9e758cbf/README.md">UPNG</a>의 <code class="language-text">cnum</code>파라미터를 사용해서 압축한다. cnum은 png에서 허용되는 색 범위를 조절해서 압축한다.</li>
 </ol>
 <br/>
-<pre><code class="language-js">// browser-image-compression에서 /lib/image-compression.js 내부 발췌
-export default async function compress(file, options, previousProgress = 0) {
-  // ...
-  const maxSizeByte = options.maxSizeMB * 1024 * 1024;
-  // 1차 압축: maxWidthOrHeight 활용해서 이미지 줄이기
-  const [, origCanvas] = await drawFileInCanvas(file, options); // 여기에서 1차 압축
-  const maxWidthOrHeightFixedCanvas = handleMaxWidthOrHeight(
-    origCanvas,
+<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token comment">// browser-image-compression에서 /lib/image-compression.js 내부 발췌</span>
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">compress</span><span class="token punctuation">(</span><span class="token parameter">file<span class="token punctuation">,</span> options<span class="token punctuation">,</span> previousProgress <span class="token operator">=</span> <span class="token number">0</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// ...</span>
+  <span class="token keyword">const</span> maxSizeByte <span class="token operator">=</span> options<span class="token punctuation">.</span>maxSizeMB <span class="token operator">*</span> <span class="token number">1024</span> <span class="token operator">*</span> <span class="token number">1024</span><span class="token punctuation">;</span>
+  <span class="token comment">// 1차 압축: maxWidthOrHeight 활용해서 이미지 줄이기</span>
+  <span class="token keyword">const</span> <span class="token punctuation">[</span><span class="token punctuation">,</span> origCanvas<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">drawFileInCanvas</span><span class="token punctuation">(</span>file<span class="token punctuation">,</span> options<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 여기에서 1차 압축</span>
+  <span class="token keyword">const</span> maxWidthOrHeightFixedCanvas <span class="token operator">=</span> <span class="token function">handleMaxWidthOrHeight</span><span class="token punctuation">(</span>
+    origCanvas<span class="token punctuation">,</span>
     options
-  );
-  // ... 중략. maxWidthOrHeightFixedCanvase에서 orientationFixedCanvas로 변환. 회전 정보 처리.
-  let quality = options.initialQuality || 1.0;
-  const outputFileType = options.fileType || file.type;
-  // 2차 압축: 요 아래로는 maxSizeMB활용해서 이미지 줄이기
-  const tempFile = await canvasToFile(
-    orientationFixedCanvas,
-    outputFileType,
-    file.name,
-    file.lastModified,
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">// ... 중략. maxWidthOrHeightFixedCanvase에서 orientationFixedCanvas로 변환. 회전 정보 처리.</span>
+  <span class="token keyword">let</span> quality <span class="token operator">=</span> options<span class="token punctuation">.</span>initialQuality <span class="token operator">||</span> <span class="token number">1.0</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> outputFileType <span class="token operator">=</span> options<span class="token punctuation">.</span>fileType <span class="token operator">||</span> file<span class="token punctuation">.</span>type<span class="token punctuation">;</span>
+  <span class="token comment">// 2차 압축: 요 아래로는 maxSizeMB활용해서 이미지 줄이기</span>
+  <span class="token keyword">const</span> tempFile <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">canvasToFile</span><span class="token punctuation">(</span>
+    orientationFixedCanvas<span class="token punctuation">,</span>
+    outputFileType<span class="token punctuation">,</span>
+    file<span class="token punctuation">.</span>name<span class="token punctuation">,</span>
+    file<span class="token punctuation">.</span>lastModified<span class="token punctuation">,</span>
     quality
-  );
-  const origExceedMaxSize = tempFile.size > maxSizeByte; // 2차 압축할지말지 결정.
-  // ...
-  let compressedFile;
-  // ...
-  // 무한 루프 돌려서 이미지 원하는 용량보다 작아질 때까지 조금씩 퀄리티나 폭/너비 줄임.
-  const shouldReduceResolution =
-    !options.alwaysKeepResolution &#x26;&#x26; origExceedMaxSize;
-  while (
-    remainingTrials-- &#x26;&#x26;
-    (currentSize > maxSizeByte || currentSize > sourceSize)
-  ) {
-    const newWidth = shouldReduceResolution
-      ? canvas.width * 0.95
-      : canvas.width;
-    const newHeight = shouldReduceResolution
-      ? canvas.height * 0.95
-      : canvas.height;
-    if (process.env.BUILD === "development") {
-      console.log("current width", newWidth);
-      console.log("current height", newHeight);
-      console.log("current quality", quality);
-    }
-    [newCanvas, ctx] = getNewCanvasAndCtx(newWidth, newHeight);
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> origExceedMaxSize <span class="token operator">=</span> tempFile<span class="token punctuation">.</span>size <span class="token operator">></span> maxSizeByte<span class="token punctuation">;</span> <span class="token comment">// 2차 압축할지말지 결정.</span>
+  <span class="token comment">// ...</span>
+  <span class="token keyword">let</span> compressedFile<span class="token punctuation">;</span>
+  <span class="token comment">// ...</span>
+  <span class="token comment">// 무한 루프 돌려서 이미지 원하는 용량보다 작아질 때까지 조금씩 퀄리티나 폭/너비 줄임.</span>
+  <span class="token keyword">const</span> shouldReduceResolution <span class="token operator">=</span>
+    <span class="token operator">!</span>options<span class="token punctuation">.</span>alwaysKeepResolution <span class="token operator">&amp;&amp;</span> origExceedMaxSize<span class="token punctuation">;</span>
+  <span class="token keyword">while</span> <span class="token punctuation">(</span>
+    remainingTrials<span class="token operator">--</span> <span class="token operator">&amp;&amp;</span>
+    <span class="token punctuation">(</span>currentSize <span class="token operator">></span> maxSizeByte <span class="token operator">||</span> currentSize <span class="token operator">></span> sourceSize<span class="token punctuation">)</span>
+  <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> newWidth <span class="token operator">=</span> shouldReduceResolution
+      <span class="token operator">?</span> canvas<span class="token punctuation">.</span>width <span class="token operator">*</span> <span class="token number">0.95</span>
+      <span class="token operator">:</span> canvas<span class="token punctuation">.</span>width<span class="token punctuation">;</span>
+    <span class="token keyword">const</span> newHeight <span class="token operator">=</span> shouldReduceResolution
+      <span class="token operator">?</span> canvas<span class="token punctuation">.</span>height <span class="token operator">*</span> <span class="token number">0.95</span>
+      <span class="token operator">:</span> canvas<span class="token punctuation">.</span>height<span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>process<span class="token punctuation">.</span>env<span class="token punctuation">.</span><span class="token constant">BUILD</span> <span class="token operator">===</span> <span class="token string">"development"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"current width"</span><span class="token punctuation">,</span> newWidth<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"current height"</span><span class="token punctuation">,</span> newHeight<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"current quality"</span><span class="token punctuation">,</span> quality<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token punctuation">[</span>newCanvas<span class="token punctuation">,</span> ctx<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">getNewCanvasAndCtx</span><span class="token punctuation">(</span>newWidth<span class="token punctuation">,</span> newHeight<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    ctx.drawImage(canvas, 0, 0, newWidth, newHeight);
+    ctx<span class="token punctuation">.</span><span class="token function">drawImage</span><span class="token punctuation">(</span>canvas<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> newWidth<span class="token punctuation">,</span> newHeight<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    if (outputFileType === "image/png") {
-      quality *= 0.85;
-    } else {
-      quality *= 0.95;
-    }
-    compressedFile = await canvasToFile(
-      newCanvas,
-      outputFileType,
-      file.name,
-      file.lastModified,
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>outputFileType <span class="token operator">===</span> <span class="token string">"image/png"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      quality <span class="token operator">*=</span> <span class="token number">0.85</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      quality <span class="token operator">*=</span> <span class="token number">0.95</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    compressedFile <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">canvasToFile</span><span class="token punctuation">(</span>
+      newCanvas<span class="token punctuation">,</span>
+      outputFileType<span class="token punctuation">,</span>
+      file<span class="token punctuation">.</span>name<span class="token punctuation">,</span>
+      file<span class="token punctuation">.</span>lastModified<span class="token punctuation">,</span>
       quality
-    );
-    // ...
-  }
-}
-</code></pre>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// ...</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre></div>
 <br/>
 <h2><strong>3년 전 체험뷰 개발에서의 문제 탐구</strong></h2>
 <p>3년 전 체험뷰 개발 시 휴리스틱하게 어떤 이미지를 넣었을 때 어떤 정도의 용량이 나오는지 체크하고 browser-image-compression의 압축 파라미터 옵션들을 정해주었었다. 라이브러리를 열어보니 더 명확하게 무슨 일이 일어났는지 보인다.
@@ -109,18 +108,18 @@ export default async function compress(file, options, previousProgress = 0) {
 <p>아래 보다시피 png가 같은 용량대비 jpg 보다 퀄리티가 낮다. lossless webp는 jpg보다 업그레이드된 방식이기에 조금 더 압축 효율이 좋다.</p>
 <br/>
 <div class="image-container">
-  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/rock.jpg" alt="jpg rock"/>
-  <sub class>그림 1. 돌멩이 사진의 jpg버전 174kb</sub>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/rock.jpg" alt="jpg rock">
+  <sub class="">그림 1. 돌멩이 사진의 jpg버전 174kb</sub>
 </div>
 <br/>
 <div class="image-container">
-  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/rock.png" alt="png rock"/>
-  <sub class>그림 2. 돌멩이 사진의 png버전 198kb</sub>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/rock.png" alt="png rock">
+  <sub class="">그림 2. 돌멩이 사진의 png버전 198kb</sub>
 </div>
 <br/>
 <div class="image-container">
-  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/rock.webp" alt="webp rock"/>
-  <sub class>그림 3. 돌멩이 사진의 webp버전 84kb</sub>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/rock.webp" alt="webp rock">
+  <sub class="">그림 3. 돌멩이 사진의 webp버전 84kb</sub>
 </div></article><style data-emotion="css 9hy0l">.css-9hy0l{position:fixed;top:36px;right:40px;max-height:calc(100vh - 24px - 36px);overflow:auto;scrollbar-width:none;-ms-overflow-style:none;}.css-9hy0l::-webkit-scrollbar{display:none;}@-moz-document url-prefix(){.css-9hy0l{display:none;}}@media (max-width: 1400px){.css-9hy0l{display:none;}}</style><div data-nosnippet="true" class="css-9hy0l"><style data-emotion="css jb9iej">.css-jb9iej{background-color:rgba(0, 0, 0, 0.2);width:100%;position:absolute;right:0;top:0;z-index:11;}</style><div class="css-jb9iej"></div><style data-emotion="css 1k1x2bk">.css-1k1x2bk{position:absolute;width:100%;height:100%;background-color:rgba(255, 255, 255, 0);z-index:10;}</style><div class="css-1k1x2bk"></div><style data-emotion="css 1se8enf">.css-1se8enf{zoom:0.15;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;padding:0px 30px;}</style><div class="markdown-content css-1se8enf"><h2><strong>browser-image-compression 분석</strong></h2>
 <p class="text-time">최초 업로드 2024-03-16 / 마지막 수정 2024-05-14</p>
 <p>예전에 <a href="https://chvu.co.kr">체험뷰</a> 개발할 떄 browser-image-compression을 썼었는데, 지금 체험뷰 사이트를 방문해보면 일부 이미지가 이상적인 압축 사이즈인 50kb~300kb를 많이 벗어난 1mb 언저리인 것들도 보인다. 이렇게 일부 이미지들 때문에 페이지 로드 속도가 저하되고 있다. 내가 예전에 구현할 때 썸네일에 2MB까지 자유(maxSizeMB)를 줬었다. 500kb 같이 낮은 숫자가 아니었던 이유는 특정 이미지들의 경우 500kb 미만으로 압축시 너무 화질이 안좋아보여서 웹사이트를 외관상 해친다고 생각했기 때문이다. 그럼 왜 이런 일이 발생했을까? 3년 전에는 내가 라이브러리 내부를 열어본다는 생각까지 못했던 것 같다. 우선 이미지 압축에 대한 용어부터 정리하고 이후 라이브러리 내부를 탐구하자.</p>
@@ -141,73 +140,72 @@ PNG가 더 압축률이 높다고 한다.</p>
 <p>라이브러리 공식 설명에 따르면 브라우저에서 "resolution"을 줄이거나 "storage size"를 줄여서 jpeg, png, webp, bmp를 더 작게 압축한다.</p>
 <p>소스를 열어보니 두 가지 옵션으로 압축한다.</p>
 <ol>
-<li><code>maxWidthOrHeight</code>: 새로운 canvas를 생성하고 더 작은 width, height로 브라우저에게 그리도록 한 후 결과물 canvas를 다시 이미지로 변환한다.</li>
-<li><code>maxSizeMB</code>: 흥미롭게도 <code>maxSizeMB</code>보다 작아질 때까지 루프로 이미지를 조금씩 퀄리티를 낮추는 형식으로 구현되어있다. width, height은 5%씩 줄일 수 있고, quality라는 인자를 통해서 또 매 루프 마다 얼마나 이미지 퀄리티가 줄어드는지 알 수 있다. 해당 라이브러리에서 jpg와 webp의 경우에는 <code>canvas.toDataURL(type, encoderOptions)</code>함수에서 <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL">두 번째 인자가 quality관련</a>이라 이것을 사용한다. png의 경우에는 <a href="https://github.com/photopea/UPNG.js/blob/f6e5f93da01094b1ffb3cef364abce4d9e758cbf/README.md">UPNG</a>의 <code>cnum</code>파라미터를 사용해서 압축한다. cnum은 png에서 허용되는 색 범위를 조절해서 압축한다.</li>
+<li><code class="language-text">maxWidthOrHeight</code>: 새로운 canvas를 생성하고 더 작은 width, height로 브라우저에게 그리도록 한 후 결과물 canvas를 다시 이미지로 변환한다.</li>
+<li><code class="language-text">maxSizeMB</code>: 흥미롭게도 <code class="language-text">maxSizeMB</code>보다 작아질 때까지 루프로 이미지를 조금씩 퀄리티를 낮추는 형식으로 구현되어있다. width, height은 5%씩 줄일 수 있고, quality라는 인자를 통해서 또 매 루프 마다 얼마나 이미지 퀄리티가 줄어드는지 알 수 있다. 해당 라이브러리에서 jpg와 webp의 경우에는 <code class="language-text">canvas.toDataURL(type, encoderOptions)</code>함수에서 <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL">두 번째 인자가 quality관련</a>이라 이것을 사용한다. png의 경우에는 <a href="https://github.com/photopea/UPNG.js/blob/f6e5f93da01094b1ffb3cef364abce4d9e758cbf/README.md">UPNG</a>의 <code class="language-text">cnum</code>파라미터를 사용해서 압축한다. cnum은 png에서 허용되는 색 범위를 조절해서 압축한다.</li>
 </ol>
 <br/>
-<pre><code class="language-js">// browser-image-compression에서 /lib/image-compression.js 내부 발췌
-export default async function compress(file, options, previousProgress = 0) {
-  // ...
-  const maxSizeByte = options.maxSizeMB * 1024 * 1024;
-  // 1차 압축: maxWidthOrHeight 활용해서 이미지 줄이기
-  const [, origCanvas] = await drawFileInCanvas(file, options); // 여기에서 1차 압축
-  const maxWidthOrHeightFixedCanvas = handleMaxWidthOrHeight(
-    origCanvas,
+<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token comment">// browser-image-compression에서 /lib/image-compression.js 내부 발췌</span>
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">compress</span><span class="token punctuation">(</span><span class="token parameter">file<span class="token punctuation">,</span> options<span class="token punctuation">,</span> previousProgress <span class="token operator">=</span> <span class="token number">0</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// ...</span>
+  <span class="token keyword">const</span> maxSizeByte <span class="token operator">=</span> options<span class="token punctuation">.</span>maxSizeMB <span class="token operator">*</span> <span class="token number">1024</span> <span class="token operator">*</span> <span class="token number">1024</span><span class="token punctuation">;</span>
+  <span class="token comment">// 1차 압축: maxWidthOrHeight 활용해서 이미지 줄이기</span>
+  <span class="token keyword">const</span> <span class="token punctuation">[</span><span class="token punctuation">,</span> origCanvas<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">drawFileInCanvas</span><span class="token punctuation">(</span>file<span class="token punctuation">,</span> options<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 여기에서 1차 압축</span>
+  <span class="token keyword">const</span> maxWidthOrHeightFixedCanvas <span class="token operator">=</span> <span class="token function">handleMaxWidthOrHeight</span><span class="token punctuation">(</span>
+    origCanvas<span class="token punctuation">,</span>
     options
-  );
-  // ... 중략. maxWidthOrHeightFixedCanvase에서 orientationFixedCanvas로 변환. 회전 정보 처리.
-  let quality = options.initialQuality || 1.0;
-  const outputFileType = options.fileType || file.type;
-  // 2차 압축: 요 아래로는 maxSizeMB활용해서 이미지 줄이기
-  const tempFile = await canvasToFile(
-    orientationFixedCanvas,
-    outputFileType,
-    file.name,
-    file.lastModified,
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">// ... 중략. maxWidthOrHeightFixedCanvase에서 orientationFixedCanvas로 변환. 회전 정보 처리.</span>
+  <span class="token keyword">let</span> quality <span class="token operator">=</span> options<span class="token punctuation">.</span>initialQuality <span class="token operator">||</span> <span class="token number">1.0</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> outputFileType <span class="token operator">=</span> options<span class="token punctuation">.</span>fileType <span class="token operator">||</span> file<span class="token punctuation">.</span>type<span class="token punctuation">;</span>
+  <span class="token comment">// 2차 압축: 요 아래로는 maxSizeMB활용해서 이미지 줄이기</span>
+  <span class="token keyword">const</span> tempFile <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">canvasToFile</span><span class="token punctuation">(</span>
+    orientationFixedCanvas<span class="token punctuation">,</span>
+    outputFileType<span class="token punctuation">,</span>
+    file<span class="token punctuation">.</span>name<span class="token punctuation">,</span>
+    file<span class="token punctuation">.</span>lastModified<span class="token punctuation">,</span>
     quality
-  );
-  const origExceedMaxSize = tempFile.size > maxSizeByte; // 2차 압축할지말지 결정.
-  // ...
-  let compressedFile;
-  // ...
-  // 무한 루프 돌려서 이미지 원하는 용량보다 작아질 때까지 조금씩 퀄리티나 폭/너비 줄임.
-  const shouldReduceResolution =
-    !options.alwaysKeepResolution &#x26;&#x26; origExceedMaxSize;
-  while (
-    remainingTrials-- &#x26;&#x26;
-    (currentSize > maxSizeByte || currentSize > sourceSize)
-  ) {
-    const newWidth = shouldReduceResolution
-      ? canvas.width * 0.95
-      : canvas.width;
-    const newHeight = shouldReduceResolution
-      ? canvas.height * 0.95
-      : canvas.height;
-    if (process.env.BUILD === "development") {
-      console.log("current width", newWidth);
-      console.log("current height", newHeight);
-      console.log("current quality", quality);
-    }
-    [newCanvas, ctx] = getNewCanvasAndCtx(newWidth, newHeight);
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> origExceedMaxSize <span class="token operator">=</span> tempFile<span class="token punctuation">.</span>size <span class="token operator">></span> maxSizeByte<span class="token punctuation">;</span> <span class="token comment">// 2차 압축할지말지 결정.</span>
+  <span class="token comment">// ...</span>
+  <span class="token keyword">let</span> compressedFile<span class="token punctuation">;</span>
+  <span class="token comment">// ...</span>
+  <span class="token comment">// 무한 루프 돌려서 이미지 원하는 용량보다 작아질 때까지 조금씩 퀄리티나 폭/너비 줄임.</span>
+  <span class="token keyword">const</span> shouldReduceResolution <span class="token operator">=</span>
+    <span class="token operator">!</span>options<span class="token punctuation">.</span>alwaysKeepResolution <span class="token operator">&amp;&amp;</span> origExceedMaxSize<span class="token punctuation">;</span>
+  <span class="token keyword">while</span> <span class="token punctuation">(</span>
+    remainingTrials<span class="token operator">--</span> <span class="token operator">&amp;&amp;</span>
+    <span class="token punctuation">(</span>currentSize <span class="token operator">></span> maxSizeByte <span class="token operator">||</span> currentSize <span class="token operator">></span> sourceSize<span class="token punctuation">)</span>
+  <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> newWidth <span class="token operator">=</span> shouldReduceResolution
+      <span class="token operator">?</span> canvas<span class="token punctuation">.</span>width <span class="token operator">*</span> <span class="token number">0.95</span>
+      <span class="token operator">:</span> canvas<span class="token punctuation">.</span>width<span class="token punctuation">;</span>
+    <span class="token keyword">const</span> newHeight <span class="token operator">=</span> shouldReduceResolution
+      <span class="token operator">?</span> canvas<span class="token punctuation">.</span>height <span class="token operator">*</span> <span class="token number">0.95</span>
+      <span class="token operator">:</span> canvas<span class="token punctuation">.</span>height<span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>process<span class="token punctuation">.</span>env<span class="token punctuation">.</span><span class="token constant">BUILD</span> <span class="token operator">===</span> <span class="token string">"development"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"current width"</span><span class="token punctuation">,</span> newWidth<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"current height"</span><span class="token punctuation">,</span> newHeight<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"current quality"</span><span class="token punctuation">,</span> quality<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token punctuation">[</span>newCanvas<span class="token punctuation">,</span> ctx<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">getNewCanvasAndCtx</span><span class="token punctuation">(</span>newWidth<span class="token punctuation">,</span> newHeight<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    ctx.drawImage(canvas, 0, 0, newWidth, newHeight);
+    ctx<span class="token punctuation">.</span><span class="token function">drawImage</span><span class="token punctuation">(</span>canvas<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> newWidth<span class="token punctuation">,</span> newHeight<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    if (outputFileType === "image/png") {
-      quality *= 0.85;
-    } else {
-      quality *= 0.95;
-    }
-    compressedFile = await canvasToFile(
-      newCanvas,
-      outputFileType,
-      file.name,
-      file.lastModified,
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>outputFileType <span class="token operator">===</span> <span class="token string">"image/png"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      quality <span class="token operator">*=</span> <span class="token number">0.85</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      quality <span class="token operator">*=</span> <span class="token number">0.95</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    compressedFile <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">canvasToFile</span><span class="token punctuation">(</span>
+      newCanvas<span class="token punctuation">,</span>
+      outputFileType<span class="token punctuation">,</span>
+      file<span class="token punctuation">.</span>name<span class="token punctuation">,</span>
+      file<span class="token punctuation">.</span>lastModified<span class="token punctuation">,</span>
       quality
-    );
-    // ...
-  }
-}
-</code></pre>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// ...</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre></div>
 <br/>
 <h2><strong>3년 전 체험뷰 개발에서의 문제 탐구</strong></h2>
 <p>3년 전 체험뷰 개발 시 휴리스틱하게 어떤 이미지를 넣었을 때 어떤 정도의 용량이 나오는지 체크하고 browser-image-compression의 압축 파라미터 옵션들을 정해주었었다. 라이브러리를 열어보니 더 명확하게 무슨 일이 일어났는지 보인다.
@@ -232,18 +230,18 @@ export default async function compress(file, options, previousProgress = 0) {
 <p>아래 보다시피 png가 같은 용량대비 jpg 보다 퀄리티가 낮다. lossless webp는 jpg보다 업그레이드된 방식이기에 조금 더 압축 효율이 좋다.</p>
 <br/>
 <div class="image-container">
-  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/rock.jpg" alt="jpg rock"/>
-  <sub class>그림 1. 돌멩이 사진의 jpg버전 174kb</sub>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/rock.jpg" alt="jpg rock">
+  <sub class="">그림 1. 돌멩이 사진의 jpg버전 174kb</sub>
 </div>
 <br/>
 <div class="image-container">
-  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/rock.png" alt="png rock"/>
-  <sub class>그림 2. 돌멩이 사진의 png버전 198kb</sub>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/rock.png" alt="png rock">
+  <sub class="">그림 2. 돌멩이 사진의 png버전 198kb</sub>
 </div>
 <br/>
 <div class="image-container">
-  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/rock.webp" alt="webp rock"/>
-  <sub class>그림 3. 돌멩이 사진의 webp버전 84kb</sub>
+  <img class="md-image" src="https://d1ykeqyorqdego.cloudfront.net/new-assets/rock.webp" alt="webp rock">
+  <sub class="">그림 3. 돌멩이 사진의 webp버전 84kb</sub>
 </div></div></div><style data-emotion="css 6apk4h">.css-6apk4h{height:60px;padding-top:40px;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;color:#b4b4b4;font-size:14px;}</style><div class="css-6apk4h"><span class="text-red">Copyright </span><span class="text-purple">© </span><span class="text-skyblue">2023</span><style data-emotion="css fute3">.css-fute3{-webkit-text-decoration:none;text-decoration:none;color:#a6e22e;}</style><a href="/" class="css-fute3"> Seho Lee </a><span class="text-orange">All Rights Reserved</span><span class="text-yellow">.</span></div></main></div></div><style data-emotion="css 1u8f60p">.css-1u8f60p{width:100vw;height:24px;background-color:#414339;position:fixed;bottom:0;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;font-size:12px;}</style><div class="css-1u8f60p"><style data-emotion="css 1byydgk">.css-1byydgk{background-color:#1e1f1c;color:#ccc;font-size:12px;font-weight:800;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding:0px 6px;}@media (max-width: 768px){.css-1byydgk{font-size:10px;}}</style><div class="css-1byydgk">&lt;/&gt;</div><style data-emotion="css 1k181js">.css-1k181js{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-text-decoration:none;text-decoration:none;width:100%;}</style><a href="https://github.com/seho0808/blog" class="css-1k181js"><style data-emotion="css kr4wdv">.css-kr4wdv{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding-left:10px;padding-right:20px;color:#ccc;gap:10px;}@media (max-width: 768px){.css-kr4wdv{font-size:10px;}}</style><div class="css-kr4wdv"><div>Latest Commit</div><div>98771c25-4a52-5bde-8f14-da6328217ad1</div></div><style data-emotion="css 1lo262">.css-1lo262{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding-left:10px;padding-right:20px;color:#ccc;gap:10px;margin-left:auto;}@media (max-width: 768px){.css-1lo262{font-size:10px;}}@media (max-width: 768px){.css-1lo262{display:none;}}</style><div class="css-1lo262"><div>Seho Lee</div><div>2025-08-10T05:06:28Z</div></div></a></div></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/blog/browser-image-compression/";/*]]>*/</script><!-- slice-start id="_gatsby-scripts-1" -->
           <script
             id="gatsby-chunk-mapping"

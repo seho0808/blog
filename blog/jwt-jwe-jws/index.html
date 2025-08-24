@@ -126,7 +126,7 @@ defined in Section 3.1 of [JWA].</p>
 <li>SameSite=strict 옵션으로 CSRF 공격에 대비해야한다. (lax는 get만 허용)</li>
 <li>JWS의 expire time을 짧게 잡으면 조금은 더 보안이 나아질 수 있다. 영원히 사용가능으로 해놓으면 해커는 탈취 후 영원히 그 유저인척 살아갈 수 있다.</li>
 </ul>
-<p>예시 => <code>Set-Cookie: token=토큰; Expires=Thu, 21 Oct 2021 07:28:00 GMT; Secure; HttpOnly; SameSite=strict;</code>를 https로 주고 받기.</p>
+<p>예시 => <code class="language-text">Set-Cookie: token=토큰; Expires=Thu, 21 Oct 2021 07:28:00 GMT; Secure; HttpOnly; SameSite=strict;</code>를 https로 주고 받기.</p>
 <br/>
 <h4>5-2. bearer 사용시</h4>
 <ul>
@@ -134,7 +134,7 @@ defined in Section 3.1 of [JWA].</p>
 <li>cookie가 자동으로 패스되는 점을 악용한 CSRF에는 강하다.</li>
 <li>cookie를 수동으로 헤더에 넣어주어야해서 쿠키가 js로 accessbile해야한다. 고로 XSS에는 약하기에 XSS자체를 차단하는 방법들을 강구해야한다.</li>
 </ul>
-<p>예시 => <code>Authorization: bearer 토큰</code>를 https로 주고 받기</p>
+<p>예시 => <code class="language-text">Authorization: bearer 토큰</code>를 https로 주고 받기</p>
 <br/>
 <h3><strong>여담</strong></h3>
 <blockquote>
@@ -279,7 +279,7 @@ defined in Section 3.1 of [JWA].</p>
 <li>SameSite=strict 옵션으로 CSRF 공격에 대비해야한다. (lax는 get만 허용)</li>
 <li>JWS의 expire time을 짧게 잡으면 조금은 더 보안이 나아질 수 있다. 영원히 사용가능으로 해놓으면 해커는 탈취 후 영원히 그 유저인척 살아갈 수 있다.</li>
 </ul>
-<p>예시 => <code>Set-Cookie: token=토큰; Expires=Thu, 21 Oct 2021 07:28:00 GMT; Secure; HttpOnly; SameSite=strict;</code>를 https로 주고 받기.</p>
+<p>예시 => <code class="language-text">Set-Cookie: token=토큰; Expires=Thu, 21 Oct 2021 07:28:00 GMT; Secure; HttpOnly; SameSite=strict;</code>를 https로 주고 받기.</p>
 <br/>
 <h4>5-2. bearer 사용시</h4>
 <ul>
@@ -287,7 +287,7 @@ defined in Section 3.1 of [JWA].</p>
 <li>cookie가 자동으로 패스되는 점을 악용한 CSRF에는 강하다.</li>
 <li>cookie를 수동으로 헤더에 넣어주어야해서 쿠키가 js로 accessbile해야한다. 고로 XSS에는 약하기에 XSS자체를 차단하는 방법들을 강구해야한다.</li>
 </ul>
-<p>예시 => <code>Authorization: bearer 토큰</code>를 https로 주고 받기</p>
+<p>예시 => <code class="language-text">Authorization: bearer 토큰</code>를 https로 주고 받기</p>
 <br/>
 <h3><strong>여담</strong></h3>
 <blockquote>
