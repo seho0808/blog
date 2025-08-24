@@ -12,6 +12,8 @@ const TabWrapper = styled.div`
   display: flex;
   background-color: #1e1f1c;
   align-items: stretch;
+  overflow-x: auto;
+  white-space: nowrap;
 
   @media (max-width: 768px) {
     display: none;

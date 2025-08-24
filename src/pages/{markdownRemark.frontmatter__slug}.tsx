@@ -117,6 +117,7 @@ const WindowsLayout = styled.div`
 const ContentWindow = styled.div`
   background-color: #272822;
   flex-grow: 1;
+  overflow: hidden;
 
   @media (max-width: 1050px) {
     padding-top: 48px; // menubar
