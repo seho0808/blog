@@ -16,8 +16,8 @@ body {
 
 /* Width and color of the scrollbar */
 ::-webkit-scrollbar {
-	width: 12px; /* Adjust the width as needed */
-	height: 12px; /* For horizontal scrollbars */
+  width: 6px; /* Adjust the width as needed */
+  height: 3px; /* For horizontal scrollbars */
 }
 
 /* Track of the scrollbar */
