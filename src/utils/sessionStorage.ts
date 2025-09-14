@@ -132,7 +132,9 @@ export const loadExplorerWidth = () => {
     }
     return Number(serializedState);
   } catch (err) {
-    console.log("unexpected error at explorerWidth");
+    console.log(
+      "Unexpected error at explorerWidth. Falling back to default value."
+    );
     return 275; // Handle errors or invalid state
   }
 };
