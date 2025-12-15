@@ -1,7 +1,7 @@
 ---
 slug: "/blog/dcircle-mvp-1"
 date: "2024-09-20"
-title: "벗어날 수 없는 기로에 있을 때 강제로 성장한다"
+title: "2024-3Q 벗어날 수 없는 기로에 있을 때 강제로 성장한다"
 subtitle: "디써클 첫 MVP 회고"
 ---
 

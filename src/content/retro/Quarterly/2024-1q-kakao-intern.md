@@ -1,7 +1,7 @@
 ---
 slug: "/blog/kakao-intern"
 date: "2024-03-12"
-title: "카카오 인턴 회고"
+title: "2024-1Q 카카오 인턴 회고"
 subtitle: "카카오 커머스기술팀 프론트엔드 인턴을 하며 느낀점들"
 ---
 

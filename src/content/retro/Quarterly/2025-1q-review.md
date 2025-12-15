@@ -1,7 +1,7 @@
 ---
 slug: "/blog/2025-1q-review"
 date: "2025-03-30"
-title: "2025년 1분기 회고"
+title: "2025-1Q 회고"
 subtitle: "2025년 1분기 회고"
 ---
 
