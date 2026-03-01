@@ -1,10 +1,13 @@
 import { TabsInfo } from "../types/types";
 
+const isBrowser = typeof window !== "undefined";
+
 /**
  * save open tabs information
  * @param state tabs that are open
  */
 export const saveTabsInfo = (state: TabsInfo[]) => {
+  if (!isBrowser) return;
   try {
     const serializedState = JSON.stringify(state);
     sessionStorage.setItem("tabsInfo", serializedState);
@@ -17,15 +20,16 @@ export const saveTabsInfo = (state: TabsInfo[]) => {
  * @returns tabs that are open
  */
 export const loadTabsInfo = () => {
+  if (!isBrowser) return [];
   try {
     const serializedState = sessionStorage.getItem("tabsInfo");
     if (serializedState === null) {
-      return []; // No state saved in session storage
+      return [];
     }
     return JSON.parse(serializedState);
   } catch (err) {
     console.log("unexpected error at loadTabsInfo");
-    return []; // Handle errors or invalid state
+    return [];
   }
 };
 
@@ -35,6 +39,7 @@ export const loadTabsInfo = () => {
  * @returns false if something went wrong. true if executed.
  */
 export const removeTabsInfo = (slug: string) => {
+  if (!isBrowser) return false;
   try {
     const serializedState = sessionStorage.getItem("tabsInfo");
     if (serializedState === null) {
@@ -57,6 +62,7 @@ export const removeTabsInfo = (slug: string) => {
  * @param folderNames folder names to save
  */
 export const saveOpenFolders = (folderNames: string[]) => {
+  if (!isBrowser) return false;
   try {
     sessionStorage.setItem("openFolders", JSON.stringify(folderNames));
     return true;
@@ -71,10 +77,11 @@ export const saveOpenFolders = (folderNames: string[]) => {
  * @returns open folders' names
  */
 export const loadOpenFolders = () => {
+  if (!isBrowser) return [];
   try {
     const serializedState = sessionStorage.getItem("openFolders");
     if (serializedState === null) {
-      return []; // No state saved in session storage
+      return [];
     }
     return JSON.parse(serializedState);
   } catch (e) {
@@ -88,6 +95,7 @@ export const loadOpenFolders = () => {
  * @param folderName folder name to remove
  */
 export const removeOpenFolders = (folderName: string) => {
+  if (!isBrowser) return false;
   try {
     const serializedState = sessionStorage.getItem("openFolders");
     if (serializedState !== null) {
@@ -114,6 +122,7 @@ export const removeOpenFolders = (folderName: string) => {
  * @param width width in px
  */
 export const saveExplorerWidth = (width: number) => {
+  if (!isBrowser) return;
   try {
     sessionStorage.setItem("explorerWidth", JSON.stringify(width));
   } catch (err) {
@@ -125,16 +134,17 @@ export const saveExplorerWidth = (width: number) => {
  * @returns width in px
  */
 export const loadExplorerWidth = () => {
+  if (!isBrowser) return 275;
   try {
     const serializedState = sessionStorage.getItem("explorerWidth");
     if (!serializedState) {
-      return 275; // No state saved in session storage
+      return 275;
     }
     return Number(serializedState);
   } catch (err) {
     console.log(
       "Unexpected error at explorerWidth. Falling back to default value."
     );
-    return 275; // Handle errors or invalid state
+    return 275;
   }
 };
