@@ -1,7 +1,7 @@
 // core
 import React, { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
-import { graphql } from "gatsby";
+import { graphql, HeadProps } from "gatsby";
 
 // types
 import { BlogMarkdownRemark } from "../types/types";
@@ -54,11 +54,6 @@ export default function BlogPostTemplate({
 
   return (
     <OuterLayout>
-      <SEO
-        title={frontmatter.title}
-        pathname={frontmatter.slug}
-        description={frontmatter.subtitle}
-      />
       <WindowsLayout>
         {/* explorer, search selector */}
         <Menubar
@@ -85,6 +80,17 @@ export default function BlogPostTemplate({
     </OuterLayout>
   );
 }
+
+export const Head = ({ data }: HeadProps<BlogMarkdownRemark>) => {
+  const { frontmatter } = data.markdownRemark;
+  return (
+    <SEO
+      title={frontmatter.title}
+      pathname={frontmatter.slug}
+      description={frontmatter.subtitle}
+    />
+  );
+};
 
 export const pageQuery = graphql`
   query ($id: String!) {

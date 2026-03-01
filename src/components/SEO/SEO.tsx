@@ -1,6 +1,5 @@
 import React from "react";
 import { useSiteMetadata } from "../../hooks/use-site-metadata";
-import { Helmet } from "react-helmet";
 
 export const SEO = ({
   title,
@@ -11,7 +10,7 @@ export const SEO = ({
   title?: string;
   description?: string;
   pathname?: string;
-  children?: JSX.Element | JSX.Element[];
+  children?: React.ReactNode;
 }) => {
   const {
     title: defaultTitle,
@@ -30,7 +29,7 @@ export const SEO = ({
   };
 
   return (
-    <Helmet>
+    <>
       <title>{seo.title}</title>
       <meta name="description" content={seo.description} />
       <meta name="image" content={seo.image} />
@@ -57,9 +56,9 @@ export const SEO = ({
       <meta name="author" content={author} />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <link rel="icon" href="/favicon.ico" />
-      <script src="https://www.googletagmanager.com/gtag/js?id=G-C806LPCFGY"></script>
+      <script src="https://www.googletagmanager.com/gtag/js?id=G-C806LPCFGY" />
 
       {children}
-    </Helmet>
+    </>
   );
 };

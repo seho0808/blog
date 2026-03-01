@@ -11,7 +11,6 @@ const config: GatsbyConfig = {
       },
     },
     `gatsby-plugin-sitemap`,
-    `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-transformer-remark`,
       options: {
